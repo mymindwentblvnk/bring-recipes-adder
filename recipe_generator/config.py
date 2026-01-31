@@ -76,6 +76,31 @@ body {
     margin: 0 auto;
     padding: 20px;
 }
+.language-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #2c5282;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+    z-index: 1000;
+}
+.language-toggle:hover {
+    background-color: #1e3a5f;
+}
+.lang-de, .lang-en {
+    display: none;
+}
+.lang-de.active, .lang-en.active {
+    display: inline;
+}
 """
 
 DETAIL_PAGE_CSS = """

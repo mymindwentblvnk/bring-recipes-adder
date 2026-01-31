@@ -4,7 +4,21 @@ from typing import Any
 from html import escape
 from datetime import datetime
 
-from .config import COMMON_CSS, DETAIL_PAGE_CSS, OVERVIEW_PAGE_CSS, get_text
+from .config import COMMON_CSS, DETAIL_PAGE_CSS, OVERVIEW_PAGE_CSS, get_text, TEXTS
+
+
+def bilingual_text(key: str) -> str:
+    """Generate bilingual span elements for a text key.
+
+    Args:
+        key: The text key to look up in TEXTS dictionary
+
+    Returns:
+        HTML with both German and English spans
+    """
+    de_text = TEXTS['de'].get(key, key)
+    en_text = TEXTS['en'].get(key, key)
+    return f'<span class="lang-de">{de_text}</span><span class="lang-en">{en_text}</span>'
 
 
 def format_time(minutes: int) -> str:
@@ -84,7 +98,11 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-button">{get_text('back_to_recipes')}</a>
+    <button class="language-toggle" onclick="toggleLanguage()">
+        <span class="lang-de">🇬🇧 English</span>
+        <span class="lang-en">🇩🇪 Deutsch</span>
+    </button>
+    <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
     <div itemscope itemtype="https://schema.org/Recipe">
         <h1 itemprop="name">{category} {escape(recipe['name'])}</h1>
 
@@ -96,28 +114,28 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
 
         <table class="recipe-info-table">
             <tr>
-                <td><time itemprop="prepTime" datetime="{format_time(recipe['prep_time'])}">{get_text('prep_time')}</time></td>
-                <td>{recipe['prep_time']} {get_text('minutes')}</td>
+                <td><time itemprop="prepTime" datetime="{format_time(recipe['prep_time'])}">{bilingual_text('prep_time')}</time></td>
+                <td>{recipe['prep_time']} {bilingual_text('minutes')}</td>
             </tr>
             <tr>
-                <td><time itemprop="cookTime" datetime="{format_time(recipe['cook_time'])}">{get_text('cook_time')}</time></td>
-                <td>{recipe['cook_time']} {get_text('minutes')}</td>
+                <td><time itemprop="cookTime" datetime="{format_time(recipe['cook_time'])}">{bilingual_text('cook_time')}</time></td>
+                <td>{recipe['cook_time']} {bilingual_text('minutes')}</td>
             </tr>
             <tr>
-                <td><meta itemprop="recipeYield" content="{recipe['servings']} servings">{get_text('servings_label')}</td>
+                <td><meta itemprop="recipeYield" content="{recipe['servings']} servings">{bilingual_text('servings_label')}</td>
                 <td>{recipe['servings']}</td>
             </tr>
         </table>
 
-        <h2>{get_text('ingredients_heading')}</h2>
+        <h2>{bilingual_text('ingredients_heading')}</h2>
 
         {generate_bring_widget()}
-        
+
         <table class="ingredients-table">
             <thead>
                 <tr>
-                    <th>{get_text('amount_label')}</th>
-                    <th>{get_text('ingredient_label')}</th>
+                    <th>{bilingual_text('amount_label')}</th>
+                    <th>{bilingual_text('ingredient_label')}</th>
                 </tr>
             </thead>
             <tbody>
@@ -125,13 +143,37 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
             </tbody>
         </table>
 
-        <h2>{get_text('instructions_heading')}</h2>
+        <h2>{bilingual_text('instructions_heading')}</h2>
         <div itemprop="recipeInstructions" itemscope itemtype="https://schema.org/HowToSection">
             <ol>
 {chr(10).join(instructions_html)}
             </ol>
         </div>
     </div>
+    <script>
+        // Language toggle functionality
+        function toggleLanguage() {{
+            const currentLang = localStorage.getItem('language') || 'de';
+            const newLang = currentLang === 'de' ? 'en' : 'de';
+            localStorage.setItem('language', newLang);
+            applyLanguage(newLang);
+        }}
+
+        function applyLanguage(lang) {{
+            document.querySelectorAll('.lang-de, .lang-en').forEach(el => {{
+                el.classList.remove('active');
+            }});
+            document.querySelectorAll('.lang-' + lang).forEach(el => {{
+                el.classList.add('active');
+            }});
+        }}
+
+        // Apply saved language preference on page load
+        document.addEventListener('DOMContentLoaded', function() {{
+            const savedLang = localStorage.getItem('language') || 'de';
+            applyLanguage(savedLang);
+        }});
+    </script>
 </body>
 </html>'''
 
@@ -171,10 +213,10 @@ def generate_overview_html(
         <h2><a href="{escape(filename)}">{category} {escape(recipe['name'])}</a></h2>
         <p class="description">{description}</p>
         <p class="meta">
-            <span class="servings">🍽️ {servings} {get_text('servings')}</span> •
-            <span class="time">⏱️ {prep_time + cook_time} {get_text('min_total')}</span>
+            <span class="servings">🍽️ {servings} {bilingual_text('servings')}</span> •
+            <span class="time">⏱️ {prep_time + cook_time} {bilingual_text('min_total')}</span>
         </p>
-        <a href="{escape(filename)}" class="view-recipe-btn">{get_text('view_recipe')}</a>
+        <a href="{escape(filename)}" class="view-recipe-btn">{bilingual_text('view_recipe')}</a>
     </div>'''
         recipe_entries.append(recipe_entry)
 
@@ -184,7 +226,7 @@ def generate_overview_html(
         formatted_time = deployment_time.strftime("%d. %B %Y um %H:%M UTC")
         footer_html = f'''
     <footer class="deployment-info">
-        <p>{get_text('last_updated')} {formatted_time}</p>
+        <p>{bilingual_text('last_updated')} {formatted_time}</p>
     </footer>'''
 
     html = f'''<!DOCTYPE html>
@@ -199,14 +241,18 @@ def generate_overview_html(
     </style>
 </head>
 <body>
-    <h1>{get_text('overview_title')}</h1>
+    <button class="language-toggle" onclick="toggleLanguage()">
+        <span class="lang-de">🇬🇧 English</span>
+        <span class="lang-en">🇩🇪 Deutsch</span>
+    </button>
+    <h1>{bilingual_text('overview_title')}</h1>
 
     <div class="filter-buttons">
-        <button class="filter-btn active" data-filter="all">{get_text('filter_all')}</button>
-        <button class="filter-btn" data-filter="🥩">🥩 {get_text('filter_meat')}</button>
-        <button class="filter-btn" data-filter="🐟">🐟 {get_text('filter_fish')}</button>
-        <button class="filter-btn" data-filter="🥦">🥦 {get_text('filter_vegetarian')}</button>
-        <button class="filter-btn" data-filter="🥣">🥣 {get_text('filter_sweet')}</button>
+        <button class="filter-btn active" data-filter="all">{bilingual_text('filter_all')}</button>
+        <button class="filter-btn" data-filter="🥩">🥩 {bilingual_text('filter_meat')}</button>
+        <button class="filter-btn" data-filter="🐟">🐟 {bilingual_text('filter_fish')}</button>
+        <button class="filter-btn" data-filter="🥦">🥦 {bilingual_text('filter_vegetarian')}</button>
+        <button class="filter-btn" data-filter="🥣">🥣 {bilingual_text('filter_sweet')}</button>
     </div>
 
 {chr(10).join(recipe_entries)}{footer_html}
@@ -234,6 +280,29 @@ def generate_overview_html(
                     }}
                 }});
             }});
+        }});
+
+        // Language toggle functionality
+        function toggleLanguage() {{
+            const currentLang = localStorage.getItem('language') || 'de';
+            const newLang = currentLang === 'de' ? 'en' : 'de';
+            localStorage.setItem('language', newLang);
+            applyLanguage(newLang);
+        }}
+
+        function applyLanguage(lang) {{
+            document.querySelectorAll('.lang-de, .lang-en').forEach(el => {{
+                el.classList.remove('active');
+            }});
+            document.querySelectorAll('.lang-' + lang).forEach(el => {{
+                el.classList.add('active');
+            }});
+        }}
+
+        // Apply saved language preference on page load
+        document.addEventListener('DOMContentLoaded', function() {{
+            const savedLang = localStorage.getItem('language') || 'de';
+            applyLanguage(savedLang);
         }});
     </script>
 </body>
