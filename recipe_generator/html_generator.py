@@ -81,6 +81,7 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
     </style>
 </head>
 <body>
+    <a href="index.html" class="back-button">← Back to Recipes</a>
     <div itemscope itemtype="https://schema.org/Recipe">
         <h1 itemprop="name">{escape(recipe['name'])}</h1>
 

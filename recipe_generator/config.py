@@ -18,6 +18,21 @@ body {
 """
 
 DETAIL_PAGE_CSS = """
+.back-button {
+    display: inline-block;
+    padding: 8px 16px;
+    margin-bottom: 20px;
+    background-color: #e2e8f0;
+    color: #2d3748;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+.back-button:hover {
+    background-color: #cbd5e0;
+    text-decoration: none;
+}
 .amount {
     font-weight: bold;
     min-width: 80px;
