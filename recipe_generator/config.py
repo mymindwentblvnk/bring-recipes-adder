@@ -7,6 +7,53 @@ from pathlib import Path
 RECIPES_DIR = Path("recipes")
 OUTPUT_DIR = Path("output")
 
+# Language configuration - set to "de" for German or "en" for English
+LANGUAGE = "de"
+
+# Text strings for internationalization
+TEXTS = {
+    "de": {
+        # Overview page
+        "overview_title": "Rezeptsammlung",
+        "servings": "Portionen",
+        "min_total": "min gesamt",
+        "view_recipe": "Rezept ansehen →",
+        "last_updated": "Zuletzt aktualisiert:",
+
+        # Detail page
+        "recipe_title_suffix": "Rezept",
+        "back_to_recipes": "← Zurück zur Übersicht",
+        "prep_time": "Vorbereitungszeit:",
+        "cook_time": "Kochzeit:",
+        "minutes": "Minuten",
+        "servings_label": "Portionen:",
+        "ingredients_heading": "Zutaten:",
+        "instructions_heading": "Zubereitung:",
+    },
+    "en": {
+        # Overview page
+        "overview_title": "Recipe Collection",
+        "servings": "servings",
+        "min_total": "min total",
+        "view_recipe": "View Recipe →",
+        "last_updated": "Last updated:",
+
+        # Detail page
+        "recipe_title_suffix": "Recipe",
+        "back_to_recipes": "← Back to Recipes",
+        "prep_time": "Prep time:",
+        "cook_time": "Cook time:",
+        "minutes": "minutes",
+        "servings_label": "Servings:",
+        "ingredients_heading": "Ingredients:",
+        "instructions_heading": "Instructions:",
+    },
+}
+
+def get_text(key: str) -> str:
+    """Get text string for the current language."""
+    return TEXTS[LANGUAGE].get(key, key)
+
 # CSS Styles
 COMMON_CSS = """
 body {

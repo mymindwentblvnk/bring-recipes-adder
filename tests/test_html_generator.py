@@ -154,7 +154,7 @@ class TestGenerateRecipeDetailHtml:
         """Test that HTML includes recipe name."""
         html = generate_recipe_detail_html(sample_recipe)
         assert 'Chocolate Cake' in html
-        assert '<title>Chocolate Cake Recipe</title>' in html
+        assert '<title>Chocolate Cake Rezept</title>' in html
 
     def test_html_includes_description(self, sample_recipe):
         """Test that HTML includes description."""
@@ -174,13 +174,13 @@ class TestGenerateRecipeDetailHtml:
     def test_html_includes_prep_time(self, sample_recipe):
         """Test that HTML includes prep time."""
         html = generate_recipe_detail_html(sample_recipe)
-        assert '20 minutes' in html
+        assert '20 Minuten' in html
         assert 'PT20M' in html
 
     def test_html_includes_cook_time(self, sample_recipe):
         """Test that HTML includes cook time."""
         html = generate_recipe_detail_html(sample_recipe)
-        assert '40 minutes' in html
+        assert '40 Minuten' in html
         assert 'PT40M' in html
 
     def test_html_includes_ingredients(self, sample_recipe):
@@ -233,7 +233,7 @@ class TestGenerateRecipeDetailHtml:
     def test_html_has_valid_structure(self, sample_recipe):
         """Test that generated HTML has valid structure."""
         html = generate_recipe_detail_html(sample_recipe)
-        assert '<html lang="en">' in html
+        assert '<html lang="de">' in html
         assert '<head>' in html
         assert '</head>' in html
         assert '<body>' in html
@@ -274,8 +274,8 @@ class TestGenerateOverviewHtml:
     def test_html_includes_title(self, sample_recipes_data):
         """Test that HTML includes title."""
         html = generate_overview_html(sample_recipes_data)
-        assert '<title>Recipe Collection</title>' in html
-        assert '<h1>Recipe Collection</h1>' in html
+        assert '<title>Rezeptsammlung</title>' in html
+        assert '<h1>Rezeptsammlung</h1>' in html
 
     def test_html_includes_all_recipes(self, sample_recipes_data):
         """Test that HTML includes all recipes."""
@@ -298,14 +298,14 @@ class TestGenerateOverviewHtml:
     def test_html_includes_servings_info(self, sample_recipes_data):
         """Test that HTML includes servings information."""
         html = generate_overview_html(sample_recipes_data)
-        assert '4 servings' in html
-        assert '6 servings' in html
+        assert '4 Portionen' in html
+        assert '6 Portionen' in html
 
     def test_html_includes_total_time(self, sample_recipes_data):
         """Test that HTML includes total time."""
         html = generate_overview_html(sample_recipes_data)
-        assert '30 min total' in html  # 10 + 20
-        assert '45 min total' in html  # 15 + 30
+        assert '30 min gesamt' in html  # 10 + 20
+        assert '45 min gesamt' in html  # 15 + 30
 
     def test_html_escapes_special_characters(self, sample_recipes_data):
         """Test that HTML escapes special characters."""
@@ -337,7 +337,7 @@ class TestGenerateOverviewHtml:
     def test_html_has_valid_structure(self, sample_recipes_data):
         """Test that generated HTML has valid structure."""
         html = generate_overview_html(sample_recipes_data)
-        assert '<html lang="en">' in html
+        assert '<html lang="de">' in html
         assert '<head>' in html
         assert '</head>' in html
         assert '<body>' in html
@@ -364,13 +364,13 @@ class TestGenerateOverviewHtml:
         """Test that deployment time is included when provided."""
         deployment_time = datetime(2024, 1, 15, 14, 30, 0, tzinfo=timezone.utc)
         html = generate_overview_html(sample_recipes_data, deployment_time)
-        assert 'Last updated:' in html
-        assert 'January 15, 2024' in html
+        assert 'Zuletzt aktualisiert:' in html
+        assert '15. January 2024' in html
 
     def test_deployment_time_not_included_when_none(self, sample_recipes_data):
         """Test that deployment time footer is not included when None."""
         html = generate_overview_html(sample_recipes_data, None)
-        assert 'Last updated:' not in html
+        assert 'Zuletzt aktualisiert:' not in html
         assert '<footer class="deployment-info">' not in html
 
     def test_deployment_time_footer_has_correct_class(self, sample_recipes_data):

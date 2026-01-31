@@ -4,7 +4,7 @@ from typing import Any
 from html import escape
 from datetime import datetime
 
-from .config import COMMON_CSS, DETAIL_PAGE_CSS, OVERVIEW_PAGE_CSS
+from .config import COMMON_CSS, DETAIL_PAGE_CSS, OVERVIEW_PAGE_CSS, get_text
 
 
 def format_time(minutes: int) -> str:
@@ -73,18 +73,18 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
     category = recipe.get('category', '')
 
     html = f'''<!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{escape(recipe['name'])} Recipe</title>
+    <title>{escape(recipe['name'])} {get_text('recipe_title_suffix')}</title>
     <style>
         {COMMON_CSS}
         {DETAIL_PAGE_CSS}
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-button">← Back to Recipes</a>
+    <a href="index.html" class="back-button">{get_text('back_to_recipes')}</a>
     <div itemscope itemtype="https://schema.org/Recipe">
         <h1 itemprop="name">{category} {escape(recipe['name'])}</h1>
 
@@ -94,19 +94,19 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
             <meta itemprop="name" content="{escape(recipe.get('author', 'Unknown'))}">
         </div>
 
-        <time itemprop="prepTime" datetime="{format_time(recipe['prep_time'])}">Prep time: {recipe['prep_time']} minutes</time>
+        <time itemprop="prepTime" datetime="{format_time(recipe['prep_time'])}">{get_text('prep_time')} {recipe['prep_time']} {get_text('minutes')}</time>
         <br>
-        <time itemprop="cookTime" datetime="{format_time(recipe['cook_time'])}">Cook time: {recipe['cook_time']} minutes</time>
+        <time itemprop="cookTime" datetime="{format_time(recipe['cook_time'])}">{get_text('cook_time')} {recipe['cook_time']} {get_text('minutes')}</time>
         <br>
         <meta itemprop="recipeYield" content="{recipe['servings']} servings">
-        <span>Servings: {recipe['servings']}</span>
+        <span>{get_text('servings_label')} {recipe['servings']}</span>
 
-        <h2>Ingredients:</h2>
+        <h2>{get_text('ingredients_heading')}</h2>
         <ul>
 {chr(10).join(ingredients_html)}
         </ul>
 
-        <h2>Instructions:</h2>
+        <h2>{get_text('instructions_heading')}</h2>
         <div itemprop="recipeInstructions" itemscope itemtype="https://schema.org/HowToSection">
             <ol>
 {chr(10).join(instructions_html)}
@@ -146,36 +146,35 @@ def generate_overview_html(
         <h2><a href="{escape(filename)}">{category} {escape(recipe['name'])}</a></h2>
         <p class="description">{description}</p>
         <p class="meta">
-            <span class="servings">🍽️ {servings} servings</span> •
-            <span class="time">⏱️ {prep_time + cook_time} min total</span>
+            <span class="servings">🍽️ {servings} {get_text('servings')}</span> •
+            <span class="time">⏱️ {prep_time + cook_time} {get_text('min_total')}</span>
         </p>
-        <a href="{escape(filename)}" class="view-recipe-btn">View Recipe →</a>
+        <a href="{escape(filename)}" class="view-recipe-btn">{get_text('view_recipe')}</a>
     </div>'''
         recipe_entries.append(recipe_entry)
 
     # Generate footer with deployment time
     footer_html = ""
     if deployment_time:
-        formatted_time = deployment_time.strftime("%B %d, %Y at %H:%M UTC")
+        formatted_time = deployment_time.strftime("%d. %B %Y um %H:%M UTC")
         footer_html = f'''
     <footer class="deployment-info">
-        <p>Last updated: {formatted_time}</p>
+        <p>{get_text('last_updated')} {formatted_time}</p>
     </footer>'''
 
     html = f'''<!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe Collection</title>
+    <title>{get_text('overview_title')}</title>
     <style>
         {COMMON_CSS}
         {OVERVIEW_PAGE_CSS}
     </style>
 </head>
 <body>
-    <h1>Recipe Collection</h1>
-    <p>Browse recipes and click through to add ingredients to your Bring! shopping list.</p>
+    <h1>{get_text('overview_title')}</h1>
 
 {chr(10).join(recipe_entries)}{footer_html}
 </body>
