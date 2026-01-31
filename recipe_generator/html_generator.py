@@ -109,9 +109,10 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
             </tr>
         </table>
 
-        {generate_bring_widget()}
-
         <h2>{get_text('ingredients_heading')}</h2>
+
+        {generate_bring_widget()}
+        
         <table class="ingredients-table">
             <thead>
                 <tr>
