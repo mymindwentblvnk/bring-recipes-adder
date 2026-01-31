@@ -155,6 +155,41 @@ ul {
 li {
     padding: 5px 0;
 }
+ol {
+    counter-reset: step-counter;
+    list-style: none;
+    padding-left: 0;
+}
+ol li {
+    counter-increment: step-counter;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f7fafc;
+    border-left: 4px solid #2c5282;
+    border-radius: 4px;
+    position: relative;
+    line-height: 1.6;
+}
+ol li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: -20px;
+    top: 15px;
+    background-color: #2c5282;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+ol li span {
+    display: block;
+    padding-left: 20px;
+}
 """
 
 OVERVIEW_PAGE_CSS = """
