@@ -94,6 +94,24 @@ DETAIL_PAGE_CSS = """
     background-color: #cbd5e0;
     text-decoration: none;
 }
+h1 {
+    color: #2c5282;
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #2c5282;
+}
+h2 {
+    color: #2c5282;
+    font-size: 1.8em;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    padding-left: 15px;
+    border-left: 5px solid #2c5282;
+    background: linear-gradient(to right, #f7fafc 0%, transparent 100%);
+    padding: 12px 15px;
+    border-radius: 4px;
+}
 .recipe-info-table {
     width: 100%;
     max-width: 500px;
