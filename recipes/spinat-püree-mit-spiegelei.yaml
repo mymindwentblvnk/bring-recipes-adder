@@ -1,0 +1,29 @@
+name: Spinatpüree mit Spiegelei
+description: Klassisches Gericht von Grund auf selbst gemacht.
+author: VitaMoment
+servings: 1
+prep_time: 5  # minutes
+cook_time: 15   # minutes
+
+ingredients:
+  - name: Zwiebel
+    amount: 1
+  - name: Butter
+    amount: 15 g
+  - name: Blattspinat
+    amount: 300 g
+  - name: Eier
+    amount: 2
+  - name: Frischkäse (Doppelrahmstufe)
+    amount: 30 g
+  - name: Kreuzkümmel
+    amount: 1 Prise
+  - name: Muskat
+    amount: 1 Prise
+
+instructions:
+  - Zwiebel schälen und in Ringe schneiden.
+  - Hälfte der Butter in einem kleinen Topf zum Schmelzen bringen, Blattspinat und Zwiebeln hinzugeben und für etwa 5-8 Minuten dünsten.
+  - In der Zwischenzeit Eier mit der restlichen Butter in einer Pfanne braten.
+  - Spinat-Zwiebelmischung pürieren, Frischkäse hinzugeben und mit Salz, Pfeffer, Kreuzkümmel und Muskat abschmecken.
+  - Beides auf einem Teller servieren.

@@ -1,0 +1,40 @@
+name: Fischpfanne
+description: Frisch aus dem Meer hinein in den Mund.
+author: VitaMoment
+servings: 1
+prep_time: 10  # minutes
+cook_time: 25   # minutes
+
+ingredients:
+  - name: Kartoffeln
+    amount: 180 g
+  - name: Porreestange
+    amount: 1
+  - name: Zwiebel
+    amount: 1
+  - name: Wildlachsfilet
+    amount: 100 g
+  - name: Butter
+    amount: 5 g
+  - name: Garnelen
+    amount: 60 g
+  - name: Limettensaft
+    amount: 10 ml
+  - name: Cremefine
+    amount: 100 ml
+  - name: Tomatenmark
+    amount: 15 g
+  - name: Chilipulver
+    amount: 1 Prise
+  - name: Muskatnuss
+    amount: 1 Prise
+
+instructions:
+  - Kartoffeln in Salzwasser in einem Kochtopf etwa 20 Minuten kochen.
+  - In der Zwischenzeit Porree waschen, Zwiebel schälen und beides in Ringe schneiden.
+  - Wildlachsfilet würfeln.
+  - Butter in einer heißen Pfanne schmelzen. Zwiebelwürfel glasig dünsten, Lachswürfel und Garnelen hinzufügen und kurz scharf anbraten.
+  - Porree und Limettensaft hinzugeben und bei niedriger Temperatur und geschlossenem Deckel etwa 2-5 Minuten garen.
+  - Cremefine in einem Gefäß mit Tomatenmark vermengen. Mit Muskat, Chilipulver, Salz und Pfeffer würzen.
+  - Pfanneninhalt mit der Sauce aufgießen und weitere 7-10 Minuten köcheln lassen.
+  - Auf einem Teller mit Salzkartoffeln servieren.
