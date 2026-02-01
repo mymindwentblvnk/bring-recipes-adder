@@ -101,20 +101,14 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
 </head>
 <body>
     <div class="top-nav">
-        <label class="nav-toggle-button language-toggle-switch">
-            <input type="checkbox" id="languageToggle" onchange="toggleLanguage()">
-            <span class="language-slider">
-                <span class="flag flag-de">🇩🇪</span>
-                <span class="flag flag-en">🇬🇧</span>
-            </span>
-        </label>
-        <label class="nav-toggle-button toggle-switch">
-            <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
-            <span class="toggle-slider">
-                <span class="icon icon-light">☀️</span>
-                <span class="icon icon-dark">🌙</span>
-            </span>
-        </label>
+        <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
+            <span class="emoji lang-de">🇩🇪</span>
+            <span class="emoji lang-en">🇬🇧</span>
+        </button>
+        <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+            <span class="emoji light-mode-icon">☀️</span>
+            <span class="emoji dark-mode-icon">🌙</span>
+        </button>
         <div class="burger-menu">
             <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
             <div class="burger-dropdown" id="burgerDropdown">
@@ -217,8 +211,8 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
 
         // Language toggle functionality
         function toggleLanguage() {{
-            const languageToggle = document.getElementById('languageToggle');
-            const newLang = languageToggle.checked ? 'en' : 'de';
+            const currentLang = localStorage.getItem('language') || 'de';
+            const newLang = currentLang === 'de' ? 'en' : 'de';
             localStorage.setItem('language', newLang);
             applyLanguage(newLang);
         }}
@@ -230,34 +224,11 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
             document.querySelectorAll('.lang-' + lang).forEach(el => {{
                 el.classList.add('active');
             }});
-
-            // Update language toggle switch flags
-            const deFlag = document.querySelector('.flag-de');
-            const enFlag = document.querySelector('.flag-en');
-            if (deFlag && enFlag) {{
-                if (lang === 'en') {{
-                    deFlag.classList.add('inactive');
-                    deFlag.classList.remove('active');
-                    enFlag.classList.add('active');
-                    enFlag.classList.remove('inactive');
-                }} else {{
-                    deFlag.classList.add('active');
-                    deFlag.classList.remove('inactive');
-                    enFlag.classList.add('inactive');
-                    enFlag.classList.remove('active');
-                }}
-            }}
         }}
 
         // Dark mode toggle functionality
         function toggleDarkMode() {{
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const isDark = darkModeToggle.checked;
-            if (isDark) {{
-                document.body.classList.add('dark-mode');
-            }} else {{
-                document.body.classList.remove('dark-mode');
-            }}
+            const isDark = document.body.classList.toggle('dark-mode');
             localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
             updateDarkModeButton(isDark);
         }}
@@ -270,49 +241,33 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
                 el.style.display = isDark ? 'inline' : 'none';
             }});
 
-            // Update dark mode toggle switch
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            if (darkModeToggle) {{
-                darkModeToggle.checked = isDark;
-
-                // Update icon states
-                const lightIcon = darkModeToggle.parentElement.querySelector('.icon-light');
-                const darkIcon = darkModeToggle.parentElement.querySelector('.icon-dark');
-                if (lightIcon && darkIcon) {{
-                    if (isDark) {{
-                        lightIcon.classList.add('inactive');
-                        lightIcon.classList.remove('active');
-                        darkIcon.classList.add('active');
-                        darkIcon.classList.remove('inactive');
-                    }} else {{
-                        lightIcon.classList.add('active');
-                        lightIcon.classList.remove('inactive');
-                        darkIcon.classList.add('inactive');
-                        darkIcon.classList.remove('active');
-                    }}
+            // Update dark mode toggle icon
+            document.querySelectorAll('.light-mode-icon').forEach(el => {{
+                if (isDark) {{
+                    el.classList.remove('active');
+                }} else {{
+                    el.classList.add('active');
                 }}
-            }}
+            }});
+            document.querySelectorAll('.dark-mode-icon').forEach(el => {{
+                if (isDark) {{
+                    el.classList.add('active');
+                }} else {{
+                    el.classList.remove('active');
+                }}
+            }});
         }}
 
         // Apply saved preferences on page load
         document.addEventListener('DOMContentLoaded', function() {{
             // Apply language
             const savedLang = localStorage.getItem('language') || 'de';
-            const languageToggle = document.getElementById('languageToggle');
-            if (languageToggle) {{
-                languageToggle.checked = (savedLang === 'en');
-            }}
             applyLanguage(savedLang);
 
             // Apply dark mode
             const darkMode = localStorage.getItem('darkMode');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             const isDark = darkMode === 'enabled' || (darkMode === null && prefersDark);
-
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            if (darkModeToggle) {{
-                darkModeToggle.checked = isDark;
-            }}
 
             if (isDark) {{
                 document.body.classList.add('dark-mode');
@@ -392,20 +347,14 @@ def generate_overview_html(
 </head>
 <body>
     <div class="top-nav">
-        <label class="nav-toggle-button language-toggle-switch">
-            <input type="checkbox" id="languageToggle" onchange="toggleLanguage()">
-            <span class="language-slider">
-                <span class="flag flag-de">🇩🇪</span>
-                <span class="flag flag-en">🇬🇧</span>
-            </span>
-        </label>
-        <label class="nav-toggle-button toggle-switch">
-            <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
-            <span class="toggle-slider">
-                <span class="icon icon-light">☀️</span>
-                <span class="icon icon-dark">🌙</span>
-            </span>
-        </label>
+        <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
+            <span class="emoji lang-de">🇩🇪</span>
+            <span class="emoji lang-en">🇬🇧</span>
+        </button>
+        <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+            <span class="emoji light-mode-icon">☀️</span>
+            <span class="emoji dark-mode-icon">🌙</span>
+        </button>
         <div class="burger-menu">
             <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
             <div class="burger-dropdown" id="burgerDropdown">
@@ -509,8 +458,8 @@ def generate_overview_html(
 
         // Language toggle functionality
         function toggleLanguage() {{
-            const languageToggle = document.getElementById('languageToggle');
-            const newLang = languageToggle.checked ? 'en' : 'de';
+            const currentLang = localStorage.getItem('language') || 'de';
+            const newLang = currentLang === 'de' ? 'en' : 'de';
             localStorage.setItem('language', newLang);
             applyLanguage(newLang);
         }}
@@ -522,34 +471,11 @@ def generate_overview_html(
             document.querySelectorAll('.lang-' + lang).forEach(el => {{
                 el.classList.add('active');
             }});
-
-            // Update language toggle switch flags
-            const deFlag = document.querySelector('.flag-de');
-            const enFlag = document.querySelector('.flag-en');
-            if (deFlag && enFlag) {{
-                if (lang === 'en') {{
-                    deFlag.classList.add('inactive');
-                    deFlag.classList.remove('active');
-                    enFlag.classList.add('active');
-                    enFlag.classList.remove('inactive');
-                }} else {{
-                    deFlag.classList.add('active');
-                    deFlag.classList.remove('inactive');
-                    enFlag.classList.add('inactive');
-                    enFlag.classList.remove('active');
-                }}
-            }}
         }}
 
         // Dark mode toggle functionality
         function toggleDarkMode() {{
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const isDark = darkModeToggle.checked;
-            if (isDark) {{
-                document.body.classList.add('dark-mode');
-            }} else {{
-                document.body.classList.remove('dark-mode');
-            }}
+            const isDark = document.body.classList.toggle('dark-mode');
             localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
             updateDarkModeButton(isDark);
         }}
@@ -562,28 +488,21 @@ def generate_overview_html(
                 el.style.display = isDark ? 'inline' : 'none';
             }});
 
-            // Update dark mode toggle switch
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            if (darkModeToggle) {{
-                darkModeToggle.checked = isDark;
-
-                // Update icon states
-                const lightIcon = darkModeToggle.parentElement.querySelector('.icon-light');
-                const darkIcon = darkModeToggle.parentElement.querySelector('.icon-dark');
-                if (lightIcon && darkIcon) {{
-                    if (isDark) {{
-                        lightIcon.classList.add('inactive');
-                        lightIcon.classList.remove('active');
-                        darkIcon.classList.add('active');
-                        darkIcon.classList.remove('inactive');
-                    }} else {{
-                        lightIcon.classList.add('active');
-                        lightIcon.classList.remove('inactive');
-                        darkIcon.classList.add('inactive');
-                        darkIcon.classList.remove('active');
-                    }}
+            // Update dark mode toggle icon
+            document.querySelectorAll('.light-mode-icon').forEach(el => {{
+                if (isDark) {{
+                    el.classList.remove('active');
+                }} else {{
+                    el.classList.add('active');
                 }}
-            }}
+            }});
+            document.querySelectorAll('.dark-mode-icon').forEach(el => {{
+                if (isDark) {{
+                    el.classList.add('active');
+                }} else {{
+                    el.classList.remove('active');
+                }}
+            }});
         }}
 
         // Apply saved preferences on page load
@@ -723,20 +642,14 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
 </head>
 <body>
     <div class="top-nav">
-        <label class="nav-toggle-button language-toggle-switch">
-            <input type="checkbox" id="languageToggle" onchange="toggleLanguage()">
-            <span class="language-slider">
-                <span class="flag flag-de">🇩🇪</span>
-                <span class="flag flag-en">🇬🇧</span>
-            </span>
-        </label>
-        <label class="nav-toggle-button toggle-switch">
-            <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
-            <span class="toggle-slider">
-                <span class="icon icon-light">☀️</span>
-                <span class="icon icon-dark">🌙</span>
-            </span>
-        </label>
+        <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
+            <span class="emoji lang-de">🇩🇪</span>
+            <span class="emoji lang-en">🇬🇧</span>
+        </button>
+        <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+            <span class="emoji light-mode-icon">☀️</span>
+            <span class="emoji dark-mode-icon">🌙</span>
+        </button>
         <div class="burger-menu">
             <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
             <div class="burger-dropdown" id="burgerDropdown">
@@ -833,8 +746,8 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
 
         // Language toggle functionality
         function toggleLanguage() {{
-            const languageToggle = document.getElementById('languageToggle');
-            const newLang = languageToggle.checked ? 'en' : 'de';
+            const currentLang = localStorage.getItem('language') || 'de';
+            const newLang = currentLang === 'de' ? 'en' : 'de';
             localStorage.setItem('language', newLang);
             applyLanguage(newLang);
         }}
@@ -846,34 +759,11 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             document.querySelectorAll('.lang-' + lang).forEach(el => {{
                 el.classList.add('active');
             }});
-
-            // Update language toggle switch flags
-            const deFlag = document.querySelector('.flag-de');
-            const enFlag = document.querySelector('.flag-en');
-            if (deFlag && enFlag) {{
-                if (lang === 'en') {{
-                    deFlag.classList.add('inactive');
-                    deFlag.classList.remove('active');
-                    enFlag.classList.add('active');
-                    enFlag.classList.remove('inactive');
-                }} else {{
-                    deFlag.classList.add('active');
-                    deFlag.classList.remove('inactive');
-                    enFlag.classList.add('inactive');
-                    enFlag.classList.remove('active');
-                }}
-            }}
         }}
 
         // Dark mode toggle functionality
         function toggleDarkMode() {{
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const isDark = darkModeToggle.checked;
-            if (isDark) {{
-                document.body.classList.add('dark-mode');
-            }} else {{
-                document.body.classList.remove('dark-mode');
-            }}
+            const isDark = document.body.classList.toggle('dark-mode');
             localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
             updateDarkModeButton(isDark);
         }}
@@ -886,28 +776,21 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                 el.style.display = isDark ? 'inline' : 'none';
             }});
 
-            // Update dark mode toggle switch
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            if (darkModeToggle) {{
-                darkModeToggle.checked = isDark;
-
-                // Update icon states
-                const lightIcon = darkModeToggle.parentElement.querySelector('.icon-light');
-                const darkIcon = darkModeToggle.parentElement.querySelector('.icon-dark');
-                if (lightIcon && darkIcon) {{
-                    if (isDark) {{
-                        lightIcon.classList.add('inactive');
-                        lightIcon.classList.remove('active');
-                        darkIcon.classList.add('active');
-                        darkIcon.classList.remove('inactive');
-                    }} else {{
-                        lightIcon.classList.add('active');
-                        lightIcon.classList.remove('inactive');
-                        darkIcon.classList.add('inactive');
-                        darkIcon.classList.remove('active');
-                    }}
+            // Update dark mode toggle icon
+            document.querySelectorAll('.light-mode-icon').forEach(el => {{
+                if (isDark) {{
+                    el.classList.remove('active');
+                }} else {{
+                    el.classList.add('active');
                 }}
-            }}
+            }});
+            document.querySelectorAll('.dark-mode-icon').forEach(el => {{
+                if (isDark) {{
+                    el.classList.add('active');
+                }} else {{
+                    el.classList.remove('active');
+                }}
+            }});
         }}
 
         // Apply saved preferences on page load

@@ -245,13 +245,40 @@ body {
 .nav-toggle-button {
     background-color: var(--primary-color);
     border: none;
-    padding: 8px;
+    padding: 8px 12px;
     border-radius: 8px;
     box-shadow: 0 2px 8px var(--shadow);
+    cursor: pointer;
+    font-size: 1.5em;
+    line-height: 1;
+    transition: background-color 0.2s, transform 0.1s;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+}
+
+.nav-toggle-button:hover {
+    background-color: var(--primary-hover);
+}
+
+.nav-toggle-button:active {
+    transform: scale(0.95);
+}
+
+.nav-toggle-button .emoji {
+    display: none;
+}
+
+.nav-toggle-button .emoji.active {
+    display: block;
+}
+
+.light-mode-icon, .dark-mode-icon {
+    display: none;
+}
+
+.light-mode-icon.active, .dark-mode-icon.active {
+    display: block;
 }
 
 /* iOS-style toggle switches */
