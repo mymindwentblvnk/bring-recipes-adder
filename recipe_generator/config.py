@@ -26,6 +26,13 @@ TEXTS = {
         "filter_bread": "Brot",
         "filter_sweet": "Frühstück",
         "filter_fast": "Schnell (≤30 min)",
+        "view_stats": "📊 Statistiken",
+
+        # Stats page
+        "stats_title": "Rezept-Statistiken",
+        "stats_subtitle": "Top 10 beliebteste Rezepte",
+        "stats_views": "Aufrufe",
+        "stats_no_data": "Noch keine Daten verfügbar. Öffne einige Rezepte, um Statistiken zu sehen!",
 
         # Detail page
         "recipe_title_suffix": "Rezept",
@@ -53,6 +60,13 @@ TEXTS = {
         "filter_bread": "Bread",
         "filter_sweet": "Breakfast",
         "filter_fast": "Fast (≤30 min)",
+        "view_stats": "📊 Statistics",
+
+        # Stats page
+        "stats_title": "Recipe Statistics",
+        "stats_subtitle": "Top 10 most popular recipes",
+        "stats_views": "Views",
+        "stats_no_data": "No data available yet. Open some recipes to see statistics!",
 
         # Detail page
         "recipe_title_suffix": "Recipe",

@@ -157,6 +157,33 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
         </div>
     </div>
     <script>
+        // Track page view
+        (function trackPageView() {{
+            const recipeName = '{escape(recipe['name'])}';
+            const viewsKey = 'recipeViews';
+
+            // Get current view counts
+            let views = {{}};
+            try {{
+                const stored = localStorage.getItem(viewsKey);
+                if (stored) {{
+                    views = JSON.parse(stored);
+                }}
+            }} catch (e) {{
+                console.error('Error reading view counts:', e);
+            }}
+
+            // Increment view count for this recipe
+            views[recipeName] = (views[recipeName] || 0) + 1;
+
+            // Save back to localStorage
+            try {{
+                localStorage.setItem(viewsKey, JSON.stringify(views));
+            }} catch (e) {{
+                console.error('Error saving view counts:', e);
+            }}
+        }})();
+
         // Language toggle functionality
         function toggleLanguage() {{
             const currentLang = localStorage.getItem('language') || 'de';
@@ -290,6 +317,9 @@ def generate_overview_html(
         <span class="dark-mode-indicator">☀️</span>
     </button>
     <h1>{bilingual_text('overview_title')}</h1>
+    <p style="text-align: center; margin-bottom: 20px;">
+        <a href="stats.html" style="color: var(--primary-color); text-decoration: none; font-weight: 500;">{bilingual_text('view_stats')}</a>
+    </p>
 
     <div class="filter-buttons">
         <button class="filter-btn active" data-filter="all" data-filter-type="category">{bilingual_text('filter_all')}</button>
@@ -422,6 +452,244 @@ def generate_overview_html(
             categoryFilter = localStorage.getItem('recipeCategoryFilter') || 'all';
             timeFilterActive = localStorage.getItem('recipeTimeFilter') === 'active';
             applyFilters();
+        }});
+    </script>
+</body>
+</html>'''
+
+    return html
+
+
+def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
+    """Generate stats page showing top 10 most viewed recipes.
+
+    Args:
+        recipes_data: List of tuples containing (filename, recipe_dict)
+
+    Returns:
+        Complete HTML page as a string
+    """
+    # Create recipe lookup by name
+    recipe_lookup = {recipe['name']: (filename, recipe) for filename, recipe in recipes_data}
+
+    # Generate recipe list as JSON for JavaScript
+    recipe_names = [recipe['name'] for _, recipe in recipes_data]
+    recipe_names_json = str(recipe_names).replace("'", '"')
+
+    html = f'''<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{get_text('stats_title')}</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <style>
+        {COMMON_CSS}
+        {OVERVIEW_PAGE_CSS}
+        .stats-list {{
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }}
+        .stats-item {{
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            transition: box-shadow 0.2s;
+        }}
+        .stats-item:hover {{
+            box-shadow: 0 4px 6px var(--shadow);
+        }}
+        .rank {{
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--primary-color);
+            min-width: 60px;
+            text-align: center;
+        }}
+        .recipe-info {{
+            flex: 1;
+            margin-left: 20px;
+        }}
+        .recipe-info h3 {{
+            margin: 0 0 5px 0;
+            color: var(--text-color);
+        }}
+        .recipe-info a {{
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 1.2em;
+        }}
+        .recipe-info a:hover {{
+            text-decoration: underline;
+        }}
+        .view-count {{
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary-color);
+            min-width: 100px;
+            text-align: right;
+        }}
+        .no-data {{
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }}
+        .back-button {{
+            display: inline-block;
+            padding: 8px 16px;
+            margin-bottom: 20px;
+            background-color: var(--border-color);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }}
+        .back-button:hover {{
+            background-color: var(--bg-secondary);
+            text-decoration: none;
+        }}
+    </style>
+</head>
+<body>
+    <button class="language-toggle" onclick="toggleLanguage()">
+        <span class="lang-de">🇬🇧 English</span>
+        <span class="lang-en">🇩🇪 Deutsch</span>
+    </button>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">
+        <span class="light-mode-indicator">🌙</span>
+        <span class="dark-mode-indicator">☀️</span>
+    </button>
+    <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
+    <h1>{bilingual_text('stats_title')}</h1>
+    <p style="color: var(--text-secondary); margin-bottom: 30px;">{bilingual_text('stats_subtitle')}</p>
+
+    <div id="stats-container">
+        <p class="no-data">{bilingual_text('stats_no_data')}</p>
+    </div>
+
+    <script>
+        const recipeNames = {recipe_names_json};
+        const recipeData = {{{','.join(f'"{recipe["name"]}": {{"filename": "{filename}", "category": "{recipe.get("category", "")}"}}' for filename, recipe in recipes_data)}}};
+
+        function displayStats() {{
+            const viewsKey = 'recipeViews';
+            let views = {{}};
+
+            try {{
+                const stored = localStorage.getItem(viewsKey);
+                if (stored) {{
+                    views = JSON.parse(stored);
+                }}
+            }} catch (e) {{
+                console.error('Error reading view counts:', e);
+            }}
+
+            // Filter to only include recipes that exist
+            const validViews = {{}};
+            for (const [name, count] of Object.entries(views)) {{
+                if (recipeNames.includes(name)) {{
+                    validViews[name] = count;
+                }}
+            }}
+
+            // Sort by view count and take top 10
+            const sortedRecipes = Object.entries(validViews)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+
+            const container = document.getElementById('stats-container');
+
+            if (sortedRecipes.length === 0) {{
+                container.innerHTML = '<p class="no-data">{bilingual_text("stats_no_data")}</p>';
+                return;
+            }}
+
+            // Generate stats list
+            let html = '<ol class="stats-list">';
+            sortedRecipes.forEach(([name, count], index) => {{
+                const data = recipeData[name];
+                const rankEmoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+                html += `
+                    <li class="stats-item">
+                        <div class="rank">${{rankEmoji || (index + 1)}}</div>
+                        <div class="recipe-info">
+                            <h3><a href="${{data.filename}}">${{data.category}} ${{name}}</a></h3>
+                        </div>
+                        <div class="view-count">${{count}} <span class="lang-de">Aufrufe</span><span class="lang-en">Views</span></div>
+                    </li>
+                `;
+            }});
+            html += '</ol>';
+
+            container.innerHTML = html;
+
+            // Apply current language to new content
+            const savedLang = localStorage.getItem('language') || 'de';
+            applyLanguage(savedLang);
+        }}
+
+        // Language toggle functionality
+        function toggleLanguage() {{
+            const currentLang = localStorage.getItem('language') || 'de';
+            const newLang = currentLang === 'de' ? 'en' : 'de';
+            localStorage.setItem('language', newLang);
+            applyLanguage(newLang);
+        }}
+
+        function applyLanguage(lang) {{
+            document.querySelectorAll('.lang-de, .lang-en').forEach(el => {{
+                el.classList.remove('active');
+            }});
+            document.querySelectorAll('.lang-' + lang).forEach(el => {{
+                el.classList.add('active');
+            }});
+        }}
+
+        // Dark mode toggle functionality
+        function toggleDarkMode() {{
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+            updateDarkModeButton(isDark);
+        }}
+
+        function updateDarkModeButton(isDark) {{
+            const lightIndicator = document.querySelector('.light-mode-indicator');
+            const darkIndicator = document.querySelector('.dark-mode-indicator');
+            if (isDark) {{
+                lightIndicator.style.display = 'none';
+                darkIndicator.style.display = 'inline';
+            }} else {{
+                lightIndicator.style.display = 'inline';
+                darkIndicator.style.display = 'none';
+            }}
+        }}
+
+        // Apply saved preferences on page load
+        document.addEventListener('DOMContentLoaded', function() {{
+            // Display stats
+            displayStats();
+
+            // Apply language
+            const savedLang = localStorage.getItem('language') || 'de';
+            applyLanguage(savedLang);
+
+            // Apply dark mode
+            const darkMode = localStorage.getItem('darkMode');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = darkMode === 'enabled' || (darkMode === null && prefersDark);
+
+            if (isDark) {{
+                document.body.classList.add('dark-mode');
+            }}
+            updateDarkModeButton(isDark);
         }});
     </script>
 </body>

@@ -10,6 +10,7 @@ from recipe_generator import (
     validate_recipe,
     generate_recipe_detail_html,
     generate_overview_html,
+    generate_stats_html,
 )
 
 
@@ -230,6 +231,14 @@ def main():
         with open(overview_file, 'w', encoding='utf-8') as f:
             f.write(overview_html)
         print(f"  → Generated {overview_file}")
+
+        # Generate stats page
+        print("Generating stats page...")
+        stats_html = generate_stats_html(recipes_data)
+        stats_file = OUTPUT_DIR / "stats.html"
+        with open(stats_file, 'w', encoding='utf-8') as f:
+            f.write(stats_html)
+        print(f"  → Generated {stats_file}")
 
     # Print summary
     print(f"\nDone! Generated {len(recipes_data)} recipe(s) in the 'output' directory.")
