@@ -168,125 +168,43 @@ body {
 
 /* Top Navigation */
 .top-nav {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    z-index: 1001;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-}
-
-.top-nav-left {
-    display: flex;
     gap: 10px;
-    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
-.top-nav-right {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-/* Burger Menu */
-.burger-menu {
-    position: relative;
-}
-
-.burger-icon {
+/* Navigation Links */
+.nav-link {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: 12px;
+    padding: 8px 12px;
     border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.5em;
-    line-height: 1;
     box-shadow: 0 2px 8px var(--shadow);
-    transition: background-color 0.2s;
+    cursor: pointer;
+    font-size: 1em;
+    line-height: 1;
+    transition: background-color 0.2s, transform 0.1s;
+    text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
+    white-space: nowrap;
 }
 
-.burger-icon:hover {
+.nav-link:hover {
     background-color: var(--primary-hover);
-}
-
-.burger-dropdown {
-    position: absolute;
-    top: 60px;
-    left: 0;
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px var(--shadow);
-    min-width: 220px;
-    display: none;
-    overflow: hidden;
-}
-
-.burger-dropdown.open {
-    display: block;
-}
-
-.burger-item {
-    color: var(--text-color);
-    border-bottom: 1px solid var(--border-color);
-    transition: background-color 0.2s;
-    display: flex;
-    align-items: center;
-}
-
-.burger-item:last-child {
-    border-bottom: none;
-}
-
-.burger-item:hover {
-    background-color: var(--bg-secondary);
-}
-
-.burger-item > a,
-.burger-item > label {
-    padding: 12px 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 1;
-    margin: 0;
-}
-
-.burger-item a {
-    color: var(--text-color);
     text-decoration: none;
 }
 
-.toggle-item-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 1;
-    padding: 12px 16px;
-    margin: 0;
-    cursor: pointer;
+.nav-link:active {
+    transform: scale(0.95);
 }
 
-.toggle-item-label input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.toggle-text {
-    flex: 1;
-}
-
-/* Standalone toggle buttons in top nav */
+/* Toggle buttons in top nav */
 .nav-toggle-button {
     background-color: var(--primary-color);
     border: none;
@@ -644,21 +562,22 @@ h1 {
     }
 }
 
-/* Responsive: Prevent h1 overlap with top-nav buttons on small screens */
-@media (max-width: 768px) {
-    h1 {
-        padding-left: 70px; /* Account for burger menu width */
-        padding-right: 180px; /* Account for toggle buttons width */
-        font-size: 2em; /* Slightly smaller on small screens */
-    }
+/* Heading with navigation in same row */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
-@media (max-width: 480px) {
-    h1 {
-        padding-left: 70px;
-        padding-right: 180px;
-        font-size: 1.6em; /* Even smaller on very small screens */
-    }
+.page-header h1 {
+    flex: 1;
+    min-width: 200px;
+    margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .filter-btn {
     padding: 10px 20px;

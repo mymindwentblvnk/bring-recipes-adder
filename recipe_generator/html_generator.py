@@ -101,34 +101,23 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
     </style>
 </head>
 <body>
-    <div class="top-nav">
-        <div class="top-nav-left">
-            <div class="burger-menu">
-                <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
-                <div class="burger-dropdown" id="burgerDropdown">
-                    <div class="burger-item">
-                        <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
-                    </div>
-                    <div class="burger-item">
-                        <a href="stats.html">{bilingual_text('view_stats')}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="top-nav-right">
-            <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
-                <span class="emoji lang-de">🇩🇪</span>
-                <span class="emoji lang-en">🇬🇧</span>
-            </button>
-            <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
-                <span class="emoji light-mode-icon">☀️</span>
-                <span class="emoji dark-mode-icon">🌙</span>
-            </button>
-        </div>
-    </div>
     <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
     <div itemscope itemtype="https://schema.org/Recipe">
-        <h1 itemprop="name">{escape(recipe['name'])}</h1>
+        <div class="page-header">
+            <h1 itemprop="name">{escape(recipe['name'])}</h1>
+            <div class="top-nav">
+                <a href="weekly.html" class="nav-link">{bilingual_text('view_weekly_plan')}</a>
+                <a href="stats.html" class="nav-link">{bilingual_text('view_stats')}</a>
+                <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
+                    <span class="emoji lang-de">🇩🇪</span>
+                    <span class="emoji lang-en">🇬🇧</span>
+                </button>
+                <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+                    <span class="emoji light-mode-icon">☀️</span>
+                    <span class="emoji dark-mode-icon">🌙</span>
+                </button>
+            </div>
+        </div>
 
         <p itemprop="description">{escape(recipe.get('description', ''))}</p>
 
@@ -278,21 +267,6 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
             applyLanguage(savedLang);
         }}
 
-        // Burger menu functionality
-        function toggleBurgerMenu() {{
-            const dropdown = document.getElementById('burgerDropdown');
-            dropdown.classList.toggle('open');
-        }}
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {{
-            const menu = document.querySelector('.burger-menu');
-            const dropdown = document.getElementById('burgerDropdown');
-            if (!menu.contains(event.target) && dropdown.classList.contains('open')) {{
-                dropdown.classList.remove('open');
-            }}
-        }});
-
         // Language toggle functionality
         function toggleLanguage() {{
             const currentLang = localStorage.getItem('language') || 'de';
@@ -433,21 +407,11 @@ def generate_overview_html(
     </style>
 </head>
 <body>
-    <div class="top-nav">
-        <div class="top-nav-left">
-            <div class="burger-menu">
-                <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
-                <div class="burger-dropdown" id="burgerDropdown">
-                    <div class="burger-item">
-                        <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
-                    </div>
-                    <div class="burger-item">
-                        <a href="stats.html">{bilingual_text('view_stats')}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="top-nav-right">
+    <div class="page-header">
+        <h1>{bilingual_text('overview_title')}</h1>
+        <div class="top-nav">
+            <a href="weekly.html" class="nav-link">{bilingual_text('view_weekly_plan')}</a>
+            <a href="stats.html" class="nav-link">{bilingual_text('view_stats')}</a>
             <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
                 <span class="emoji lang-de">🇩🇪</span>
                 <span class="emoji lang-en">🇬🇧</span>
@@ -458,7 +422,6 @@ def generate_overview_html(
             </button>
         </div>
     </div>
-    <h1>{bilingual_text('overview_title')}</h1>
 
     <div class="filter-buttons">
         <button class="filter-btn active" data-filter="all" data-filter-type="category">{bilingual_text('filter_all')}</button>
@@ -476,21 +439,6 @@ def generate_overview_html(
 {footer_html}
 
     <script>
-        // Burger menu functionality
-        function toggleBurgerMenu() {{
-            const dropdown = document.getElementById('burgerDropdown');
-            dropdown.classList.toggle('open');
-        }}
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {{
-            const menu = document.querySelector('.burger-menu');
-            const dropdown = document.getElementById('burgerDropdown');
-            if (!menu.contains(event.target) && dropdown.classList.contains('open')) {{
-                dropdown.classList.remove('open');
-            }}
-        }});
-
         // Filter functionality
         const filterButtons = document.querySelectorAll('.filter-btn');
         const recipeCards = document.querySelectorAll('.recipe-card');
@@ -735,21 +683,12 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
     </style>
 </head>
 <body>
-    <div class="top-nav">
-        <div class="top-nav-left">
-            <div class="burger-menu">
-                <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
-                <div class="burger-dropdown" id="burgerDropdown">
-                    <div class="burger-item">
-                        <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
-                    </div>
-                    <div class="burger-item">
-                        <a href="stats.html">{bilingual_text('view_stats')}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="top-nav-right">
+    <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
+    <div class="page-header">
+        <h1>{bilingual_text('stats_title')}</h1>
+        <div class="top-nav">
+            <a href="weekly.html" class="nav-link">{bilingual_text('view_weekly_plan')}</a>
+            <a href="stats.html" class="nav-link">{bilingual_text('view_stats')}</a>
             <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
                 <span class="emoji lang-de">🇩🇪</span>
                 <span class="emoji lang-en">🇬🇧</span>
@@ -760,8 +699,6 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             </button>
         </div>
     </div>
-    <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
-    <h1>{bilingual_text('stats_title')}</h1>
     <p style="color: var(--text-secondary); margin-bottom: 15px;">{bilingual_text('stats_subtitle')}</p>
     <p style="color: var(--text-tertiary); font-size: 0.9em; font-style: italic; margin-bottom: 30px; padding: 10px; background-color: var(--bg-secondary); border-radius: 4px; border-left: 3px solid var(--primary-color);">{bilingual_text('stats_disclaimer')}</p>
 
@@ -770,21 +707,6 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
     </div>
 
     <script>
-        // Burger menu functionality
-        function toggleBurgerMenu() {{
-            const dropdown = document.getElementById('burgerDropdown');
-            dropdown.classList.toggle('open');
-        }}
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {{
-            const menu = document.querySelector('.burger-menu');
-            const dropdown = document.getElementById('burgerDropdown');
-            if (!menu.contains(event.target) && dropdown.classList.contains('open')) {{
-                dropdown.classList.remove('open');
-            }}
-        }});
-
         const recipeNames = {recipe_names_json};
         const recipeData = {{{','.join(f'"{recipe["name"]}": {{"filename": "{filename}", "category": "{recipe.get("category", "")}"}}' for filename, recipe in recipes_data)}}};
 
@@ -965,21 +887,12 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
     </style>
 </head>
 <body>
-    <div class="top-nav">
-        <div class="top-nav-left">
-            <div class="burger-menu">
-                <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
-                <div class="burger-dropdown" id="burgerDropdown">
-                    <div class="burger-item">
-                        <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
-                    </div>
-                    <div class="burger-item">
-                        <a href="stats.html">{bilingual_text('view_stats')}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="top-nav-right">
+    <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
+    <div class="page-header">
+        <h1>{bilingual_text('weekly_plan_title')}</h1>
+        <div class="top-nav">
+            <a href="weekly.html" class="nav-link">{bilingual_text('view_weekly_plan')}</a>
+            <a href="stats.html" class="nav-link">{bilingual_text('view_stats')}</a>
             <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
                 <span class="emoji lang-de">🇩🇪</span>
                 <span class="emoji lang-en">🇬🇧</span>
@@ -990,8 +903,6 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             </button>
         </div>
     </div>
-    <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
-    <h1>{bilingual_text('weekly_plan_title')}</h1>
 
     <button id="clearAllButton" class="clear-all-button" onclick="clearAllRecipes()">
         <span class="lang-de">Alle löschen</span>
@@ -1180,21 +1091,6 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                 console.error('Error clearing weekly plan:', e);
             }}
         }}
-
-        // Burger menu functionality
-        function toggleBurgerMenu() {{
-            const dropdown = document.getElementById('burgerDropdown');
-            dropdown.classList.toggle('open');
-        }}
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {{
-            const menu = document.querySelector('.burger-menu');
-            const dropdown = document.getElementById('burgerDropdown');
-            if (!menu.contains(event.target) && dropdown.classList.contains('open')) {{
-                dropdown.classList.remove('open');
-            }}
-        }});
 
         // Language toggle functionality
         function toggleLanguage() {{
