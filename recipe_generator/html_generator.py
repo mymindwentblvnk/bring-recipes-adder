@@ -101,23 +101,23 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
-    <div itemscope itemtype="https://schema.org/Recipe">
-        <div class="page-header">
-            <h1 itemprop="name">{escape(recipe['name'])}</h1>
-            <div class="top-nav">
-                <a href="weekly.html" class="nav-link">{bilingual_text('view_weekly_plan')}</a>
-                <a href="stats.html" class="nav-link">{bilingual_text('view_stats')}</a>
-                <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
-                    <span class="emoji lang-de">🇩🇪</span>
-                    <span class="emoji lang-en">🇬🇧</span>
-                </button>
-                <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
-                    <span class="emoji light-mode-icon">☀️</span>
-                    <span class="emoji dark-mode-icon">🌙</span>
-                </button>
-            </div>
+    <div class="top-nav">
+        <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <a href="weekly.html" class="nav-link" aria-label="Weekly Plan">🗓️</a>
+            <a href="stats.html" class="nav-link" aria-label="Statistics">📊</a>
+            <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
+                <span class="emoji lang-de">🇩🇪</span>
+                <span class="emoji lang-en">🇬🇧</span>
+            </button>
+            <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+                <span class="emoji light-mode-icon">☀️</span>
+                <span class="emoji dark-mode-icon">🌙</span>
+            </button>
         </div>
+    </div>
+    <div itemscope itemtype="https://schema.org/Recipe">
+        <h1 itemprop="name">{escape(recipe['name'])}</h1>
 
         <p itemprop="description">{escape(recipe.get('description', ''))}</p>
 
@@ -410,8 +410,8 @@ def generate_overview_html(
     <div class="page-header">
         <h1>{bilingual_text('overview_title')}</h1>
         <div class="top-nav">
-            <a href="weekly.html" class="nav-link">{bilingual_text('view_weekly_plan')}</a>
-            <a href="stats.html" class="nav-link">{bilingual_text('view_stats')}</a>
+            <a href="weekly.html" class="nav-link" aria-label="Weekly Plan">🗓️</a>
+            <a href="stats.html" class="nav-link" aria-label="Statistics">📊</a>
             <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
                 <span class="emoji lang-de">🇩🇪</span>
                 <span class="emoji lang-en">🇬🇧</span>
@@ -687,8 +687,8 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
     <div class="page-header">
         <h1>{bilingual_text('stats_title')}</h1>
         <div class="top-nav">
-            <a href="weekly.html" class="nav-link">{bilingual_text('view_weekly_plan')}</a>
-            <a href="stats.html" class="nav-link">{bilingual_text('view_stats')}</a>
+            <a href="weekly.html" class="nav-link" aria-label="Weekly Plan">🗓️</a>
+            <a href="stats.html" class="nav-link" aria-label="Statistics">📊</a>
             <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
                 <span class="emoji lang-de">🇩🇪</span>
                 <span class="emoji lang-en">🇬🇧</span>

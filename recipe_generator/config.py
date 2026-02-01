@@ -169,7 +169,7 @@ body {
 /* Top Navigation */
 .top-nav {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
@@ -185,7 +185,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 8px var(--shadow);
     cursor: pointer;
-    font-size: 1em;
+    font-size: 1.5em;
     line-height: 1;
     transition: background-color 0.2s, transform 0.1s;
     text-decoration: none;
