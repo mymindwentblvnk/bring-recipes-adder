@@ -49,6 +49,22 @@ TEXTS = {
         "instructions_heading": "Zubereitung",
         "amount_label": "Menge",
         "ingredient_label": "Zutat",
+
+        # Weekly plan page
+        "view_weekly_plan": "🗓️ Wochenplan",
+        "weekly_plan_title": "Wochenplan",
+        "add_to_weekly": "📅 Diese Woche kochen",
+        "in_weekly_plan": "✓ In Wochenplan",
+        "mark_cooked": "Als gekocht markieren",
+        "mark_uncooked": "Als ungekocht markieren",
+        "remove_from_plan": "Entfernen",
+        "clear_all": "Alle löschen",
+        "clear_all_confirm": "Möchtest du wirklich alle Rezepte aus dem Wochenplan entfernen?",
+        "no_recipes_planned": "Noch keine Rezepte geplant",
+        "no_recipes_message": "Füge Rezepte aus den Detail-Seiten hinzu, um deinen Wochenplan zu erstellen!",
+        "cooked": "✓ Gekocht",
+        "not_cooked": "Nicht gekocht",
+        "added_on": "Hinzugefügt:",
     },
     "en": {
         # Overview page
@@ -87,6 +103,22 @@ TEXTS = {
         "instructions_heading": "Instructions",
         "amount_label": "Amount",
         "ingredient_label": "Ingredient",
+
+        # Weekly plan page
+        "view_weekly_plan": "🗓️ Weekly Plan",
+        "weekly_plan_title": "Weekly Plan",
+        "add_to_weekly": "📅 Cook This Week",
+        "in_weekly_plan": "✓ In Weekly Plan",
+        "mark_cooked": "Mark as Cooked",
+        "mark_uncooked": "Mark as Uncooked",
+        "remove_from_plan": "Remove",
+        "clear_all": "Clear All",
+        "clear_all_confirm": "Do you really want to remove all recipes from your weekly plan?",
+        "no_recipes_planned": "No Recipes Planned Yet",
+        "no_recipes_message": "Add recipes from detail pages to create your weekly meal plan!",
+        "cooked": "✓ Cooked",
+        "not_cooked": "Not cooked",
+        "added_on": "Added:",
     },
 }
 
@@ -549,6 +581,32 @@ ol li span {
     display: block;
     padding-left: 20px;
 }
+.weekly-plan-button {
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 20px 0;
+    background-color: var(--primary-color);
+    color: white;
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+.weekly-plan-button:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+.weekly-plan-button.in-plan {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+.weekly-plan-button.in-plan:hover {
+    background-color: var(--bg-secondary);
+}
 """
 
 OVERVIEW_PAGE_CSS = """
@@ -664,5 +722,146 @@ h1 {
 }
 .deployment-info p {
     margin: 0;
+}
+"""
+
+WEEKLY_PAGE_CSS = """
+h1 {
+    color: var(--primary-color);
+}
+.back-button {
+    display: inline-block;
+    padding: 8px 16px;
+    margin-bottom: 20px;
+    background-color: var(--border-color);
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+.back-button:hover {
+    background-color: var(--bg-secondary);
+    text-decoration: none;
+}
+.weekly-plan-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+.weekly-recipe-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: box-shadow 0.2s, opacity 0.2s;
+}
+.weekly-recipe-card:hover {
+    box-shadow: 0 4px 6px var(--shadow);
+}
+.weekly-recipe-card.cooked {
+    opacity: 0.6;
+}
+.recipe-category {
+    font-size: 2em;
+    min-width: 50px;
+    text-align: center;
+}
+.recipe-details {
+    flex: 1;
+}
+.recipe-details h3 {
+    margin: 0 0 5px 0;
+    color: var(--text-color);
+}
+.recipe-details a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1.2em;
+}
+.recipe-details a:hover {
+    text-decoration: underline;
+}
+.recipe-status {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+.recipe-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.action-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.cook-button {
+    background-color: var(--primary-color);
+    color: white;
+}
+.cook-button:hover {
+    background-color: var(--primary-hover);
+}
+.uncook-button {
+    background-color: var(--border-color);
+    color: var(--text-color);
+}
+.uncook-button:hover {
+    background-color: var(--bg-secondary);
+}
+.remove-button {
+    background-color: #e53e3e;
+    color: white;
+}
+.remove-button:hover {
+    background-color: #c53030;
+}
+.clear-all-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.clear-all-button:hover {
+    background-color: #c53030;
+}
+.clear-all-button:disabled {
+    background-color: var(--border-color);
+    color: var(--text-tertiary);
+    cursor: not-allowed;
+}
+.no-recipes {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+    background-color: var(--bg-secondary);
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    margin: 20px 0;
+}
+.no-recipes h2 {
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+.no-recipes p {
+    font-size: 1.1em;
 }
 """

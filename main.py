@@ -10,6 +10,7 @@ from recipe_generator import (
     generate_recipe_detail_html,
     generate_overview_html,
     generate_stats_html,
+    generate_weekly_html,
 )
 
 
@@ -34,7 +35,7 @@ def main():
             validate_recipe(recipe, yaml_file.name)
 
             # Generate recipe detail HTML
-            html = generate_recipe_detail_html(recipe)
+            html = generate_recipe_detail_html(recipe, yaml_file.stem)
 
             # Write HTML file
             output_filename = f"{yaml_file.stem}.html"
@@ -77,6 +78,14 @@ def main():
         with open(stats_file, 'w', encoding='utf-8') as f:
             f.write(stats_html)
         print(f"  → Generated {stats_file}")
+
+        # Generate weekly plan page
+        print("Generating weekly plan page...")
+        weekly_html = generate_weekly_html(recipes_data)
+        weekly_file = OUTPUT_DIR / "weekly.html"
+        with open(weekly_file, 'w', encoding='utf-8') as f:
+            f.write(weekly_html)
+        print(f"  → Generated {weekly_file}")
 
     # Print summary
     print(f"\nDone! Generated {len(recipes_data)} recipe(s) in the 'output' directory.")

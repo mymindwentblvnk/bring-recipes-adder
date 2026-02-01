@@ -4,7 +4,7 @@ from typing import Any
 from html import escape
 from datetime import datetime
 
-from .config import COMMON_CSS, DETAIL_PAGE_CSS, OVERVIEW_PAGE_CSS, get_text, TEXTS
+from .config import COMMON_CSS, DETAIL_PAGE_CSS, OVERVIEW_PAGE_CSS, WEEKLY_PAGE_CSS, get_text, TEXTS
 
 
 def bilingual_text(key: str) -> str:
@@ -59,11 +59,12 @@ def generate_schema_metadata(recipe: dict[str, Any]) -> str:
     return metadata
 
 
-def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
+def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
     """Generate HTML with Schema.org microdata and Bring! widget from recipe data.
 
     Args:
         recipe: Recipe dictionary containing name, ingredients, instructions, etc.
+        slug: Recipe slug/filename (without .html extension) for weekly plan tracking
 
     Returns:
         Complete HTML page as a string
@@ -113,6 +114,9 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
             <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
             <div class="burger-dropdown" id="burgerDropdown">
                 <div class="burger-item">
+                    <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
+                </div>
+                <div class="burger-item">
                     <a href="stats.html">{bilingual_text('view_stats')}</a>
                 </div>
             </div>
@@ -143,6 +147,11 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
             </tr>
         </table>
 
+        <button id="weeklyPlanButton" class="weekly-plan-button" onclick="toggleWeeklyPlan()">
+            <span class="lang-de">📅 Diese Woche kochen</span>
+            <span class="lang-en">📅 Cook This Week</span>
+        </button>
+
         <h2>{bilingual_text('ingredients_heading')}</h2>
 
         {generate_bring_widget()}
@@ -167,6 +176,13 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
         </div>
     </div>
     <script>
+        // Recipe data for weekly plan
+        const recipeData = {{
+            name: '{escape(recipe['name'])}',
+            slug: '{escape(slug)}',
+            category: '{escape(recipe.get('category', ''))}'
+        }};
+
         // Track page view
         (function trackPageView() {{
             const recipeName = '{escape(recipe['name'])}';
@@ -193,6 +209,76 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
                 console.error('Error saving view counts:', e);
             }}
         }})();
+
+        // Weekly plan functionality
+        function toggleWeeklyPlan() {{
+            const planKey = 'weeklyMealPlan';
+            let plan = {{ recipes: [] }};
+
+            try {{
+                const stored = localStorage.getItem(planKey);
+                if (stored) {{
+                    plan = JSON.parse(stored);
+                }}
+            }} catch (e) {{
+                console.error('Error reading weekly plan:', e);
+            }}
+
+            // Check if recipe is already in plan
+            const existingIndex = plan.recipes.findIndex(r => r.slug === recipeData.slug);
+
+            if (existingIndex >= 0) {{
+                // Remove from plan
+                plan.recipes.splice(existingIndex, 1);
+            }} else {{
+                // Add to plan
+                plan.recipes.push({{
+                    name: recipeData.name,
+                    slug: recipeData.slug,
+                    category: recipeData.category,
+                    addedAt: Date.now(),
+                    cooked: false
+                }});
+            }}
+
+            // Save back to localStorage
+            try {{
+                localStorage.setItem(planKey, JSON.stringify(plan));
+                updateWeeklyPlanButton();
+            }} catch (e) {{
+                console.error('Error saving weekly plan:', e);
+            }}
+        }}
+
+        function updateWeeklyPlanButton() {{
+            const planKey = 'weeklyMealPlan';
+            const button = document.getElementById('weeklyPlanButton');
+            if (!button) return;
+
+            let plan = {{ recipes: [] }};
+            try {{
+                const stored = localStorage.getItem(planKey);
+                if (stored) {{
+                    plan = JSON.parse(stored);
+                }}
+            }} catch (e) {{
+                console.error('Error reading weekly plan:', e);
+            }}
+
+            const isInPlan = plan.recipes.some(r => r.slug === recipeData.slug);
+
+            if (isInPlan) {{
+                button.classList.add('in-plan');
+                button.innerHTML = '<span class="lang-de">✓ In Wochenplan</span><span class="lang-en">✓ In Weekly Plan</span>';
+            }} else {{
+                button.classList.remove('in-plan');
+                button.innerHTML = '<span class="lang-de">📅 Diese Woche kochen</span><span class="lang-en">📅 Cook This Week</span>';
+            }}
+
+            // Apply current language
+            const savedLang = localStorage.getItem('language') || 'de';
+            applyLanguage(savedLang);
+        }}
 
         // Burger menu functionality
         function toggleBurgerMenu() {{
@@ -273,6 +359,9 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
                 document.body.classList.add('dark-mode');
             }}
             updateDarkModeButton(isDark);
+
+            // Update weekly plan button state
+            updateWeeklyPlanButton();
         }});
     </script>
 </body>
@@ -358,6 +447,9 @@ def generate_overview_html(
         <div class="burger-menu">
             <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
             <div class="burger-dropdown" id="burgerDropdown">
+                <div class="burger-item">
+                    <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
+                </div>
                 <div class="burger-item">
                     <a href="stats.html">{bilingual_text('view_stats')}</a>
                 </div>
@@ -654,6 +746,9 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
             <div class="burger-dropdown" id="burgerDropdown">
                 <div class="burger-item">
+                    <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
+                </div>
+                <div class="burger-item">
                     <a href="stats.html">{bilingual_text('view_stats')}</a>
                 </div>
             </div>
@@ -815,6 +910,329 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             if (darkModeToggle) {{
                 darkModeToggle.checked = isDark;
             }}
+
+            if (isDark) {{
+                document.body.classList.add('dark-mode');
+            }}
+            updateDarkModeButton(isDark);
+        }});
+    </script>
+</body>
+</html>'''
+
+    return html
+
+
+def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
+    """Generate weekly meal plan page.
+
+    Args:
+        recipes_data: List of tuples containing (filename, recipe_dict)
+
+    Returns:
+        Complete HTML page as a string
+    """
+    # Create recipe lookup by slug
+    recipe_lookup = {}
+    for filename, recipe in recipes_data:
+        slug = filename.replace('.html', '')
+        recipe_lookup[slug] = {
+            'name': recipe['name'],
+            'filename': filename,
+            'category': recipe.get('category', '')
+        }
+
+    # Generate recipe lookup as JSON for JavaScript
+    recipe_lookup_json = str(recipe_lookup).replace("'", '"')
+
+    html = f'''<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{get_text('weekly_plan_title')}</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <style>
+        {COMMON_CSS}
+        {WEEKLY_PAGE_CSS}
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
+            <span class="emoji lang-de">🇩🇪</span>
+            <span class="emoji lang-en">🇬🇧</span>
+        </button>
+        <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+            <span class="emoji light-mode-icon">☀️</span>
+            <span class="emoji dark-mode-icon">🌙</span>
+        </button>
+        <div class="burger-menu">
+            <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
+            <div class="burger-dropdown" id="burgerDropdown">
+                <div class="burger-item">
+                    <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
+                </div>
+                <div class="burger-item">
+                    <a href="stats.html">{bilingual_text('view_stats')}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
+    <h1>{bilingual_text('weekly_plan_title')}</h1>
+
+    <button id="clearAllButton" class="clear-all-button" onclick="clearAllRecipes()">
+        <span class="lang-de">Alle löschen</span>
+        <span class="lang-en">Clear All</span>
+    </button>
+
+    <div id="weeklyPlanContainer"></div>
+
+    <script>
+        const recipeData = {recipe_lookup_json};
+
+        function formatDate(timestamp) {{
+            const date = new Date(timestamp);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${{day}}.${{month}}.${{year}}`;
+        }}
+
+        function loadWeeklyPlan() {{
+            const planKey = 'weeklyMealPlan';
+            let plan = {{ recipes: [] }};
+
+            try {{
+                const stored = localStorage.getItem(planKey);
+                if (stored) {{
+                    plan = JSON.parse(stored);
+                }}
+            }} catch (e) {{
+                console.error('Error reading weekly plan:', e);
+            }}
+
+            const container = document.getElementById('weeklyPlanContainer');
+            const clearButton = document.getElementById('clearAllButton');
+
+            if (plan.recipes.length === 0) {{
+                container.innerHTML = `
+                    <div class="no-recipes">
+                        <h2><span class="lang-de">Noch keine Rezepte geplant</span><span class="lang-en">No Recipes Planned Yet</span></h2>
+                        <p><span class="lang-de">Füge Rezepte aus den Detail-Seiten hinzu, um deinen Wochenplan zu erstellen!</span><span class="lang-en">Add recipes from detail pages to create your weekly meal plan!</span></p>
+                    </div>
+                `;
+                clearButton.disabled = true;
+
+                // Apply current language to new content
+                const savedLang = localStorage.getItem('language') || 'de';
+                applyLanguage(savedLang);
+                return;
+            }}
+
+            clearButton.disabled = false;
+
+            let html = '<div class="weekly-plan-list">';
+            plan.recipes.forEach((recipe, index) => {{
+                const recipeInfo = recipeData[recipe.slug];
+                if (!recipeInfo) return; // Skip if recipe not found
+
+                const cookedClass = recipe.cooked ? 'cooked' : '';
+                const statusText = recipe.cooked
+                    ? '<span class="lang-de">✓ Gekocht</span><span class="lang-en">✓ Cooked</span>'
+                    : '<span class="lang-de">Nicht gekocht</span><span class="lang-en">Not cooked</span>';
+                const dateAdded = formatDate(recipe.addedAt);
+
+                const actionButton = recipe.cooked
+                    ? `<button class="action-button uncook-button" onclick="toggleCooked(${{index}})">
+                        <span class="lang-de">Als ungekocht markieren</span>
+                        <span class="lang-en">Mark as Uncooked</span>
+                       </button>`
+                    : `<button class="action-button cook-button" onclick="toggleCooked(${{index}})">
+                        <span class="lang-de">Als gekocht markieren</span>
+                        <span class="lang-en">Mark as Cooked</span>
+                       </button>`;
+
+                html += `
+                    <div class="weekly-recipe-card ${{cookedClass}}">
+                        <div class="recipe-category">${{recipe.category}}</div>
+                        <div class="recipe-details">
+                            <h3><a href="${{recipeInfo.filename}}">${{recipeInfo.name}}</a></h3>
+                            <div class="recipe-status">
+                                ${{statusText}} • <span class="lang-de">Hinzugefügt:</span><span class="lang-en">Added:</span> ${{dateAdded}}
+                            </div>
+                        </div>
+                        <div class="recipe-actions">
+                            ${{actionButton}}
+                            <button class="action-button remove-button" onclick="removeRecipe(${{index}})">
+                                <span class="lang-de">Entfernen</span>
+                                <span class="lang-en">Remove</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }});
+            html += '</div>';
+
+            container.innerHTML = html;
+
+            // Apply current language to new content
+            const savedLang = localStorage.getItem('language') || 'de';
+            applyLanguage(savedLang);
+        }}
+
+        function toggleCooked(index) {{
+            const planKey = 'weeklyMealPlan';
+            let plan = {{ recipes: [] }};
+
+            try {{
+                const stored = localStorage.getItem(planKey);
+                if (stored) {{
+                    plan = JSON.parse(stored);
+                }}
+            }} catch (e) {{
+                console.error('Error reading weekly plan:', e);
+                return;
+            }}
+
+            if (index >= 0 && index < plan.recipes.length) {{
+                plan.recipes[index].cooked = !plan.recipes[index].cooked;
+
+                try {{
+                    localStorage.setItem(planKey, JSON.stringify(plan));
+                    loadWeeklyPlan();
+                }} catch (e) {{
+                    console.error('Error saving weekly plan:', e);
+                }}
+            }}
+        }}
+
+        function removeRecipe(index) {{
+            const planKey = 'weeklyMealPlan';
+            let plan = {{ recipes: [] }};
+
+            try {{
+                const stored = localStorage.getItem(planKey);
+                if (stored) {{
+                    plan = JSON.parse(stored);
+                }}
+            }} catch (e) {{
+                console.error('Error reading weekly plan:', e);
+                return;
+            }}
+
+            if (index >= 0 && index < plan.recipes.length) {{
+                plan.recipes.splice(index, 1);
+
+                try {{
+                    localStorage.setItem(planKey, JSON.stringify(plan));
+                    loadWeeklyPlan();
+                }} catch (e) {{
+                    console.error('Error saving weekly plan:', e);
+                }}
+            }}
+        }}
+
+        function clearAllRecipes() {{
+            const currentLang = localStorage.getItem('language') || 'de';
+            const confirmMessage = currentLang === 'de'
+                ? 'Möchtest du wirklich alle Rezepte aus dem Wochenplan entfernen?'
+                : 'Do you really want to remove all recipes from your weekly plan?';
+
+            if (!confirm(confirmMessage)) {{
+                return;
+            }}
+
+            const planKey = 'weeklyMealPlan';
+            const emptyPlan = {{ recipes: [] }};
+
+            try {{
+                localStorage.setItem(planKey, JSON.stringify(emptyPlan));
+                loadWeeklyPlan();
+            }} catch (e) {{
+                console.error('Error clearing weekly plan:', e);
+            }}
+        }}
+
+        // Burger menu functionality
+        function toggleBurgerMenu() {{
+            const dropdown = document.getElementById('burgerDropdown');
+            dropdown.classList.toggle('open');
+        }}
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {{
+            const menu = document.querySelector('.burger-menu');
+            const dropdown = document.getElementById('burgerDropdown');
+            if (!menu.contains(event.target) && dropdown.classList.contains('open')) {{
+                dropdown.classList.remove('open');
+            }}
+        }});
+
+        // Language toggle functionality
+        function toggleLanguage() {{
+            const currentLang = localStorage.getItem('language') || 'de';
+            const newLang = currentLang === 'de' ? 'en' : 'de';
+            localStorage.setItem('language', newLang);
+            applyLanguage(newLang);
+        }}
+
+        function applyLanguage(lang) {{
+            document.querySelectorAll('.lang-de, .lang-en').forEach(el => {{
+                el.classList.remove('active');
+            }});
+            document.querySelectorAll('.lang-' + lang).forEach(el => {{
+                el.classList.add('active');
+            }});
+        }}
+
+        // Dark mode toggle functionality
+        function toggleDarkMode() {{
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+            updateDarkModeButton(isDark);
+        }}
+
+        function updateDarkModeButton(isDark) {{
+            document.querySelectorAll('.light-mode-text').forEach(el => {{
+                el.style.display = isDark ? 'none' : 'inline';
+            }});
+            document.querySelectorAll('.dark-mode-text').forEach(el => {{
+                el.style.display = isDark ? 'inline' : 'none';
+            }});
+
+            // Update dark mode toggle icon
+            document.querySelectorAll('.light-mode-icon').forEach(el => {{
+                if (isDark) {{
+                    el.classList.remove('active');
+                }} else {{
+                    el.classList.add('active');
+                }}
+            }});
+            document.querySelectorAll('.dark-mode-icon').forEach(el => {{
+                if (isDark) {{
+                    el.classList.add('active');
+                }} else {{
+                    el.classList.remove('active');
+                }}
+            }});
+        }}
+
+        // Apply saved preferences on page load
+        document.addEventListener('DOMContentLoaded', function() {{
+            // Load weekly plan
+            loadWeeklyPlan();
+
+            // Apply language
+            const savedLang = localStorage.getItem('language') || 'de';
+            applyLanguage(savedLang);
+
+            // Apply dark mode
+            const darkMode = localStorage.getItem('darkMode');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = darkMode === 'enabled' || (darkMode === null && prefersDark);
 
             if (isDark) {{
                 document.body.classList.add('dark-mode');
