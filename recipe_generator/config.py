@@ -305,6 +305,17 @@ h1 {
     margin-bottom: 30px;
     flex-wrap: wrap;
 }
+.recipe-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+@media (min-width: 900px) {
+    .recipe-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
 .filter-btn {
     padding: 10px 20px;
     border: 2px solid var(--primary-color);
@@ -327,7 +338,6 @@ h1 {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 20px;
-    margin-bottom: 20px;
     background-color: var(--card-bg);
     transition: box-shadow 0.2s;
 }

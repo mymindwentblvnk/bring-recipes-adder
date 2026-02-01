@@ -301,7 +301,10 @@ def generate_overview_html(
         <button class="filter-btn" data-filter="fast" data-filter-type="time">⚡ {bilingual_text('filter_fast')}</button>
     </div>
 
-{chr(10).join(recipe_entries)}{footer_html}
+    <div class="recipe-grid">
+{chr(10).join(recipe_entries)}
+    </div>
+{footer_html}
 
     <script>
         // Filter functionality
