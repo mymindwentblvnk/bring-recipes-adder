@@ -212,8 +212,8 @@ body {
 /* iOS-style toggle switches */
 .toggle-switch {
     position: relative;
-    width: 56px;
-    height: 28px;
+    width: 64px;
+    height: 32px;
     margin-left: auto;
     flex-shrink: 0;
 }
@@ -231,18 +231,35 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: var(--border-color);
     transition: 0.3s;
-    border-radius: 28px;
+    border-radius: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6px;
+}
+
+.toggle-slider .icon {
+    font-size: 1em;
+    z-index: 1;
+    transition: opacity 0.3s;
+}
+
+.toggle-slider .icon.inactive {
+    opacity: 0.4;
+}
+
+.toggle-slider .icon.active {
+    opacity: 1;
 }
 
 .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 22px;
-    width: 22px;
+    height: 26px;
+    width: 26px;
     left: 3px;
-    bottom: 3px;
     background-color: white;
     transition: 0.3s;
     border-radius: 50%;
@@ -254,7 +271,7 @@ input:checked + .toggle-slider {
 }
 
 input:checked + .toggle-slider:before {
-    transform: translateX(28px);
+    transform: translateX(32px);
 }
 
 /* Language toggle with flags */

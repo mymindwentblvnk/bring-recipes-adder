@@ -118,7 +118,10 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
                 <span class="dark-mode-text">{bilingual_text('menu_light_mode')}</span>
                 <label class="toggle-switch">
                     <input type="checkbox" id="darkModeToggle">
-                    <span class="toggle-slider"></span>
+                    <span class="toggle-slider">
+                        <span class="icon icon-light">☀️</span>
+                        <span class="icon icon-dark">🌙</span>
+                    </span>
                 </label>
             </div>
         </div>
@@ -268,6 +271,23 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
             const darkModeToggle = document.getElementById('darkModeToggle');
             if (darkModeToggle) {{
                 darkModeToggle.checked = isDark;
+
+                // Update icon states
+                const lightIcon = darkModeToggle.parentElement.querySelector('.icon-light');
+                const darkIcon = darkModeToggle.parentElement.querySelector('.icon-dark');
+                if (lightIcon && darkIcon) {{
+                    if (isDark) {{
+                        lightIcon.classList.add('inactive');
+                        lightIcon.classList.remove('active');
+                        darkIcon.classList.add('active');
+                        darkIcon.classList.remove('inactive');
+                    }} else {{
+                        lightIcon.classList.add('active');
+                        lightIcon.classList.remove('inactive');
+                        darkIcon.classList.add('inactive');
+                        darkIcon.classList.remove('active');
+                    }}
+                }}
             }}
         }}
 
@@ -377,7 +397,10 @@ def generate_overview_html(
                 <span class="dark-mode-text">{bilingual_text('menu_light_mode')}</span>
                 <label class="toggle-switch">
                     <input type="checkbox" id="darkModeToggle">
-                    <span class="toggle-slider"></span>
+                    <span class="toggle-slider">
+                        <span class="icon icon-light">☀️</span>
+                        <span class="icon icon-dark">🌙</span>
+                    </span>
                 </label>
             </div>
         </div>
@@ -528,6 +551,23 @@ def generate_overview_html(
             const darkModeToggle = document.getElementById('darkModeToggle');
             if (darkModeToggle) {{
                 darkModeToggle.checked = isDark;
+
+                // Update icon states
+                const lightIcon = darkModeToggle.parentElement.querySelector('.icon-light');
+                const darkIcon = darkModeToggle.parentElement.querySelector('.icon-dark');
+                if (lightIcon && darkIcon) {{
+                    if (isDark) {{
+                        lightIcon.classList.add('inactive');
+                        lightIcon.classList.remove('active');
+                        darkIcon.classList.add('active');
+                        darkIcon.classList.remove('inactive');
+                    }} else {{
+                        lightIcon.classList.add('active');
+                        lightIcon.classList.remove('inactive');
+                        darkIcon.classList.add('inactive');
+                        darkIcon.classList.remove('active');
+                    }}
+                }}
             }}
         }}
 
@@ -676,7 +716,10 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                 <span class="dark-mode-text">{bilingual_text('menu_light_mode')}</span>
                 <label class="toggle-switch">
                     <input type="checkbox" id="darkModeToggle">
-                    <span class="toggle-slider"></span>
+                    <span class="toggle-slider">
+                        <span class="icon icon-light">☀️</span>
+                        <span class="icon icon-dark">🌙</span>
+                    </span>
                 </label>
             </div>
         </div>
@@ -820,6 +863,23 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             const darkModeToggle = document.getElementById('darkModeToggle');
             if (darkModeToggle) {{
                 darkModeToggle.checked = isDark;
+
+                // Update icon states
+                const lightIcon = darkModeToggle.parentElement.querySelector('.icon-light');
+                const darkIcon = darkModeToggle.parentElement.querySelector('.icon-dark');
+                if (lightIcon && darkIcon) {{
+                    if (isDark) {{
+                        lightIcon.classList.add('inactive');
+                        lightIcon.classList.remove('active');
+                        darkIcon.classList.add('active');
+                        darkIcon.classList.remove('inactive');
+                    }} else {{
+                        lightIcon.classList.add('active');
+                        lightIcon.classList.remove('inactive');
+                        darkIcon.classList.add('inactive');
+                        darkIcon.classList.remove('active');
+                    }}
+                }}
             }}
         }}
 
