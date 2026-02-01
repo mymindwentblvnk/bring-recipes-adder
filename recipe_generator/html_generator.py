@@ -125,7 +125,7 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
     </div>
     <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
     <div itemscope itemtype="https://schema.org/Recipe">
-        <h1 itemprop="name">{category} {escape(recipe['name'])}</h1>
+        <h1 itemprop="name">{escape(recipe['name'])}</h1>
 
         <p itemprop="description">{escape(recipe.get('description', ''))}</p>
 
@@ -326,7 +326,7 @@ def generate_overview_html(
         time_category = 'fast' if total_time <= 30 else 'slow'
 
         recipe_entry = f'''    <div class="recipe-card" data-category="{category}" data-time="{time_category}">
-        <h2><a href="{escape(filename)}">{category} {escape(recipe['name'])}</a></h2>
+        <h2><a href="{escape(filename)}">{escape(recipe['name'])}</a></h2>
         <p class="description">{description}</p>
         <p class="meta">
             <span class="servings">🍽️ {servings} {bilingual_text('servings')}</span> •
@@ -751,7 +751,7 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                     <li class="stats-item">
                         <div class="rank">${{rankEmoji || (index + 1)}}</div>
                         <div class="recipe-info">
-                            <h3><a href="${{data.filename}}">${{data.category}} ${{name}}</a></h3>
+                            <h3><a href="${{data.filename}}">${{name}}</a></h3>
                         </div>
                         <div class="view-count">${{count}} <span class="lang-de">Aufrufe</span><span class="lang-en">Views</span></div>
                     </li>
