@@ -683,10 +683,9 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
-    <div class="page-header">
-        <h1>{bilingual_text('stats_title')}</h1>
-        <div class="top-nav">
+    <div class="top-nav">
+        <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
+        <div style="display: flex; gap: 10px; align-items: center;">
             <a href="weekly.html" class="nav-link" aria-label="Weekly Plan">🗓️</a>
             <a href="stats.html" class="nav-link" aria-label="Statistics">📊</a>
             <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
@@ -699,6 +698,7 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             </button>
         </div>
     </div>
+    <h1>{bilingual_text('stats_title')}</h1>
     <p style="color: var(--text-secondary); margin-bottom: 15px;">{bilingual_text('stats_subtitle')}</p>
     <p style="color: var(--text-tertiary); font-size: 0.9em; font-style: italic; margin-bottom: 30px; padding: 10px; background-color: var(--bg-secondary); border-radius: 4px; border-left: 3px solid var(--primary-color);">{bilingual_text('stats_disclaimer')}</p>
 
@@ -887,12 +887,11 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
-    <div class="page-header">
-        <h1>{bilingual_text('weekly_plan_title')}</h1>
-        <div class="top-nav">
-            <a href="weekly.html" class="nav-link">{bilingual_text('view_weekly_plan')}</a>
-            <a href="stats.html" class="nav-link">{bilingual_text('view_stats')}</a>
+    <div class="top-nav">
+        <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <a href="weekly.html" class="nav-link" aria-label="Weekly Plan">🗓️</a>
+            <a href="stats.html" class="nav-link" aria-label="Statistics">📊</a>
             <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
                 <span class="emoji lang-de">🇩🇪</span>
                 <span class="emoji lang-en">🇬🇧</span>
@@ -903,6 +902,7 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             </button>
         </div>
     </div>
+    <h1>{bilingual_text('weekly_plan_title')}</h1>
 
     <button id="clearAllButton" class="clear-all-button" onclick="clearAllRecipes()">
         <span class="lang-de">Alle löschen</span>
