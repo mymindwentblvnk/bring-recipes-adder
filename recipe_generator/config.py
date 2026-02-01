@@ -101,12 +101,12 @@ COMMON_CSS = """
     --text-color: #2d3748;
     --text-secondary: #4a5568;
     --text-tertiary: #718096;
-    --primary-color: #2c5282;
-    --primary-hover: #1e3a5f;
+    --primary-color: #2f855a;
+    --primary-hover: #276749;
     --bg-secondary: #f7fafc;
     --border-color: #e2e8f0;
     --card-bg: #f7fafc;
-    --table-header-bg: #2c5282;
+    --table-header-bg: #2f855a;
     --shadow: rgba(0, 0, 0, 0.1);
 }
 
@@ -115,12 +115,12 @@ body.dark-mode {
     --text-color: #e2e8f0;
     --text-secondary: #cbd5e0;
     --text-tertiary: #a0aec0;
-    --primary-color: #4299e1;
-    --primary-hover: #3182ce;
+    --primary-color: #68d391;
+    --primary-hover: #48bb78;
     --bg-secondary: #2d3748;
     --border-color: #4a5568;
     --card-bg: #2d3748;
-    --table-header-bg: #4299e1;
+    --table-header-bg: #68d391;
     --shadow: rgba(0, 0, 0, 0.3);
 }
 
