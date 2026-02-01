@@ -274,11 +274,11 @@ body {
 }
 
 .light-mode-icon, .dark-mode-icon {
-    display: none;
+    display: block;
 }
 
 .light-mode-icon.active, .dark-mode-icon.active {
-    display: block;
+    display: none;
 }
 
 /* iOS-style toggle switches */
@@ -411,11 +411,11 @@ input:checked + .language-slider:before {
 
 
 .lang-de, .lang-en {
-    display: none;
+    display: inline;
 }
 
 .lang-de.active, .lang-en.active {
-    display: inline;
+    display: none;
 }
 """
 
