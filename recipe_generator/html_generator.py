@@ -224,22 +224,15 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
                 console.error('Error reading weekly plan:', e);
             }}
 
-            // Check if recipe is already in plan
-            const existingIndex = plan.recipes.findIndex(r => r.slug === recipeData.slug);
-
-            if (existingIndex >= 0) {{
-                // Remove from plan
-                plan.recipes.splice(existingIndex, 1);
-            }} else {{
-                // Add to plan
-                plan.recipes.push({{
-                    name: recipeData.name,
-                    slug: recipeData.slug,
-                    category: recipeData.category,
-                    addedAt: Date.now(),
-                    cooked: false
-                }});
-            }}
+            // Always add to plan (allow duplicates)
+            plan.recipes.push({{
+                id: Date.now() + Math.random(), // Unique ID for each instance
+                name: recipeData.name,
+                slug: recipeData.slug,
+                category: recipeData.category,
+                addedAt: Date.now(),
+                cooked: false
+            }});
 
             // Save back to localStorage
             try {{
@@ -265,11 +258,12 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
                 console.error('Error reading weekly plan:', e);
             }}
 
-            const isInPlan = plan.recipes.some(r => r.slug === recipeData.slug);
+            const count = plan.recipes.filter(r => r.slug === recipeData.slug).length;
 
-            if (isInPlan) {{
+            if (count > 0) {{
                 button.classList.add('in-plan');
-                button.innerHTML = '<span class="lang-de">✓ In Wochenplan</span><span class="lang-en">✓ In Weekly Plan</span>';
+                const countText = count > 1 ? ` (${{count}}×)` : '';
+                button.innerHTML = `<span class="lang-de">✓ In Wochenplan${{countText}}</span><span class="lang-en">✓ In Weekly Plan${{countText}}</span>`;
             }} else {{
                 button.classList.remove('in-plan');
                 button.innerHTML = '<span class="lang-de">📅 Diese Woche kochen</span><span class="lang-en">📅 Cook This Week</span>';
@@ -1035,9 +1029,12 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             clearButton.disabled = false;
 
             let html = '<div class="weekly-plan-list">';
-            plan.recipes.forEach((recipe, index) => {{
+            plan.recipes.forEach((recipe) => {{
                 const recipeInfo = recipeData[recipe.slug];
                 if (!recipeInfo) return; // Skip if recipe not found
+
+                // Use recipe.id or fall back to slug+addedAt for backwards compatibility
+                const recipeId = recipe.id || `${{recipe.slug}}-${{recipe.addedAt}}`;
 
                 const cookedClass = recipe.cooked ? 'cooked' : '';
                 const statusText = recipe.cooked
@@ -1046,11 +1043,11 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                 const dateAdded = formatDate(recipe.addedAt);
 
                 const actionButton = recipe.cooked
-                    ? `<button class="action-button uncook-button" onclick="toggleCooked(${{index}})">
+                    ? `<button class="action-button uncook-button" onclick="toggleCooked('${{recipeId}}')">
                         <span class="lang-de">Als ungekocht markieren</span>
                         <span class="lang-en">Mark as Uncooked</span>
                        </button>`
-                    : `<button class="action-button cook-button" onclick="toggleCooked(${{index}})">
+                    : `<button class="action-button cook-button" onclick="toggleCooked('${{recipeId}}')">
                         <span class="lang-de">Als gekocht markieren</span>
                         <span class="lang-en">Mark as Cooked</span>
                        </button>`;
@@ -1066,7 +1063,7 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                         </div>
                         <div class="recipe-actions">
                             ${{actionButton}}
-                            <button class="action-button remove-button" onclick="removeRecipe(${{index}})">
+                            <button class="action-button remove-button" onclick="removeRecipe('${{recipeId}}')">
                                 <span class="lang-de">Entfernen</span>
                                 <span class="lang-en">Remove</span>
                             </button>
@@ -1083,7 +1080,7 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             applyLanguage(savedLang);
         }}
 
-        function toggleCooked(index) {{
+        function toggleCooked(recipeId) {{
             const planKey = 'weeklyMealPlan';
             let plan = {{ recipes: [] }};
 
@@ -1097,8 +1094,14 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                 return;
             }}
 
-            if (index >= 0 && index < plan.recipes.length) {{
-                plan.recipes[index].cooked = !plan.recipes[index].cooked;
+            // Find recipe by ID (or fallback to slug+addedAt for backwards compatibility)
+            const recipe = plan.recipes.find(r => {{
+                const id = r.id || `${{r.slug}}-${{r.addedAt}}`;
+                return id === recipeId;
+            }});
+
+            if (recipe) {{
+                recipe.cooked = !recipe.cooked;
 
                 try {{
                     localStorage.setItem(planKey, JSON.stringify(plan));
@@ -1109,7 +1112,7 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             }}
         }}
 
-        function removeRecipe(index) {{
+        function removeRecipe(recipeId) {{
             const planKey = 'weeklyMealPlan';
             let plan = {{ recipes: [] }};
 
@@ -1123,7 +1126,13 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                 return;
             }}
 
-            if (index >= 0 && index < plan.recipes.length) {{
+            // Find and remove recipe by ID (or fallback to slug+addedAt for backwards compatibility)
+            const index = plan.recipes.findIndex(r => {{
+                const id = r.id || `${{r.slug}}-${{r.addedAt}}`;
+                return id === recipeId;
+            }});
+
+            if (index >= 0) {{
                 plan.recipes.splice(index, 1);
 
                 try {{
