@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <style>
+      .logo-text {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 120px;
+        font-weight: bold;
+        fill: #ffffff;
+      }
+    </style>
+  </defs>
+
+  <!-- Outer gold ring -->
+  <circle cx="100" cy="100" r="94" fill="#d4af37"/>
+
+  <!-- Inner blue circle -->
+  <circle cx="100" cy="100" r="89" fill="#2c5282"/>
+
+  <!-- Letter R with shadow -->
+  <text x="100" y="100" text-anchor="middle" dominant-baseline="central" class="logo-text" opacity="0.3" transform="translate(2, 2)">R</text>
+  <text x="100" y="100" text-anchor="middle" dominant-baseline="central" class="logo-text">R</text>
+</svg>

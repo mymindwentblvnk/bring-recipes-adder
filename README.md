@@ -2,6 +2,10 @@
 
 🛒 This is a HTML website generator that lets you add your favourite recipes with one click to Bring! app.
 
+## Demo
+
+![Demo](media/demo.gif)
+
 ## Features
 
 - **YAML-based recipes**: Define recipes in simple YAML files
