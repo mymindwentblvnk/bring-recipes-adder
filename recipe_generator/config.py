@@ -33,6 +33,7 @@ TEXTS = {
         "stats_subtitle": "Top 10 beliebteste Rezepte",
         "stats_views": "Aufrufe",
         "stats_no_data": "Noch keine Daten verfügbar. Öffne einige Rezepte, um Statistiken zu sehen!",
+        "stats_disclaimer": "💡 Diese Statistiken basieren auf deinem lokalen Browser-Verlauf und werden nicht geräteübergreifend synchronisiert.",
 
         # Detail page
         "recipe_title_suffix": "Rezept",
@@ -67,6 +68,7 @@ TEXTS = {
         "stats_subtitle": "Top 10 most popular recipes",
         "stats_views": "Views",
         "stats_no_data": "No data available yet. Open some recipes to see statistics!",
+        "stats_disclaimer": "💡 These statistics are based on your local browser history and are not synced across devices.",
 
         # Detail page
         "recipe_title_suffix": "Recipe",

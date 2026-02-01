@@ -569,7 +569,8 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
     </button>
     <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
     <h1>{bilingual_text('stats_title')}</h1>
-    <p style="color: var(--text-secondary); margin-bottom: 30px;">{bilingual_text('stats_subtitle')}</p>
+    <p style="color: var(--text-secondary); margin-bottom: 15px;">{bilingual_text('stats_subtitle')}</p>
+    <p style="color: var(--text-tertiary); font-size: 0.9em; font-style: italic; margin-bottom: 30px; padding: 10px; background-color: var(--bg-secondary); border-radius: 4px; border-left: 3px solid var(--primary-color);">{bilingual_text('stats_disclaimer')}</p>
 
     <div id="stats-container">
         <p class="no-data">{bilingual_text('stats_no_data')}</p>
