@@ -103,6 +103,9 @@ def generate_recipe_detail_html(recipe: dict[str, Any]) -> str:
     <div class="burger-menu">
         <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
         <div class="burger-dropdown" id="burgerDropdown">
+            <div class="burger-item">
+                <a href="stats.html">{bilingual_text('view_stats')}</a>
+            </div>
             <div class="burger-item" onclick="toggleLanguage()">
                 <span>🌐</span>
                 <span>{bilingual_text('menu_language')}: <span class="lang-de">English</span><span class="lang-en">Deutsch</span></span>
@@ -612,6 +615,9 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
     <div class="burger-menu">
         <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
         <div class="burger-dropdown" id="burgerDropdown">
+            <div class="burger-item">
+                <a href="stats.html">{bilingual_text('view_stats')}</a>
+            </div>
             <div class="burger-item" onclick="toggleLanguage()">
                 <span>🌐</span>
                 <span>{bilingual_text('menu_language')}: <span class="lang-de">English</span><span class="lang-en">Deutsch</span></span>
