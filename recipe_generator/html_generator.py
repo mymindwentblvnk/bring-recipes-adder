@@ -102,24 +102,28 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
 </head>
 <body>
     <div class="top-nav">
-        <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
-            <span class="emoji lang-de">🇩🇪</span>
-            <span class="emoji lang-en">🇬🇧</span>
-        </button>
-        <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
-            <span class="emoji light-mode-icon">☀️</span>
-            <span class="emoji dark-mode-icon">🌙</span>
-        </button>
-        <div class="burger-menu">
-            <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
-            <div class="burger-dropdown" id="burgerDropdown">
-                <div class="burger-item">
-                    <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
-                </div>
-                <div class="burger-item">
-                    <a href="stats.html">{bilingual_text('view_stats')}</a>
+        <div class="top-nav-left">
+            <div class="burger-menu">
+                <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
+                <div class="burger-dropdown" id="burgerDropdown">
+                    <div class="burger-item">
+                        <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
+                    </div>
+                    <div class="burger-item">
+                        <a href="stats.html">{bilingual_text('view_stats')}</a>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="top-nav-right">
+            <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
+                <span class="emoji lang-de">🇩🇪</span>
+                <span class="emoji lang-en">🇬🇧</span>
+            </button>
+            <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+                <span class="emoji light-mode-icon">☀️</span>
+                <span class="emoji dark-mode-icon">🌙</span>
+            </button>
         </div>
     </div>
     <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
@@ -430,24 +434,28 @@ def generate_overview_html(
 </head>
 <body>
     <div class="top-nav">
-        <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
-            <span class="emoji lang-de">🇩🇪</span>
-            <span class="emoji lang-en">🇬🇧</span>
-        </button>
-        <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
-            <span class="emoji light-mode-icon">☀️</span>
-            <span class="emoji dark-mode-icon">🌙</span>
-        </button>
-        <div class="burger-menu">
-            <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
-            <div class="burger-dropdown" id="burgerDropdown">
-                <div class="burger-item">
-                    <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
-                </div>
-                <div class="burger-item">
-                    <a href="stats.html">{bilingual_text('view_stats')}</a>
+        <div class="top-nav-left">
+            <div class="burger-menu">
+                <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
+                <div class="burger-dropdown" id="burgerDropdown">
+                    <div class="burger-item">
+                        <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
+                    </div>
+                    <div class="burger-item">
+                        <a href="stats.html">{bilingual_text('view_stats')}</a>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="top-nav-right">
+            <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
+                <span class="emoji lang-de">🇩🇪</span>
+                <span class="emoji lang-en">🇬🇧</span>
+            </button>
+            <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+                <span class="emoji light-mode-icon">☀️</span>
+                <span class="emoji dark-mode-icon">🌙</span>
+            </button>
         </div>
     </div>
     <h1>{bilingual_text('overview_title')}</h1>
@@ -728,24 +736,28 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
 </head>
 <body>
     <div class="top-nav">
-        <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
-            <span class="emoji lang-de">🇩🇪</span>
-            <span class="emoji lang-en">🇬🇧</span>
-        </button>
-        <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
-            <span class="emoji light-mode-icon">☀️</span>
-            <span class="emoji dark-mode-icon">🌙</span>
-        </button>
-        <div class="burger-menu">
-            <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
-            <div class="burger-dropdown" id="burgerDropdown">
-                <div class="burger-item">
-                    <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
-                </div>
-                <div class="burger-item">
-                    <a href="stats.html">{bilingual_text('view_stats')}</a>
+        <div class="top-nav-left">
+            <div class="burger-menu">
+                <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
+                <div class="burger-dropdown" id="burgerDropdown">
+                    <div class="burger-item">
+                        <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
+                    </div>
+                    <div class="burger-item">
+                        <a href="stats.html">{bilingual_text('view_stats')}</a>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="top-nav-right">
+            <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
+                <span class="emoji lang-de">🇩🇪</span>
+                <span class="emoji lang-en">🇬🇧</span>
+            </button>
+            <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+                <span class="emoji light-mode-icon">☀️</span>
+                <span class="emoji dark-mode-icon">🌙</span>
+            </button>
         </div>
     </div>
     <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
@@ -954,24 +966,28 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
 </head>
 <body>
     <div class="top-nav">
-        <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
-            <span class="emoji lang-de">🇩🇪</span>
-            <span class="emoji lang-en">🇬🇧</span>
-        </button>
-        <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
-            <span class="emoji light-mode-icon">☀️</span>
-            <span class="emoji dark-mode-icon">🌙</span>
-        </button>
-        <div class="burger-menu">
-            <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
-            <div class="burger-dropdown" id="burgerDropdown">
-                <div class="burger-item">
-                    <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
-                </div>
-                <div class="burger-item">
-                    <a href="stats.html">{bilingual_text('view_stats')}</a>
+        <div class="top-nav-left">
+            <div class="burger-menu">
+                <button class="burger-icon" onclick="toggleBurgerMenu()" aria-label="Menu">☰</button>
+                <div class="burger-dropdown" id="burgerDropdown">
+                    <div class="burger-item">
+                        <a href="weekly.html">{bilingual_text('view_weekly_plan')}</a>
+                    </div>
+                    <div class="burger-item">
+                        <a href="stats.html">{bilingual_text('view_stats')}</a>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="top-nav-right">
+            <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
+                <span class="emoji lang-de">🇩🇪</span>
+                <span class="emoji lang-en">🇬🇧</span>
+            </button>
+            <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+                <span class="emoji light-mode-icon">☀️</span>
+                <span class="emoji dark-mode-icon">🌙</span>
+            </button>
         </div>
     </div>
     <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>

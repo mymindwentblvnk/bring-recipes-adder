@@ -170,8 +170,21 @@ body {
 .top-nav {
     position: fixed;
     top: 20px;
+    left: 20px;
     right: 20px;
     z-index: 1001;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-nav-left {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.top-nav-right {
     display: flex;
     gap: 10px;
     align-items: center;
@@ -207,7 +220,7 @@ body {
 .burger-dropdown {
     position: absolute;
     top: 60px;
-    right: 0;
+    left: 0;
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -634,13 +647,15 @@ h1 {
 /* Responsive: Prevent h1 overlap with top-nav buttons on small screens */
 @media (max-width: 768px) {
     h1 {
-        padding-right: 180px; /* Account for emoji buttons width */
+        padding-left: 70px; /* Account for burger menu width */
+        padding-right: 180px; /* Account for toggle buttons width */
         font-size: 2em; /* Slightly smaller on small screens */
     }
 }
 
 @media (max-width: 480px) {
     h1 {
+        padding-left: 70px;
         padding-right: 180px;
         font-size: 1.6em; /* Even smaller on very small screens */
     }
