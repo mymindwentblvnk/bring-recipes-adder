@@ -147,47 +147,47 @@ class TestGenerateRecipeDetailHtml:
 
     def test_html_includes_doctype(self, sample_recipe):
         """Test that HTML includes DOCTYPE."""
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert html.startswith('<!DOCTYPE html>')
 
     def test_html_includes_recipe_name(self, sample_recipe):
         """Test that HTML includes recipe name."""
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert 'Chocolate Cake' in html
         assert '<title>Chocolate Cake Rezept</title>' in html
 
     def test_html_includes_description(self, sample_recipe):
         """Test that HTML includes description."""
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert 'A rich chocolate cake' in html
 
     def test_html_includes_author(self, sample_recipe):
         """Test that HTML includes author."""
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert 'Test Chef' in html
 
     def test_html_includes_servings(self, sample_recipe):
         """Test that HTML includes servings."""
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert '8 servings' in html
 
     def test_html_includes_prep_time(self, sample_recipe):
         """Test that HTML includes prep time."""
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert '20' in html
         assert 'PT20M' in html
         assert 'Minuten' in html or 'minutes' in html
 
     def test_html_includes_cook_time(self, sample_recipe):
         """Test that HTML includes cook time."""
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert '40' in html
         assert 'PT40M' in html
         assert 'Minuten' in html or 'minutes' in html
 
     def test_html_includes_ingredients(self, sample_recipe):
         """Test that HTML includes all ingredients."""
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert '2 cups' in html
         assert 'flour' in html
         assert '3/4 cup' in html
@@ -195,14 +195,14 @@ class TestGenerateRecipeDetailHtml:
 
     def test_html_includes_instructions(self, sample_recipe):
         """Test that HTML includes all instructions."""
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert 'Preheat oven to 350F' in html
         assert 'Mix dry ingredients' in html
         assert 'Bake for 40 minutes' in html
 
     def test_html_includes_schema_org_microdata(self, sample_recipe):
         """Test that HTML includes Schema.org microdata."""
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert 'itemscope' in html
         assert 'itemtype="https://schema.org/Recipe"' in html
         assert 'itemprop="name"' in html
@@ -211,7 +211,7 @@ class TestGenerateRecipeDetailHtml:
 
     def test_html_includes_bring_widget(self, sample_recipe):
         """Test that HTML includes Bring! widget."""
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert 'platform.getbring.com/widgets/import.js' in html
         assert 'data-bring-import' in html
 
@@ -219,7 +219,7 @@ class TestGenerateRecipeDetailHtml:
         """Test that HTML escapes special characters."""
         sample_recipe['name'] = 'Recipe with <script>alert("xss")</script>'
         sample_recipe['ingredients'][0]['name'] = 'ingredient&name'
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         # Check that the XSS attempt is escaped
         assert '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;' in html
         assert '&amp;' in html
@@ -228,13 +228,13 @@ class TestGenerateRecipeDetailHtml:
         """Test HTML generation without optional fields."""
         del sample_recipe['description']
         del sample_recipe['author']
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert 'Chocolate Cake' in html
         assert 'Unknown' in html
 
     def test_html_has_valid_structure(self, sample_recipe):
         """Test that generated HTML has valid structure."""
-        html = generate_recipe_detail_html(sample_recipe)
+        html = generate_recipe_detail_html(sample_recipe, 'test-slug')
         assert '<html lang="de">' in html
         assert '<head>' in html
         assert '</head>' in html
@@ -277,9 +277,8 @@ class TestGenerateOverviewHtml:
         """Test that HTML includes title."""
         html = generate_overview_html(sample_recipes_data)
         assert '<title>Rezeptsammlung</title>' in html
-        # Check that h1 contains both German and English
+        # Check that h1 contains German text
         assert 'Rezeptsammlung' in html
-        assert 'Recipe Collection' in html
 
     def test_html_includes_all_recipes(self, sample_recipes_data):
         """Test that HTML includes all recipes."""
@@ -305,9 +304,8 @@ class TestGenerateOverviewHtml:
         # Check that servings numbers are present
         assert '4' in html
         assert '6' in html
-        # Check that both language labels are present
+        # Check that German label is present
         assert 'Portionen' in html
-        assert 'servings' in html
 
     def test_html_includes_total_time(self, sample_recipes_data):
         """Test that HTML includes total time."""
@@ -315,9 +313,8 @@ class TestGenerateOverviewHtml:
         # Check that time values are present
         assert '30' in html  # 10 + 20
         assert '45' in html  # 15 + 30
-        # Check that both language labels are present
+        # Check that German label is present
         assert 'min gesamt' in html
-        assert 'min total' in html
 
     def test_html_escapes_special_characters(self, sample_recipes_data):
         """Test that HTML escapes special characters."""
