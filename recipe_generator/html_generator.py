@@ -902,10 +902,10 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
         <div style="display: flex; gap: 10px; align-items: center;">
             <a href="weekly.html" class="nav-link" aria-label="Weekly Plan">🗓️</a>
             <a href="stats.html" class="nav-link" aria-label="Statistics">📊</a>
-            <button id="googleSignInButton" class="nav-toggle-button google-sign-in-button" onclick="handleSignIn()" style="display: none;">
-                <span>🔒</span>
+            <button id="googleSignInButton" class="nav-toggle-button google-sign-in-button" onclick="handleSignIn()" style="display: none;" title="Sign in with Google">
+                <span>👤</span>
             </button>
-            <button id="googleSignOutButton" class="nav-toggle-button google-sign-in-button" onclick="handleSignOut()" style="display: none;">
+            <button id="googleSignOutButton" class="nav-toggle-button google-sign-in-button" onclick="handleSignOut()" style="display: none;" title="Click to sign out">
                 <span id="userEmail"></span>
             </button>
             <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
@@ -1000,8 +1000,13 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                         'Authorization': `Bearer ${{accessToken}}`
                     }}
                 }});
+
+                if (!response.ok) {{
+                    throw new Error(`HTTP error! status: ${{response.status}}`);
+                }}
+
                 const data = await response.json();
-                userEmail = data.email;
+                userEmail = data.email || 'Unknown';
 
                 // Save token and email
                 localStorage.setItem('googleAccessToken', accessToken);
@@ -1011,7 +1016,8 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                 performSync();
             }} catch (error) {{
                 console.error('Error getting user info:', error);
-                showSignedOutUI();
+                // Show signed in UI with just the icon
+                showSignedInUI(null);
             }}
         }}
 
@@ -1052,8 +1058,12 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             if (signInButton) signInButton.style.display = 'none';
             if (signOutButton) {{
                 signOutButton.style.display = 'flex';
-                const shortEmail = email.length > 20 ? email.substring(0, 17) + '...' : email;
-                userEmailSpan.textContent = '✓ ' + shortEmail;
+                if (email && email !== 'undefined') {{
+                    const shortEmail = email.length > 20 ? email.substring(0, 17) + '...' : email;
+                    userEmailSpan.textContent = '👤 ' + shortEmail;
+                }} else {{
+                    userEmailSpan.textContent = '👤';
+                }}
             }}
         }}
 
