@@ -236,11 +236,96 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
                 localStorage.setItem(planKey, JSON.stringify(plan));
                 updateWeeklyPlanButton();
 
-                // Trigger sync if available (weekly.html loads this on same device)
-                // This will only work if user navigates to weekly page
-                // Cross-device sync happens when opening weekly page on other device
+                // Trigger sync by posting message to any open weekly plan tabs
+                try {{
+                    localStorage.setItem('weeklyPlanNeedsSync', Date.now().toString());
+                }} catch (e) {{
+                    // Ignore if localStorage is full
+                }}
+
+                // Attempt to sync to Google Drive if user is signed in
+                syncToGoogleDrive(plan);
             }} catch (e) {{
                 console.error('Error saving weekly plan:', e);
+            }}
+        }}
+
+        // Lightweight Google Drive sync for recipe pages
+        async function syncToGoogleDrive(planData) {{
+            const accessToken = localStorage.getItem('googleAccessToken');
+            if (!accessToken) {{
+                return; // Not signed in, skip sync
+            }}
+
+            try {{
+                // Add sync metadata
+                const syncData = {{
+                    ...planData,
+                    lastModified: Date.now(),
+                    deviceId: localStorage.getItem('deviceId') || 'device-' + Date.now()
+                }};
+
+                // Find existing sync file
+                const listResponse = await fetch(
+                    'https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name="bring-wochenplan-sync.json"',
+                    {{
+                        headers: {{ 'Authorization': `Bearer ${{accessToken}}` }}
+                    }}
+                );
+
+                if (!listResponse.ok) {{
+                    console.log('Drive sync skipped: token may be expired');
+                    return;
+                }}
+
+                const listData = await listResponse.json();
+                const existingFile = listData.files && listData.files.length > 0 ? listData.files[0] : null;
+
+                // Prepare multipart upload
+                const boundary = '-------314159265358979323846';
+                const delimiter = "\\r\\n--" + boundary + "\\r\\n";
+                const close_delim = "\\r\\n--" + boundary + "--";
+
+                const metadata = {{
+                    name: 'bring-wochenplan-sync.json',
+                    mimeType: 'application/json'
+                }};
+
+                if (!existingFile) {{
+                    metadata.parents = ['appDataFolder'];
+                }}
+
+                const multipartRequestBody =
+                    delimiter +
+                    'Content-Type: application/json\\r\\n\\r\\n' +
+                    JSON.stringify(metadata) +
+                    delimiter +
+                    'Content-Type: application/json\\r\\n\\r\\n' +
+                    JSON.stringify(syncData) +
+                    close_delim;
+
+                const method = existingFile ? 'PATCH' : 'POST';
+                const url = existingFile
+                    ? `https://www.googleapis.com/upload/drive/v3/files/${{existingFile.id}}?uploadType=multipart`
+                    : 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
+
+                const uploadResponse = await fetch(url, {{
+                    method: method,
+                    headers: {{
+                        'Authorization': `Bearer ${{accessToken}}`,
+                        'Content-Type': `multipart/related; boundary="${{boundary}}"`
+                    }},
+                    body: multipartRequestBody
+                }});
+
+                if (uploadResponse.ok) {{
+                    console.log('Weekly plan synced to Google Drive');
+                }} else {{
+                    console.log('Drive sync failed:', uploadResponse.status);
+                }}
+            }} catch (error) {{
+                console.log('Drive sync error:', error);
+                // Silently fail - sync will happen when weekly page is opened
             }}
         }}
 
@@ -1564,6 +1649,24 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                     performSync();
                 }}
             }}, 60000);
+
+            // Listen for storage changes from other tabs (e.g., recipe pages adding items)
+            window.addEventListener('storage', function(e) {{
+                if (e.key === 'weeklyPlanNeedsSync') {{
+                    // Another tab/window modified the weekly plan
+                    loadWeeklyPlan(); // Refresh UI
+                    if (isSignedInToGoogle()) {{
+                        performSync(); // Sync to Drive
+                    }}
+                }}
+            }});
+
+            // Check for pending sync flag on page load
+            const needsSync = localStorage.getItem('weeklyPlanNeedsSync');
+            if (needsSync) {{
+                // Clear the flag
+                localStorage.removeItem('weeklyPlanNeedsSync');
+            }}
         }});
     </script>
 </body>
