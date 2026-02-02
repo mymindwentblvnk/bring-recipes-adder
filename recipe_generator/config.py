@@ -566,6 +566,37 @@ h1 {
 .remove-button:hover {
     background-color: #c53030;
 }
+
+/* Mobile optimizations */
+@media (max-width: 600px) {
+    .weekly-recipe-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+    .recipe-category {
+        font-size: 1.5em;
+        min-width: auto;
+    }
+    .recipe-details {
+        width: 100%;
+    }
+    .recipe-details a {
+        font-size: 1.1em;
+    }
+    .recipe-actions {
+        width: 100%;
+        gap: 8px;
+    }
+    .action-button {
+        white-space: normal;
+        text-align: center;
+        font-size: 0.85em;
+        padding: 8px 12px;
+        flex: 1;
+        min-width: 0;
+    }
+}
 .clear-all-button {
     display: inline-block;
     padding: 10px 20px;

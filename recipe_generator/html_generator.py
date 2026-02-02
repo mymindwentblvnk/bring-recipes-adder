@@ -588,6 +588,29 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
         .back-button:hover {{
             background-color: var(--bg-secondary);
             text-decoration: none;
+        }}
+
+        /* Mobile optimizations */
+        @media (max-width: 600px) {{
+            .stats-item {{
+                padding: 15px 10px;
+                gap: 10px;
+            }}
+            .rank {{
+                font-size: 1.3em;
+                min-width: 40px;
+            }}
+            .recipe-info {{
+                margin-left: 10px;
+            }}
+            .recipe-info a {{
+                font-size: 1em;
+                line-height: 1.3;
+            }}
+            .view-count {{
+                font-size: 1em;
+                min-width: 60px;
+            }}
         }}'''
 
     html = f'''{generate_page_header(get_text('stats_title'), OVERVIEW_PAGE_CSS, stats_css)}
