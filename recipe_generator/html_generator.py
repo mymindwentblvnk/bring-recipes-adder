@@ -4,21 +4,7 @@ from typing import Any
 from html import escape
 from datetime import datetime
 
-from .config import COMMON_CSS, DETAIL_PAGE_CSS, OVERVIEW_PAGE_CSS, WEEKLY_PAGE_CSS, get_text, TEXTS
-
-
-def bilingual_text(key: str) -> str:
-    """Generate bilingual span elements for a text key.
-
-    Args:
-        key: The text key to look up in TEXTS dictionary
-
-    Returns:
-        HTML with both German and English spans
-    """
-    de_text = TEXTS['de'].get(key, key)
-    en_text = TEXTS['en'].get(key, key)
-    return f'<span class="lang-de">{de_text}</span><span class="lang-en">{en_text}</span>'
+from .config import COMMON_CSS, DETAIL_PAGE_CSS, OVERVIEW_PAGE_CSS, WEEKLY_PAGE_CSS, get_text
 
 
 def format_time(minutes: int) -> str:
@@ -102,14 +88,10 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
 </head>
 <body>
     <div class="top-nav">
-        <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
+        <a href="index.html" class="back-button">{get_text('back_to_recipes')}</a>
         <div style="display: flex; gap: 10px; align-items: center;">
             <a href="weekly.html" class="nav-link" aria-label="Weekly Plan">🗓️</a>
             <a href="stats.html" class="nav-link" aria-label="Statistics">📊</a>
-            <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
-                <span class="emoji lang-de">🇩🇪</span>
-                <span class="emoji lang-en">🇬🇧</span>
-            </button>
             <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
                 <span class="emoji light-mode-icon">☀️</span>
                 <span class="emoji dark-mode-icon">🌙</span>
@@ -127,34 +109,31 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
 
         <div style="display: flex; gap: 15px; align-items: center; margin: 20px 0; flex-wrap: wrap;">
             {generate_bring_widget()}
-            <button id="weeklyPlanButton" class="weekly-plan-button" onclick="toggleWeeklyPlan()">
-                <span class="lang-de">📅 Diese Woche kochen</span>
-                <span class="lang-en">📅 Cook This Week</span>
-            </button>
+            <button id="weeklyPlanButton" class="weekly-plan-button" onclick="toggleWeeklyPlan()">📅 Diese Woche kochen</button>
         </div>
 
         <table class="recipe-info-table">
             <tr>
-                <td><time itemprop="prepTime" datetime="{format_time(recipe['prep_time'])}">{bilingual_text('prep_time')}</time></td>
-                <td>{recipe['prep_time']} {bilingual_text('minutes')}</td>
+                <td><time itemprop="prepTime" datetime="{format_time(recipe['prep_time'])}">{get_text('prep_time')}</time></td>
+                <td>{recipe['prep_time']} {get_text('minutes')}</td>
             </tr>
             <tr>
-                <td><time itemprop="cookTime" datetime="{format_time(recipe['cook_time'])}">{bilingual_text('cook_time')}</time></td>
-                <td>{recipe['cook_time']} {bilingual_text('minutes')}</td>
+                <td><time itemprop="cookTime" datetime="{format_time(recipe['cook_time'])}">{get_text('cook_time')}</time></td>
+                <td>{recipe['cook_time']} {get_text('minutes')}</td>
             </tr>
             <tr>
-                <td><meta itemprop="recipeYield" content="{recipe['servings']} servings">{bilingual_text('servings_label')}</td>
+                <td><meta itemprop="recipeYield" content="{recipe['servings']} servings">{get_text('servings_label')}</td>
                 <td>{recipe['servings']}</td>
             </tr>
         </table>
 
-        <h2>{bilingual_text('ingredients_heading')}</h2>
+        <h2>{get_text('ingredients_heading')}</h2>
 
         <table class="ingredients-table">
             <thead>
                 <tr>
-                    <th>{bilingual_text('amount_label')}</th>
-                    <th>{bilingual_text('ingredient_label')}</th>
+                    <th>{get_text('amount_label')}</th>
+                    <th>{get_text('ingredient_label')}</th>
                 </tr>
             </thead>
             <tbody>
@@ -162,7 +141,7 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
             </tbody>
         </table>
 
-        <h2>{bilingual_text('instructions_heading')}</h2>
+        <h2>{get_text('instructions_heading')}</h2>
         <div itemprop="recipeInstructions" itemscope itemtype="https://schema.org/HowToSection">
             <ol>
 {chr(10).join(instructions_html)}
@@ -267,32 +246,11 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
             if (count > 0) {{
                 button.classList.add('in-plan');
                 const countText = count > 1 ? ` (${{count}}×)` : '';
-                button.innerHTML = `<span class="lang-de">✓ In Wochenplan${{countText}}</span><span class="lang-en">✓ In Weekly Plan${{countText}}</span>`;
+                button.textContent = `✓ In Wochenplan${{countText}}`;
             }} else {{
                 button.classList.remove('in-plan');
-                button.innerHTML = '<span class="lang-de">📅 Diese Woche kochen</span><span class="lang-en">📅 Cook This Week</span>';
+                button.textContent = '📅 Diese Woche kochen';
             }}
-
-            // Apply current language
-            const savedLang = localStorage.getItem('language') || 'de';
-            applyLanguage(savedLang);
-        }}
-
-        // Language toggle functionality
-        function toggleLanguage() {{
-            const currentLang = localStorage.getItem('language') || 'de';
-            const newLang = currentLang === 'de' ? 'en' : 'de';
-            localStorage.setItem('language', newLang);
-            applyLanguage(newLang);
-        }}
-
-        function applyLanguage(lang) {{
-            document.querySelectorAll('.lang-de, .lang-en').forEach(el => {{
-                el.classList.remove('active');
-            }});
-            document.querySelectorAll('.lang-' + lang).forEach(el => {{
-                el.classList.add('active');
-            }});
         }}
 
         // Dark mode toggle functionality
@@ -329,10 +287,6 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
 
         // Apply saved preferences on page load
         document.addEventListener('DOMContentLoaded', function() {{
-            // Apply language
-            const savedLang = localStorage.getItem('language') || 'de';
-            applyLanguage(savedLang);
-
             // Apply dark mode
             const darkMode = localStorage.getItem('darkMode');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -388,10 +342,10 @@ def generate_overview_html(
         <h2><a href="{escape(filename)}">{escape(recipe['name'])}</a></h2>
         <p class="description">{description}</p>
         <p class="meta">
-            <span class="servings">🍽️ {servings} {bilingual_text('servings')}</span> •
-            <span class="time">⏱️ {total_time} {bilingual_text('min_total')}</span>
+            <span class="servings">🍽️ {servings} {get_text('servings')}</span> •
+            <span class="time">⏱️ {total_time} {get_text('min_total')}</span>
         </p>
-        <a href="{escape(filename)}" class="view-recipe-btn">{bilingual_text('view_recipe')}</a>
+        <a href="{escape(filename)}" class="view-recipe-btn">{get_text('view_recipe')}</a>
     </div>'''
         recipe_entries.append(recipe_entry)
 
@@ -401,7 +355,7 @@ def generate_overview_html(
         formatted_time = deployment_time.strftime("%d. %B %Y um %H:%M UTC")
         footer_html = f'''
     <footer class="deployment-info">
-        <p>{bilingual_text('last_updated')} {formatted_time}</p>
+        <p>{get_text('last_updated')} {formatted_time}</p>
     </footer>'''
 
     html = f'''<!DOCTYPE html>
@@ -419,14 +373,10 @@ def generate_overview_html(
 </head>
 <body>
     <div class="page-header">
-        <h1>{bilingual_text('overview_title')}</h1>
+        <h1>{get_text('overview_title')}</h1>
         <div class="top-nav">
             <a href="weekly.html" class="nav-link" aria-label="Weekly Plan">🗓️</a>
             <a href="stats.html" class="nav-link" aria-label="Statistics">📊</a>
-            <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
-                <span class="emoji lang-de">🇩🇪</span>
-                <span class="emoji lang-en">🇬🇧</span>
-            </button>
             <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
                 <span class="emoji light-mode-icon">☀️</span>
                 <span class="emoji dark-mode-icon">🌙</span>
@@ -435,13 +385,13 @@ def generate_overview_html(
     </div>
 
     <div class="filter-buttons">
-        <button class="filter-btn active" data-filter="all" data-filter-type="category">{bilingual_text('filter_all')}</button>
-        <button class="filter-btn" data-filter="🥩" data-filter-type="category">🥩 {bilingual_text('filter_meat')}</button>
-        <button class="filter-btn" data-filter="🐟" data-filter-type="category">🐟 {bilingual_text('filter_fish')}</button>
-        <button class="filter-btn" data-filter="🥦" data-filter-type="category">🥦 {bilingual_text('filter_vegetarian')}</button>
-        <button class="filter-btn" data-filter="🍞" data-filter-type="category">🍞 {bilingual_text('filter_bread')}</button>
-        <button class="filter-btn" data-filter="🥣" data-filter-type="category">🥣 {bilingual_text('filter_sweet')}</button>
-        <button class="filter-btn" data-filter="fast" data-filter-type="time">⚡ {bilingual_text('filter_fast')}</button>
+        <button class="filter-btn active" data-filter="all" data-filter-type="category">{get_text('filter_all')}</button>
+        <button class="filter-btn" data-filter="🥩" data-filter-type="category">🥩 {get_text('filter_meat')}</button>
+        <button class="filter-btn" data-filter="🐟" data-filter-type="category">🐟 {get_text('filter_fish')}</button>
+        <button class="filter-btn" data-filter="🥦" data-filter-type="category">🥦 {get_text('filter_vegetarian')}</button>
+        <button class="filter-btn" data-filter="🍞" data-filter-type="category">🍞 {get_text('filter_bread')}</button>
+        <button class="filter-btn" data-filter="🥣" data-filter-type="category">🥣 {get_text('filter_sweet')}</button>
+        <button class="filter-btn" data-filter="fast" data-filter-type="time">⚡ {get_text('filter_fast')}</button>
     </div>
 
     <div class="recipe-grid">
@@ -509,23 +459,6 @@ def generate_overview_html(
             }});
         }});
 
-        // Language toggle functionality
-        function toggleLanguage() {{
-            const currentLang = localStorage.getItem('language') || 'de';
-            const newLang = currentLang === 'de' ? 'en' : 'de';
-            localStorage.setItem('language', newLang);
-            applyLanguage(newLang);
-        }}
-
-        function applyLanguage(lang) {{
-            document.querySelectorAll('.lang-de, .lang-en').forEach(el => {{
-                el.classList.remove('active');
-            }});
-            document.querySelectorAll('.lang-' + lang).forEach(el => {{
-                el.classList.add('active');
-            }});
-        }}
-
         // Dark mode toggle functionality
         function toggleDarkMode() {{
             const isDark = document.body.classList.toggle('dark-mode');
@@ -560,23 +493,10 @@ def generate_overview_html(
 
         // Apply saved preferences on page load
         document.addEventListener('DOMContentLoaded', function() {{
-            // Apply language
-            const savedLang = localStorage.getItem('language') || 'de';
-            const languageToggle = document.getElementById('languageToggle');
-            if (languageToggle) {{
-                languageToggle.checked = (savedLang === 'en');
-            }}
-            applyLanguage(savedLang);
-
             // Apply dark mode
             const darkMode = localStorage.getItem('darkMode');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             const isDark = darkMode === 'enabled' || (darkMode === null && prefersDark);
-
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            if (darkModeToggle) {{
-                darkModeToggle.checked = isDark;
-            }}
 
             if (isDark) {{
                 document.body.classList.add('dark-mode');
@@ -695,26 +615,22 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
 </head>
 <body>
     <div class="top-nav">
-        <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
+        <a href="index.html" class="back-button">{get_text('back_to_recipes')}</a>
         <div style="display: flex; gap: 10px; align-items: center;">
             <a href="weekly.html" class="nav-link" aria-label="Weekly Plan">🗓️</a>
             <a href="stats.html" class="nav-link" aria-label="Statistics">📊</a>
-            <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
-                <span class="emoji lang-de">🇩🇪</span>
-                <span class="emoji lang-en">🇬🇧</span>
-            </button>
             <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
                 <span class="emoji light-mode-icon">☀️</span>
                 <span class="emoji dark-mode-icon">🌙</span>
             </button>
         </div>
     </div>
-    <h1>{bilingual_text('stats_title')}</h1>
-    <p style="color: var(--text-secondary); margin-bottom: 15px;">{bilingual_text('stats_subtitle')}</p>
-    <p style="color: var(--text-tertiary); font-size: 0.9em; font-style: italic; margin-bottom: 30px; padding: 10px; background-color: var(--bg-secondary); border-radius: 4px; border-left: 3px solid var(--primary-color);">{bilingual_text('stats_disclaimer')}</p>
+    <h1>{get_text('stats_title')}</h1>
+    <p style="color: var(--text-secondary); margin-bottom: 15px;">{get_text('stats_subtitle')}</p>
+    <p style="color: var(--text-tertiary); font-size: 0.9em; font-style: italic; margin-bottom: 30px; padding: 10px; background-color: var(--bg-secondary); border-radius: 4px; border-left: 3px solid var(--primary-color);">{get_text('stats_disclaimer')}</p>
 
     <div id="stats-container">
-        <p class="no-data">{bilingual_text('stats_no_data')}</p>
+        <p class="no-data">{get_text('stats_no_data')}</p>
     </div>
 
     <script>
@@ -750,7 +666,7 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             const container = document.getElementById('stats-container');
 
             if (sortedRecipes.length === 0) {{
-                container.innerHTML = '<p class="no-data">{bilingual_text("stats_no_data")}</p>';
+                container.innerHTML = '<p class="no-data">{get_text("stats_no_data")}</p>';
                 return;
             }}
 
@@ -765,34 +681,13 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                         <div class="recipe-info">
                             <h3><a href="${{data.filename}}">${{name}}</a></h3>
                         </div>
-                        <div class="view-count">${{count}} <span class="lang-de">Aufrufe</span><span class="lang-en">Views</span></div>
+                        <div class="view-count">${{count}} Aufrufe</div>
                     </li>
                 `;
             }});
             html += '</ol>';
 
             container.innerHTML = html;
-
-            // Apply current language to new content
-            const savedLang = localStorage.getItem('language') || 'de';
-            applyLanguage(savedLang);
-        }}
-
-        // Language toggle functionality
-        function toggleLanguage() {{
-            const currentLang = localStorage.getItem('language') || 'de';
-            const newLang = currentLang === 'de' ? 'en' : 'de';
-            localStorage.setItem('language', newLang);
-            applyLanguage(newLang);
-        }}
-
-        function applyLanguage(lang) {{
-            document.querySelectorAll('.lang-de, .lang-en').forEach(el => {{
-                el.classList.remove('active');
-            }});
-            document.querySelectorAll('.lang-' + lang).forEach(el => {{
-                el.classList.add('active');
-            }});
         }}
 
         // Dark mode toggle functionality
@@ -832,23 +727,10 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             // Display stats
             displayStats();
 
-            // Apply language
-            const savedLang = localStorage.getItem('language') || 'de';
-            const languageToggle = document.getElementById('languageToggle');
-            if (languageToggle) {{
-                languageToggle.checked = (savedLang === 'en');
-            }}
-            applyLanguage(savedLang);
-
             // Apply dark mode
             const darkMode = localStorage.getItem('darkMode');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             const isDark = darkMode === 'enabled' || (darkMode === null && prefersDark);
-
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            if (darkModeToggle) {{
-                darkModeToggle.checked = isDark;
-            }}
 
             if (isDark) {{
                 document.body.classList.add('dark-mode');
@@ -899,26 +781,19 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
 </head>
 <body>
     <div class="top-nav">
-        <a href="index.html" class="back-button">{bilingual_text('back_to_recipes')}</a>
+        <a href="index.html" class="back-button">{get_text('back_to_recipes')}</a>
         <div style="display: flex; gap: 10px; align-items: center;">
             <a href="weekly.html" class="nav-link" aria-label="Weekly Plan">🗓️</a>
             <a href="stats.html" class="nav-link" aria-label="Statistics">📊</a>
-            <button class="nav-toggle-button" id="languageToggle" onclick="toggleLanguage()" aria-label="Toggle language">
-                <span class="emoji lang-de">🇩🇪</span>
-                <span class="emoji lang-en">🇬🇧</span>
-            </button>
             <button class="nav-toggle-button" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
                 <span class="emoji light-mode-icon">☀️</span>
                 <span class="emoji dark-mode-icon">🌙</span>
             </button>
         </div>
     </div>
-    <h1>{bilingual_text('weekly_plan_title')}</h1>
+    <h1>{get_text('weekly_plan_title')}</h1>
 
-    <button id="clearAllButton" class="clear-all-button" onclick="clearAllRecipes()">
-        <span class="lang-de">Alle löschen</span>
-        <span class="lang-en">Clear All</span>
-    </button>
+    <button id="clearAllButton" class="clear-all-button" onclick="clearAllRecipes()">Alle löschen</button>
 
     <div id="weeklyPlanContainer"></div>
 
@@ -971,15 +846,11 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             if (plan.recipes.length === 0) {{
                 container.innerHTML = `
                     <div class="no-recipes">
-                        <h2><span class="lang-de">Noch keine Rezepte geplant</span><span class="lang-en">No Recipes Planned Yet</span></h2>
-                        <p><span class="lang-de">Füge Rezepte aus den Detail-Seiten hinzu, um deinen Wochenplan zu erstellen!</span><span class="lang-en">Add recipes from detail pages to create your weekly meal plan!</span></p>
+                        <h2>Noch keine Rezepte geplant</h2>
+                        <p>Füge Rezepte aus den Detail-Seiten hinzu, um deinen Wochenplan zu erstellen!</p>
                     </div>
                 `;
                 clearButton.disabled = true;
-
-                // Apply current language to new content
-                const savedLang = localStorage.getItem('language') || 'de';
-                applyLanguage(savedLang);
                 return;
             }}
 
@@ -994,20 +865,12 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                 const recipeId = String(recipe.id || `${{recipe.slug}}-${{recipe.addedAt}}`);
 
                 const cookedClass = recipe.cooked ? 'cooked' : '';
-                const statusText = recipe.cooked
-                    ? '<span class="lang-de">✓ Gekocht</span><span class="lang-en">✓ Cooked</span>'
-                    : '<span class="lang-de">Nicht gekocht</span><span class="lang-en">Not cooked</span>';
+                const statusText = recipe.cooked ? '✓ Gekocht' : 'Nicht gekocht';
                 const dateAdded = formatDate(recipe.addedAt);
 
                 const actionButton = recipe.cooked
-                    ? `<button class="action-button uncook-button" onclick="toggleCooked('${{recipeId}}')">
-                        <span class="lang-de">Als ungekocht markieren</span>
-                        <span class="lang-en">Mark as Uncooked</span>
-                       </button>`
-                    : `<button class="action-button cook-button" onclick="toggleCooked('${{recipeId}}')">
-                        <span class="lang-de">Als gekocht markieren</span>
-                        <span class="lang-en">Mark as Cooked</span>
-                       </button>`;
+                    ? `<button class="action-button uncook-button" onclick="toggleCooked('${{recipeId}}')">Als ungekocht markieren</button>`
+                    : `<button class="action-button cook-button" onclick="toggleCooked('${{recipeId}}')">Als gekocht markieren</button>`;
 
                 html += `
                     <div class="weekly-recipe-card ${{cookedClass}}">
@@ -1015,15 +878,12 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                         <div class="recipe-details">
                             <h3><a href="${{recipeInfo.filename}}">${{recipeInfo.name}}</a></h3>
                             <div class="recipe-status">
-                                ${{statusText}} • <span class="lang-de">Hinzugefügt:</span><span class="lang-en">Added:</span> ${{dateAdded}}
+                                ${{statusText}} • Hinzugefügt: ${{dateAdded}}
                             </div>
                         </div>
                         <div class="recipe-actions">
                             ${{actionButton}}
-                            <button class="action-button remove-button" onclick="removeRecipe('${{recipeId}}')">
-                                <span class="lang-de">Entfernen</span>
-                                <span class="lang-en">Remove</span>
-                            </button>
+                            <button class="action-button remove-button" onclick="removeRecipe('${{recipeId}}')">Entfernen</button>
                         </div>
                     </div>
                 `;
@@ -1031,10 +891,6 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             html += '</div>';
 
             container.innerHTML = html;
-
-            // Apply current language to new content
-            const savedLang = localStorage.getItem('language') || 'de';
-            applyLanguage(savedLang);
         }}
 
         function toggleCooked(recipeId) {{
@@ -1074,12 +930,7 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
         }}
 
         function clearAllRecipes() {{
-            const currentLang = localStorage.getItem('language') || 'de';
-            const confirmMessage = currentLang === 'de'
-                ? 'Möchtest du wirklich alle Rezepte aus dem Wochenplan entfernen?'
-                : 'Do you really want to remove all recipes from your weekly plan?';
-
-            if (!confirm(confirmMessage)) {{
+            if (!confirm('Möchtest du wirklich alle Rezepte aus dem Wochenplan entfernen?')) {{
                 return;
             }}
 
@@ -1090,23 +941,6 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
 
             saveLocalWeeklyPlan(emptyPlan);
             loadWeeklyPlan();
-        }}
-
-        // Language toggle functionality
-        function toggleLanguage() {{
-            const currentLang = localStorage.getItem('language') || 'de';
-            const newLang = currentLang === 'de' ? 'en' : 'de';
-            localStorage.setItem('language', newLang);
-            applyLanguage(newLang);
-        }}
-
-        function applyLanguage(lang) {{
-            document.querySelectorAll('.lang-de, .lang-en').forEach(el => {{
-                el.classList.remove('active');
-            }});
-            document.querySelectorAll('.lang-' + lang).forEach(el => {{
-                el.classList.add('active');
-            }});
         }}
 
         // Dark mode toggle functionality
@@ -1145,10 +979,6 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
         document.addEventListener('DOMContentLoaded', function() {{
             // Load weekly plan
             loadWeeklyPlan();
-
-            // Apply language
-            const savedLang = localStorage.getItem('language') || 'de';
-            applyLanguage(savedLang);
 
             // Apply dark mode
             const darkMode = localStorage.getItem('darkMode');

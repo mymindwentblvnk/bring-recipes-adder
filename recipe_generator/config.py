@@ -7,124 +7,64 @@ from pathlib import Path
 RECIPES_DIR = Path("recipes")
 OUTPUT_DIR = Path("output")
 
-# Language configuration - set to "de" for German or "en" for English
-LANGUAGE = "de"
-
-# Text strings for internationalization
+# Text strings for the application
 TEXTS = {
-    "de": {
-        # Overview page
-        "overview_title": "Rezeptsammlung",
-        "servings": "Portionen",
-        "min_total": "min gesamt",
-        "view_recipe": "Rezept ansehen →",
-        "last_updated": "Zuletzt aktualisiert:",
-        "filter_all": "Alle",
-        "filter_meat": "Fleisch",
-        "filter_fish": "Fisch",
-        "filter_vegetarian": "Vegetarisch",
-        "filter_bread": "Brot",
-        "filter_sweet": "Frühstück",
-        "filter_fast": "Schnell (≤30 min)",
-        "view_stats": "📊 Statistiken",
-        "menu_language": "Sprache",
-        "menu_dark_mode": "Dunkelmodus",
-        "menu_light_mode": "Hellmodus",
+    # Overview page
+    "overview_title": "Rezeptsammlung",
+    "servings": "Portionen",
+    "min_total": "min gesamt",
+    "view_recipe": "Rezept ansehen →",
+    "last_updated": "Zuletzt aktualisiert:",
+    "filter_all": "Alle",
+    "filter_meat": "Fleisch",
+    "filter_fish": "Fisch",
+    "filter_vegetarian": "Vegetarisch",
+    "filter_bread": "Brot",
+    "filter_sweet": "Frühstück",
+    "filter_fast": "Schnell (≤30 min)",
+    "view_stats": "📊 Statistiken",
+    "menu_dark_mode": "Dunkelmodus",
+    "menu_light_mode": "Hellmodus",
 
-        # Stats page
-        "stats_title": "Rezept-Statistiken",
-        "stats_subtitle": "Top 10 beliebteste Rezepte",
-        "stats_views": "Aufrufe",
-        "stats_no_data": "Noch keine Daten verfügbar. Öffne einige Rezepte, um Statistiken zu sehen!",
-        "stats_disclaimer": "💡 Diese Statistiken basieren auf deinem lokalen Browser-Verlauf und werden nicht geräteübergreifend synchronisiert.",
+    # Stats page
+    "stats_title": "Rezept-Statistiken",
+    "stats_subtitle": "Top 10 beliebteste Rezepte",
+    "stats_views": "Aufrufe",
+    "stats_no_data": "Noch keine Daten verfügbar. Öffne einige Rezepte, um Statistiken zu sehen!",
+    "stats_disclaimer": "💡 Diese Statistiken basieren auf deinem lokalen Browser-Verlauf und werden nicht geräteübergreifend synchronisiert.",
 
-        # Detail page
-        "recipe_title_suffix": "Rezept",
-        "back_to_recipes": "← Zurück zur Übersicht",
-        "prep_time": "Vorbereitungszeit",
-        "cook_time": "Kochzeit",
-        "minutes": "Minuten",
-        "servings_label": "Portionen",
-        "ingredients_heading": "Zutaten",
-        "instructions_heading": "Zubereitung",
-        "amount_label": "Menge",
-        "ingredient_label": "Zutat",
+    # Detail page
+    "recipe_title_suffix": "Rezept",
+    "back_to_recipes": "← Zurück zur Übersicht",
+    "prep_time": "Vorbereitungszeit",
+    "cook_time": "Kochzeit",
+    "minutes": "Minuten",
+    "servings_label": "Portionen",
+    "ingredients_heading": "Zutaten",
+    "instructions_heading": "Zubereitung",
+    "amount_label": "Menge",
+    "ingredient_label": "Zutat",
 
-        # Weekly plan page
-        "view_weekly_plan": "🗓️ Wochenplan",
-        "weekly_plan_title": "Wochenplan",
-        "add_to_weekly": "📅 Diese Woche kochen",
-        "in_weekly_plan": "✓ In Wochenplan",
-        "mark_cooked": "Als gekocht markieren",
-        "mark_uncooked": "Als ungekocht markieren",
-        "remove_from_plan": "Entfernen",
-        "clear_all": "Alle löschen",
-        "clear_all_confirm": "Möchtest du wirklich alle Rezepte aus dem Wochenplan entfernen?",
-        "no_recipes_planned": "Noch keine Rezepte geplant",
-        "no_recipes_message": "Füge Rezepte aus den Detail-Seiten hinzu, um deinen Wochenplan zu erstellen!",
-        "cooked": "✓ Gekocht",
-        "not_cooked": "Nicht gekocht",
-        "added_on": "Hinzugefügt:",
-    },
-    "en": {
-        # Overview page
-        "overview_title": "Recipe Collection",
-        "servings": "servings",
-        "min_total": "min total",
-        "view_recipe": "View Recipe →",
-        "last_updated": "Last updated:",
-        "filter_all": "All",
-        "filter_meat": "Meat",
-        "filter_fish": "Fish",
-        "filter_vegetarian": "Vegetarian",
-        "filter_bread": "Bread",
-        "filter_sweet": "Breakfast",
-        "filter_fast": "Fast (≤30 min)",
-        "view_stats": "📊 Statistics",
-        "menu_language": "Language",
-        "menu_dark_mode": "Dark Mode",
-        "menu_light_mode": "Light Mode",
-
-        # Stats page
-        "stats_title": "Recipe Statistics",
-        "stats_subtitle": "Top 10 most popular recipes",
-        "stats_views": "Views",
-        "stats_no_data": "No data available yet. Open some recipes to see statistics!",
-        "stats_disclaimer": "💡 These statistics are based on your local browser history and are not synced across devices.",
-
-        # Detail page
-        "recipe_title_suffix": "Recipe",
-        "back_to_recipes": "← Back to Recipes",
-        "prep_time": "Prep time",
-        "cook_time": "Cook time",
-        "minutes": "minutes",
-        "servings_label": "Servings",
-        "ingredients_heading": "Ingredients",
-        "instructions_heading": "Instructions",
-        "amount_label": "Amount",
-        "ingredient_label": "Ingredient",
-
-        # Weekly plan page
-        "view_weekly_plan": "🗓️ Weekly Plan",
-        "weekly_plan_title": "Weekly Plan",
-        "add_to_weekly": "📅 Cook This Week",
-        "in_weekly_plan": "✓ In Weekly Plan",
-        "mark_cooked": "Mark as Cooked",
-        "mark_uncooked": "Mark as Uncooked",
-        "remove_from_plan": "Remove",
-        "clear_all": "Clear All",
-        "clear_all_confirm": "Do you really want to remove all recipes from your weekly plan?",
-        "no_recipes_planned": "No Recipes Planned Yet",
-        "no_recipes_message": "Add recipes from detail pages to create your weekly meal plan!",
-        "cooked": "✓ Cooked",
-        "not_cooked": "Not cooked",
-        "added_on": "Added:",
-    },
+    # Weekly plan page
+    "view_weekly_plan": "🗓️ Wochenplan",
+    "weekly_plan_title": "Wochenplan",
+    "add_to_weekly": "📅 Diese Woche kochen",
+    "in_weekly_plan": "✓ In Wochenplan",
+    "mark_cooked": "Als gekocht markieren",
+    "mark_uncooked": "Als ungekocht markieren",
+    "remove_from_plan": "Entfernen",
+    "clear_all": "Alle löschen",
+    "clear_all_confirm": "Möchtest du wirklich alle Rezepte aus dem Wochenplan entfernen?",
+    "no_recipes_planned": "Noch keine Rezepte geplant",
+    "no_recipes_message": "Füge Rezepte aus den Detail-Seiten hinzu, um deinen Wochenplan zu erstellen!",
+    "cooked": "✓ Gekocht",
+    "not_cooked": "Nicht gekocht",
+    "added_on": "Hinzugefügt:",
 }
 
 def get_text(key: str) -> str:
-    """Get text string for the current language."""
-    return TEXTS[LANGUAGE].get(key, key)
+    """Get text string."""
+    return TEXTS.get(key, key)
 
 # CSS Styles
 COMMON_CSS = """
@@ -244,142 +184,6 @@ body {
     display: none;
 }
 
-/* iOS-style toggle switches */
-.toggle-switch {
-    position: relative;
-    width: 64px;
-    height: 32px;
-    flex-shrink: 0;
-}
-
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--border-color);
-    transition: 0.3s;
-    border-radius: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 6px;
-}
-
-.toggle-slider .icon {
-    font-size: 1em;
-    z-index: 1;
-    transition: opacity 0.3s;
-}
-
-.toggle-slider .icon.inactive {
-    opacity: 0.4;
-}
-
-.toggle-slider .icon.active {
-    opacity: 1;
-}
-
-.toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 3px;
-    background-color: white;
-    transition: 0.3s;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-input:checked + .toggle-slider {
-    background-color: var(--primary-color);
-}
-
-input:checked + .toggle-slider:before {
-    transform: translateX(32px);
-}
-
-/* Language toggle with flags */
-.language-toggle-switch {
-    position: relative;
-    width: 64px;
-    height: 32px;
-    flex-shrink: 0;
-}
-
-.language-toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.language-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--border-color);
-    transition: 0.3s;
-    border-radius: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 6px;
-}
-
-.language-slider .flag {
-    font-size: 1.2em;
-    z-index: 1;
-    transition: opacity 0.3s;
-}
-
-.language-slider .flag.inactive {
-    opacity: 0.4;
-}
-
-.language-slider .flag.active {
-    opacity: 1;
-}
-
-.language-slider:before {
-    content: "";
-    position: absolute;
-    height: 26px;
-    width: 26px;
-    left: 3px;
-    background-color: white;
-    transition: 0.3s;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-input:checked + .language-slider {
-    background-color: var(--border-color);
-}
-
-input:checked + .language-slider:before {
-    transform: translateX(32px);
-}
-
-
-.lang-de, .lang-en {
-    display: inline;
-}
-
-.lang-de.active, .lang-en.active {
-    display: none;
-}
 """
 
 DETAIL_PAGE_CSS = """
