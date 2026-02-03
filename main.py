@@ -22,8 +22,8 @@ def main():
     recipes_data = []
     errors = []
 
-    # Process all YAML files in recipes directory
-    for yaml_file in RECIPES_DIR.glob("*.yaml"):
+    # Process all YAML files in recipes directory (including subdirectories)
+    for yaml_file in RECIPES_DIR.glob("**/*.yaml"):
         print(f"Processing {yaml_file.name}...")
 
         try:
