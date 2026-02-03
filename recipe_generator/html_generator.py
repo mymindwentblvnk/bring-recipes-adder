@@ -366,6 +366,23 @@ def generate_overview_html(
     Returns:
         Complete HTML page as a string
     """
+    # Collect unique authors and categories
+    authors = sorted(set(recipe.get('author', 'Unknown') for _, recipe in recipes_data))
+    categories = []
+    category_map = {
+        '🥩': get_text('filter_meat'),
+        '🐟': get_text('filter_fish'),
+        '🥦': get_text('filter_vegetarian'),
+        '🍞': get_text('filter_bread'),
+        '🥣': get_text('filter_sweet')
+    }
+
+    # Get unique categories from recipes
+    used_categories = sorted(set(recipe.get('category', '') for _, recipe in recipes_data if recipe.get('category')))
+    for cat in used_categories:
+        if cat in category_map:
+            categories.append((cat, category_map[cat]))
+
     # Sort recipes by category
     category_order = {'🥩': 0, '🐟': 1, '🥦': 2, '🍞': 3, '🥣': 4}
     sorted_recipes = sorted(
@@ -382,9 +399,10 @@ def generate_overview_html(
         cook_time = recipe['cook_time']
         total_time = prep_time + cook_time
         category = recipe.get('category', '')
+        author = escape(recipe.get('author', 'Unknown'))
         time_category = 'fast' if total_time <= 30 else 'slow'
 
-        recipe_entry = f'''    <div class="recipe-card" data-category="{category}" data-time="{time_category}">
+        recipe_entry = f'''    <div class="recipe-card" data-category="{category}" data-author="{author}" data-time="{time_category}">
         <h2><a href="{escape(filename)}">{escape(recipe['name'])}</a></h2>
         <p class="description">{description}</p>
         <p class="meta">
@@ -404,20 +422,69 @@ def generate_overview_html(
         <p>{get_text('last_updated')} {formatted_time}</p>
     </footer>'''
 
+    # Generate category checkboxes
+    category_checkboxes = []
+    for cat_emoji, cat_name in categories:
+        category_checkboxes.append(f'''
+                <label class="filter-dropdown-option">
+                    <input type="checkbox" value="{cat_emoji}" class="category-checkbox">
+                    <span>{cat_emoji} {cat_name}</span>
+                </label>''')
+
+    # Generate author checkboxes
+    author_checkboxes = []
+    for author in authors:
+        author_checkboxes.append(f'''
+                <label class="filter-dropdown-option">
+                    <input type="checkbox" value="{escape(author)}" class="author-checkbox">
+                    <span>{escape(author)}</span>
+                </label>''')
+
     html = f'''{generate_page_header(get_text('overview_title'), OVERVIEW_PAGE_CSS)}
     <div class="page-header">
         <h1>{get_text('overview_title')}</h1>
         {generate_navigation(show_back_button=False)}
     </div>
 
-    <div class="filter-buttons">
-        <button class="filter-btn active" data-filter="all" data-filter-type="category">{get_text('filter_all')}</button>
-        <button class="filter-btn" data-filter="🥩" data-filter-type="category">🥩 {get_text('filter_meat')}</button>
-        <button class="filter-btn" data-filter="🐟" data-filter-type="category">🐟 {get_text('filter_fish')}</button>
-        <button class="filter-btn" data-filter="🥦" data-filter-type="category">🥦 {get_text('filter_vegetarian')}</button>
-        <button class="filter-btn" data-filter="🍞" data-filter-type="category">🍞 {get_text('filter_bread')}</button>
-        <button class="filter-btn" data-filter="🥣" data-filter-type="category">🥣 {get_text('filter_sweet')}</button>
-        <button class="filter-btn" data-filter="fast" data-filter-type="time">⚡ {get_text('filter_fast')}</button>
+    <div class="filters-container">
+        <div class="filter-group">
+            <label class="filter-label">
+                Kategorie <span id="categoryCount" class="filter-count"></span>
+            </label>
+            <div class="filter-dropdown">
+                <button type="button" class="filter-dropdown-button" id="categoryDropdownBtn">
+                    <span id="categoryDropdownText">Alle Kategorien</span>
+                    <span class="filter-dropdown-arrow">▼</span>
+                </button>
+                <div class="filter-dropdown-panel" id="categoryDropdownPanel">{''.join(category_checkboxes)}
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label class="filter-label">
+                Autor <span id="authorCount" class="filter-count"></span>
+            </label>
+            <div class="filter-dropdown">
+                <button type="button" class="filter-dropdown-button" id="authorDropdownBtn">
+                    <span id="authorDropdownText">Alle Autoren</span>
+                    <span class="filter-dropdown-arrow">▼</span>
+                </button>
+                <div class="filter-dropdown-panel" id="authorDropdownPanel">{''.join(author_checkboxes)}
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label class="filter-checkbox">
+                <input type="checkbox" id="fastFilter">
+                <span>⚡ {get_text('filter_fast')}</span>
+            </label>
+        </div>
+
+        <button class="clear-filters-btn" onclick="clearAllFilters()">
+            ✕ Zurücksetzen
+        </button>
     </div>
 
     <div class="recipe-grid">
@@ -427,63 +494,163 @@ def generate_overview_html(
 
     <script>
         // Filter functionality
-        const filterButtons = document.querySelectorAll('.filter-btn');
         const recipeCards = document.querySelectorAll('.recipe-card');
+        const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+        const authorCheckboxes = document.querySelectorAll('.author-checkbox');
+        const fastFilter = document.getElementById('fastFilter');
+        const categoryCount = document.getElementById('categoryCount');
+        const authorCount = document.getElementById('authorCount');
+        const categoryDropdownBtn = document.getElementById('categoryDropdownBtn');
+        const categoryDropdownPanel = document.getElementById('categoryDropdownPanel');
+        const authorDropdownBtn = document.getElementById('authorDropdownBtn');
+        const authorDropdownPanel = document.getElementById('authorDropdownPanel');
+        const categoryDropdownText = document.getElementById('categoryDropdownText');
+        const authorDropdownText = document.getElementById('authorDropdownText');
 
-        let categoryFilter = 'all';
-        let timeFilterActive = false;
+        // Toggle dropdown panels
+        function toggleDropdown(button, panel) {{
+            const isOpen = panel.classList.contains('open');
+
+            // Close all dropdowns
+            document.querySelectorAll('.filter-dropdown-panel').forEach(p => p.classList.remove('open'));
+            document.querySelectorAll('.filter-dropdown-button').forEach(b => b.classList.remove('open'));
+
+            // Toggle current dropdown
+            if (!isOpen) {{
+                panel.classList.add('open');
+                button.classList.add('open');
+            }}
+        }}
+
+        categoryDropdownBtn.addEventListener('click', (e) => {{
+            e.stopPropagation();
+            toggleDropdown(categoryDropdownBtn, categoryDropdownPanel);
+        }});
+
+        authorDropdownBtn.addEventListener('click', (e) => {{
+            e.stopPropagation();
+            toggleDropdown(authorDropdownBtn, authorDropdownPanel);
+        }});
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {{
+            if (!e.target.closest('.filter-dropdown')) {{
+                document.querySelectorAll('.filter-dropdown-panel').forEach(p => p.classList.remove('open'));
+                document.querySelectorAll('.filter-dropdown-button').forEach(b => b.classList.remove('open'));
+            }}
+        }});
+
+        // Prevent dropdown close when clicking inside panel
+        categoryDropdownPanel.addEventListener('click', (e) => e.stopPropagation());
+        authorDropdownPanel.addEventListener('click', (e) => e.stopPropagation());
 
         function applyFilters() {{
+            // Get selected filters from checkboxes
+            const selectedCategories = Array.from(categoryCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            const selectedAuthors = Array.from(authorCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            const fastOnly = fastFilter.checked;
+
+            // Update count badges and button text
+            if (selectedCategories.length > 0) {{
+                categoryCount.textContent = `(${{selectedCategories.length}})`;
+                categoryDropdownText.textContent = selectedCategories.length === 1
+                    ? selectedCategories[0]
+                    : `${{selectedCategories.length}} ausgewählt`;
+            }} else {{
+                categoryCount.textContent = '';
+                categoryDropdownText.textContent = 'Alle Kategorien';
+            }}
+
+            if (selectedAuthors.length > 0) {{
+                authorCount.textContent = `(${{selectedAuthors.length}})`;
+                authorDropdownText.textContent = selectedAuthors.length === 1
+                    ? selectedAuthors[0]
+                    : `${{selectedAuthors.length}} ausgewählt`;
+            }} else {{
+                authorCount.textContent = '';
+                authorDropdownText.textContent = 'Alle Autoren';
+            }}
+
+            // Filter recipe cards
             recipeCards.forEach(card => {{
-                // Check category filter
-                const matchesCategory = categoryFilter === 'all' || card.dataset.category === categoryFilter;
+                const category = card.dataset.category;
+                const author = card.dataset.author;
+                const time = card.dataset.time;
 
-                // Check time filter
-                const matchesTime = !timeFilterActive || card.dataset.time === 'fast';
+                // Check if matches category filter (empty = show all)
+                const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(category);
 
-                // Show card only if it matches both filters
-                if (matchesCategory && matchesTime) {{
+                // Check if matches author filter (empty = show all)
+                const matchesAuthor = selectedAuthors.length === 0 || selectedAuthors.includes(author);
+
+                // Check if matches time filter
+                const matchesTime = !fastOnly || time === 'fast';
+
+                // Show card only if it matches all filters
+                if (matchesCategory && matchesAuthor && matchesTime) {{
                     card.classList.remove('hidden');
                 }} else {{
                     card.classList.add('hidden');
                 }}
             }});
 
-            // Update button states
-            filterButtons.forEach(btn => {{
-                if (btn.dataset.filterType === 'category') {{
-                    if (btn.dataset.filter === categoryFilter) {{
-                        btn.classList.add('active');
-                    }} else {{
-                        btn.classList.remove('active');
-                    }}
-                }} else if (btn.dataset.filterType === 'time') {{
-                    if (timeFilterActive) {{
-                        btn.classList.add('active');
-                    }} else {{
-                        btn.classList.remove('active');
-                    }}
-                }}
-            }});
+            // Save filter state
+            saveFilters();
         }}
 
-        filterButtons.forEach(button => {{
-            button.addEventListener('click', () => {{
-                if (button.dataset.filterType === 'category') {{
-                    // Toggle category filter: if clicking active category, go back to 'all'
-                    if (categoryFilter === button.dataset.filter && categoryFilter !== 'all') {{
-                        categoryFilter = 'all';
-                    }} else {{
-                        categoryFilter = button.dataset.filter;
-                    }}
-                    localStorage.setItem('recipeCategoryFilter', categoryFilter);
-                }} else if (button.dataset.filterType === 'time') {{
-                    timeFilterActive = !timeFilterActive;
-                    localStorage.setItem('recipeTimeFilter', timeFilterActive ? 'active' : 'inactive');
+        function saveFilters() {{
+            const selectedCategories = Array.from(categoryCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            const selectedAuthors = Array.from(authorCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+
+            localStorage.setItem('recipeCategoryFilter', JSON.stringify(selectedCategories));
+            localStorage.setItem('recipeAuthorFilter', JSON.stringify(selectedAuthors));
+            localStorage.setItem('recipeFastFilter', fastFilter.checked ? 'true' : 'false');
+        }}
+
+        function loadFilters() {{
+            try {{
+                const savedCategories = JSON.parse(localStorage.getItem('recipeCategoryFilter') || '[]');
+                const savedAuthors = JSON.parse(localStorage.getItem('recipeAuthorFilter') || '[]');
+                const savedFast = localStorage.getItem('recipeFastFilter');
+
+                // Select saved categories
+                categoryCheckboxes.forEach(cb => {{
+                    cb.checked = savedCategories.includes(cb.value);
+                }});
+
+                // Select saved authors
+                authorCheckboxes.forEach(cb => {{
+                    cb.checked = savedAuthors.includes(cb.value);
+                }});
+
+                if (savedFast !== null) {{
+                    fastFilter.checked = savedFast === 'true';
                 }}
-                applyFilters();
-            }});
-        }});
+            }} catch (e) {{
+                // Ignore errors loading saved filters
+            }}
+        }}
+
+        // Add event listeners to checkboxes
+        categoryCheckboxes.forEach(cb => cb.addEventListener('change', applyFilters));
+        authorCheckboxes.forEach(cb => cb.addEventListener('change', applyFilters));
+        fastFilter.addEventListener('change', applyFilters);
+
+        // Clear all filters
+        function clearAllFilters() {{
+            categoryCheckboxes.forEach(cb => cb.checked = false);
+            authorCheckboxes.forEach(cb => cb.checked = false);
+            fastFilter.checked = false;
+            applyFilters();
+        }}
 
         {generate_dark_mode_script()}
 
@@ -491,9 +658,8 @@ def generate_overview_html(
         document.addEventListener('DOMContentLoaded', function() {{
             initializeDarkMode();
 
-            // Apply saved filters
-            categoryFilter = localStorage.getItem('recipeCategoryFilter') || 'all';
-            timeFilterActive = localStorage.getItem('recipeTimeFilter') === 'active';
+            // Load and apply saved filters
+            loadFilters();
             applyFilters();
         }});
     </script>

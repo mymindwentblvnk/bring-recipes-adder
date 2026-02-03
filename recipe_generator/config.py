@@ -349,11 +349,136 @@ OVERVIEW_PAGE_CSS = """
 h1 {
     color: var(--primary-color);
 }
-.filter-buttons {
+.filters-container {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     margin-bottom: 30px;
     flex-wrap: wrap;
+    align-items: flex-end;
+    padding: 15px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.filter-label {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.filter-count {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 0.9em;
+}
+.filter-dropdown {
+    position: relative;
+}
+.filter-dropdown-button {
+    padding: 8px 12px;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-radius: 6px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    min-width: 180px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+.filter-dropdown-button:hover {
+    border-color: var(--primary-color);
+}
+.filter-dropdown-button.open {
+    border-color: var(--primary-color);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.filter-dropdown-arrow {
+    font-size: 0.7em;
+    transition: transform 0.2s;
+}
+.filter-dropdown-button.open .filter-dropdown-arrow {
+    transform: rotate(180deg);
+}
+.filter-dropdown-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--bg-color);
+    border: 2px solid var(--primary-color);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.filter-dropdown-panel.open {
+    display: block;
+}
+.filter-dropdown-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.15s;
+}
+.filter-dropdown-option:hover {
+    background-color: var(--bg-secondary);
+}
+.filter-dropdown-option input[type="checkbox"] {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+.filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
+    color: var(--text-color);
+    user-select: none;
+    padding: 8px 0;
+}
+.filter-checkbox input[type="checkbox"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+.filter-checkbox:hover {
+    color: var(--primary-color);
+}
+.clear-filters-btn {
+    padding: 8px 16px;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.clear-filters-btn:hover {
+    background-color: var(--bg-secondary);
+    border-color: var(--text-secondary);
 }
 .recipe-grid {
     display: grid;

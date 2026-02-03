@@ -253,6 +253,7 @@ class TestGenerateOverviewHtml:
             ('recipe1.html', {
                 'name': 'Recipe One',
                 'description': 'First recipe description',
+                'author': 'Test Author',
                 'category': '🥦',
                 'servings': 4,
                 'prep_time': 10,
@@ -261,6 +262,7 @@ class TestGenerateOverviewHtml:
             ('recipe2.html', {
                 'name': 'Recipe Two',
                 'description': 'Second recipe description',
+                'author': 'Test Author',
                 'category': '🥩',
                 'servings': 6,
                 'prep_time': 15,
@@ -321,6 +323,7 @@ class TestGenerateOverviewHtml:
         sample_recipes_data[0] = ('test.html', {
             'name': 'Recipe with <script>alert("xss")</script>',
             'description': 'Description & special chars',
+            'author': 'Test Author',
             'category': '🥦',
             'servings': 4,
             'prep_time': 10,
@@ -331,12 +334,13 @@ class TestGenerateOverviewHtml:
         assert '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;' in html
         assert '&amp;' in html
         # Make sure we still have our legitimate filter script
-        assert 'filterButtons' in html
+        assert 'categoryCheckboxes' in html
 
     def test_html_without_descriptions(self, sample_recipes_data):
         """Test HTML generation when recipes lack descriptions."""
         sample_recipes_data[0] = ('test.html', {
             'name': 'Recipe Without Description',
+            'author': 'Test Author',
             'category': '🐟',
             'servings': 4,
             'prep_time': 10,
@@ -390,15 +394,19 @@ class TestGenerateOverviewHtml:
         html = generate_overview_html(sample_recipes_data, deployment_time)
         assert 'class="deployment-info"' in html
 
-    def test_filter_buttons_included(self, sample_recipes_data):
-        """Test that filter buttons are included."""
+    def test_filter_dropdowns_included(self, sample_recipes_data):
+        """Test that filter dropdowns are included."""
         html = generate_overview_html(sample_recipes_data)
-        assert 'filter-buttons' in html
-        assert 'data-filter="all"' in html
-        assert 'data-filter="🥩"' in html
-        assert 'data-filter="🐟"' in html
-        assert 'data-filter="🥦"' in html
-        assert 'data-filter="🥣"' in html
+        assert 'filters-container' in html
+        assert 'categoryDropdownBtn' in html
+        assert 'authorDropdownBtn' in html
+        assert 'fastFilter' in html
+        assert 'filter-dropdown-button' in html
+        assert 'filter-dropdown-panel' in html
+        assert 'category-checkbox' in html
+        assert 'author-checkbox' in html
+        assert 'Alle Kategorien' in html
+        assert 'Alle Autoren' in html
 
     def test_recipe_cards_have_category_data_attribute(self, sample_recipes_data):
         """Test that recipe cards have category data attribute."""
@@ -410,17 +418,23 @@ class TestGenerateOverviewHtml:
         """Test that filter JavaScript is included."""
         html = generate_overview_html(sample_recipes_data)
         assert '<script>' in html
-        assert 'filterButtons' in html
+        assert 'categoryCheckboxes' in html
+        assert 'authorCheckboxes' in html
+        assert 'categoryDropdownBtn' in html
+        assert 'authorDropdownBtn' in html
         assert 'recipeCards' in html
         assert 'addEventListener' in html
+        assert 'applyFilters' in html
+        assert 'clearAllFilters' in html
+        assert 'toggleDropdown' in html
 
     def test_recipes_sorted_by_category(self):
         """Test that recipes are sorted by category."""
         recipes_data = [
-            ('sweet.html', {'name': 'Sweet Recipe', 'category': '🥣', 'servings': 1, 'prep_time': 5, 'cook_time': 10}),
-            ('meat.html', {'name': 'Meat Recipe', 'category': '🥩', 'servings': 2, 'prep_time': 10, 'cook_time': 20}),
-            ('veg.html', {'name': 'Veg Recipe', 'category': '🥦', 'servings': 3, 'prep_time': 15, 'cook_time': 25}),
-            ('fish.html', {'name': 'Fish Recipe', 'category': '🐟', 'servings': 4, 'prep_time': 20, 'cook_time': 30}),
+            ('sweet.html', {'name': 'Sweet Recipe', 'author': 'Test', 'category': '🥣', 'servings': 1, 'prep_time': 5, 'cook_time': 10}),
+            ('meat.html', {'name': 'Meat Recipe', 'author': 'Test', 'category': '🥩', 'servings': 2, 'prep_time': 10, 'cook_time': 20}),
+            ('veg.html', {'name': 'Veg Recipe', 'author': 'Test', 'category': '🥦', 'servings': 3, 'prep_time': 15, 'cook_time': 25}),
+            ('fish.html', {'name': 'Fish Recipe', 'author': 'Test', 'category': '🐟', 'servings': 4, 'prep_time': 20, 'cook_time': 30}),
         ]
         html = generate_overview_html(recipes_data)
         # Check order: meat (🥩) should come before fish (🐟), fish before veg (🥦), veg before sweet (🥣)
