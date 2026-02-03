@@ -368,8 +368,9 @@ def generate_overview_html(
     """
     # Collect unique authors and categories
     authors = sorted(set(recipe.get('author', 'Unknown') for _, recipe in recipes_data))
-    categories = []
-    category_map = {
+
+    # Category labels (for known categories)
+    category_labels = {
         '🥩': get_text('filter_meat'),
         '🐟': get_text('filter_fish'),
         '🥦': get_text('filter_vegetarian'),
@@ -377,13 +378,15 @@ def generate_overview_html(
         '🥣': get_text('filter_sweet')
     }
 
-    # Get unique categories from recipes
+    # Get all unique categories from recipes (automatically detected)
     used_categories = sorted(set(recipe.get('category', '') for _, recipe in recipes_data if recipe.get('category')))
+    categories = []
     for cat in used_categories:
-        if cat in category_map:
-            categories.append((cat, category_map[cat]))
+        # Use label from map if available, otherwise just use the emoji
+        label = category_labels.get(cat, cat)
+        categories.append((cat, label))
 
-    # Sort recipes by category
+    # Sort recipes by category (known categories first, then unknown)
     category_order = {'🥩': 0, '🐟': 1, '🥦': 2, '🍞': 3, '🥣': 4}
     sorted_recipes = sorted(
         recipes_data,
