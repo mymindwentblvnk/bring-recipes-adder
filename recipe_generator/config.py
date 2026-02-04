@@ -349,6 +349,85 @@ OVERVIEW_PAGE_CSS = """
 h1 {
     color: var(--primary-color);
 }
+.tag-search-container {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+.search-label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    font-size: 1em;
+}
+.tag-search-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.2s;
+}
+.tag-search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+.tag-autocomplete {
+    position: relative;
+    margin-top: 5px;
+    background-color: var(--bg-color);
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.tag-autocomplete.show {
+    display: block;
+}
+.tag-suggestion {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    color: var(--text-color);
+}
+.tag-suggestion:hover, .tag-suggestion.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+.selected-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+.selected-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+.selected-tag-remove {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1em;
+    line-height: 1;
+    transition: opacity 0.2s;
+}
+.selected-tag-remove:hover {
+    opacity: 0.7;
+}
 .filters-container {
     display: flex;
     gap: 15px;

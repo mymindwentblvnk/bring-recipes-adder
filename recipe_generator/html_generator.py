@@ -386,6 +386,13 @@ def generate_overview_html(
         label = category_labels.get(cat, cat)
         categories.append((cat, label))
 
+    # Collect all unique tags from all recipes
+    all_tags = set()
+    for _, recipe in recipes_data:
+        if 'tags' in recipe and recipe['tags']:
+            all_tags.update(recipe['tags'])
+    sorted_tags = sorted(all_tags)
+
     # Sort recipes by category (known categories first, then unknown)
     category_order = {'🥩': 0, '🐟': 1, '🥦': 2, '🍞': 3, '🥣': 4}
     sorted_recipes = sorted(
@@ -405,7 +412,11 @@ def generate_overview_html(
         author = escape(recipe.get('author', 'Unknown'))
         time_category = 'fast' if total_time <= 30 else 'slow'
 
-        recipe_entry = f'''    <div class="recipe-card" data-category="{category}" data-author="{author}" data-time="{time_category}">
+        # Get tags for this recipe
+        recipe_tags = recipe.get('tags', [])
+        tags_json = escape(','.join(recipe_tags))  # Comma-separated tags for data attribute
+
+        recipe_entry = f'''    <div class="recipe-card" data-category="{category}" data-author="{author}" data-time="{time_category}" data-tags="{tags_json}">
         <h2><a href="{escape(filename)}">{escape(recipe['name'])}</a></h2>
         <p class="description">{description}</p>
         <p class="meta">
@@ -443,10 +454,21 @@ def generate_overview_html(
                     <span>{escape(author)}</span>
                 </label>''')
 
+    # Prepare tags as JSON for JavaScript
+    import json
+    tags_json = json.dumps(sorted_tags)
+
     html = f'''{generate_page_header(get_text('overview_title'), OVERVIEW_PAGE_CSS)}
     <div class="page-header">
         <h1>{get_text('overview_title')}</h1>
         {generate_navigation(show_back_button=False)}
+    </div>
+
+    <div class="tag-search-container">
+        <label for="tagSearch" class="search-label">🔍 Zutaten suchen</label>
+        <input type="text" id="tagSearch" class="tag-search-input" placeholder="z.B. fisch, kartoffeln, tomate..." autocomplete="off">
+        <div id="tagAutocomplete" class="tag-autocomplete"></div>
+        <div id="selectedTags" class="selected-tags"></div>
     </div>
 
     <div class="filters-container">
@@ -496,6 +518,110 @@ def generate_overview_html(
 {footer_html}
 
     <script>
+        // Tag search autocomplete functionality
+        const allTags = {tags_json};
+        const tagSearchInput = document.getElementById('tagSearch');
+        const tagAutocomplete = document.getElementById('tagAutocomplete');
+        const selectedTagsContainer = document.getElementById('selectedTags');
+        let selectedTags = [];
+        let currentFocus = -1;
+
+        // Tag search autocomplete
+        tagSearchInput.addEventListener('input', function() {{
+            const value = this.value.toLowerCase().trim();
+            tagAutocomplete.innerHTML = '';
+            currentFocus = -1;
+
+            if (!value) {{
+                tagAutocomplete.classList.remove('show');
+                return;
+            }}
+
+            // Filter tags based on input
+            const matches = allTags.filter(tag =>
+                tag.toLowerCase().includes(value) && !selectedTags.includes(tag)
+            );
+
+            if (matches.length > 0) {{
+                matches.forEach(tag => {{
+                    const div = document.createElement('div');
+                    div.className = 'tag-suggestion';
+                    div.textContent = tag;
+                    div.addEventListener('click', () => addTag(tag));
+                    tagAutocomplete.appendChild(div);
+                }});
+                tagAutocomplete.classList.add('show');
+            }} else {{
+                tagAutocomplete.classList.remove('show');
+            }}
+        }});
+
+        // Keyboard navigation
+        tagSearchInput.addEventListener('keydown', function(e) {{
+            const suggestions = tagAutocomplete.getElementsByClassName('tag-suggestion');
+            if (e.key === 'ArrowDown') {{
+                e.preventDefault();
+                currentFocus++;
+                updateActiveSuggestion(suggestions);
+            }} else if (e.key === 'ArrowUp') {{
+                e.preventDefault();
+                currentFocus--;
+                updateActiveSuggestion(suggestions);
+            }} else if (e.key === 'Enter') {{
+                e.preventDefault();
+                if (currentFocus > -1 && suggestions[currentFocus]) {{
+                    addTag(suggestions[currentFocus].textContent);
+                }}
+            }}
+        }});
+
+        function updateActiveSuggestion(suggestions) {{
+            if (!suggestions.length) return;
+            if (currentFocus >= suggestions.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = suggestions.length - 1;
+
+            Array.from(suggestions).forEach((s, i) => {{
+                s.classList.toggle('active', i === currentFocus);
+            }});
+        }}
+
+        function addTag(tag) {{
+            if (!selectedTags.includes(tag)) {{
+                selectedTags.push(tag);
+                renderSelectedTags();
+                tagSearchInput.value = '';
+                tagAutocomplete.innerHTML = '';
+                tagAutocomplete.classList.remove('show');
+                applyFilters();
+            }}
+        }}
+
+        function removeTag(tag) {{
+            selectedTags = selectedTags.filter(t => t !== tag);
+            renderSelectedTags();
+            applyFilters();
+        }}
+
+        function renderSelectedTags() {{
+            selectedTagsContainer.innerHTML = '';
+            selectedTags.forEach(tag => {{
+                const tagEl = document.createElement('div');
+                tagEl.className = 'selected-tag';
+                tagEl.innerHTML = `
+                    <span>${{tag}}</span>
+                    <span class="selected-tag-remove" onclick="removeTag('${{tag}}')">&times;</span>
+                `;
+                selectedTagsContainer.appendChild(tagEl);
+            }});
+        }}
+
+        // Close autocomplete when clicking outside
+        document.addEventListener('click', function(e) {{
+            if (!e.target.closest('.tag-search-container')) {{
+                tagAutocomplete.classList.remove('show');
+            }}
+        }});
+
         // Filter functionality
         const recipeCards = document.querySelectorAll('.recipe-card');
         const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
@@ -583,6 +709,7 @@ def generate_overview_html(
                 const category = card.dataset.category;
                 const author = card.dataset.author;
                 const time = card.dataset.time;
+                const recipeTags = card.dataset.tags ? card.dataset.tags.split(',') : [];
 
                 // Check if matches category filter (empty = show all)
                 const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(category);
@@ -593,8 +720,11 @@ def generate_overview_html(
                 // Check if matches time filter
                 const matchesTime = !fastOnly || time === 'fast';
 
+                // Check if matches tag filter (recipe must have ALL selected tags)
+                const matchesTags = selectedTags.length === 0 || selectedTags.every(tag => recipeTags.includes(tag));
+
                 // Show card only if it matches all filters
-                if (matchesCategory && matchesAuthor && matchesTime) {{
+                if (matchesCategory && matchesAuthor && matchesTime && matchesTags) {{
                     card.classList.remove('hidden');
                 }} else {{
                     card.classList.add('hidden');
@@ -652,6 +782,8 @@ def generate_overview_html(
             categoryCheckboxes.forEach(cb => cb.checked = false);
             authorCheckboxes.forEach(cb => cb.checked = false);
             fastFilter.checked = false;
+            selectedTags = [];
+            renderSelectedTags();
             applyFilters();
         }}
 
