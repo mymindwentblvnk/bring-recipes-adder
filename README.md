@@ -2,13 +2,7 @@
 
 🛒 This is a HTML website generator that lets you add your favourite recipes with one click to Bring! app.
 
-**[🚀 Try the live app](https://mymindwentblvnk.github.io/bring-recipes-adder/)**
-
-## Demo
-
-<p align="center">
-  <img src="media/demo.gif" alt="Demo" width="400">
-</p>
+**[🚀 Try the live app](https://mymindwentblvnk.github.io/bring-recipes-adder/)** - Feel free to play around with all features! Search, filter, add recipes to your weekly plan, and explore the interface. All changes are stored locally in your browser.
 
 ## Features
 
