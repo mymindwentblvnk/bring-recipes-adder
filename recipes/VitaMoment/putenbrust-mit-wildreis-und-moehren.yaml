@@ -7,9 +7,11 @@ prep_time: 10  # minutes
 cook_time: 30  # minutes
 tags:
   - butter
+  - fleisch
   - frischkäse
   - karotte
   - kräuter
+  - käse
   - paprika
   - pute
   - reis
