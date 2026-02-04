@@ -789,11 +789,9 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
             text-decoration: underline;
         }
         .view-count {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: var(--primary-color);
-            min-width: 100px;
-            text-align: right;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-top: 5px;
         }
         .no-data {
             text-align: center;
@@ -835,8 +833,7 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                 line-height: 1.3;
             }
             .view-count {
-                font-size: 1em;
-                min-width: 60px;
+                font-size: 0.85em;
             }
         }'''
 
@@ -897,8 +894,8 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
                         <div class="rank">${{rankEmoji || (index + 1)}}</div>
                         <div class="recipe-info">
                             <h3><a href="${{data.filename}}">${{name}}</a></h3>
+                            <div class="view-count">${{count}} Aufrufe</div>
                         </div>
-                        <div class="view-count">${{count}} Aufrufe</div>
                     </li>
                 `;
             }});
