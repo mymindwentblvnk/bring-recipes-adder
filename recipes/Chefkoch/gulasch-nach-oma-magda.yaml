@@ -5,6 +5,15 @@ category: 🥩
 servings: 6
 prep_time: 30  # minutes
 cook_time: 240  # minutes
+tags:
+  - butter
+  - eier
+  - fleisch
+  - karotte
+  - paprika
+  - sellerie
+  - tomate
+  - zwiebel
 
 ingredients:
   - name: Butterschmalz

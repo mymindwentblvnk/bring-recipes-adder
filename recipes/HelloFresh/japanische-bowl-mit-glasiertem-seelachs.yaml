@@ -5,6 +5,13 @@ category: 🐟
 servings: 2
 prep_time: 10  # minutes
 cook_time: 30  # minutes
+tags:
+  - fisch
+  - gurke
+  - karotte
+  - reis
+  - sesam
+  - zwiebel
 
 ingredients:
   - name: Risottoreis

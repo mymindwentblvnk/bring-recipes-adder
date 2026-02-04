@@ -5,6 +5,12 @@ category: 🥦
 servings: 1
 prep_time: 5  # minutes
 cook_time: 15   # minutes
+tags:
+  - butter
+  - eier
+  - frischkäse
+  - spinat
+  - zwiebel
 
 ingredients:
   - name: Zwiebel

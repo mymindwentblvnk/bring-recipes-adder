@@ -5,6 +5,14 @@ category: 🥦
 servings: 1
 prep_time: 5   # minutes
 cook_time: 60  # minutes
+tags:
+  - eier
+  - gurke
+  - joghurt
+  - kartoffeln
+  - kräuter
+  - quark
+  - radieschen
 
 ingredients:
   - name: Kartoffel (groß)

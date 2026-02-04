@@ -5,6 +5,11 @@ category: 🥣
 servings: 1
 prep_time: 5  # minutes
 cook_time: 15   # minutes
+tags:
+  - beeren
+  - chiasamen
+  - milch
+  - quark
 
 ingredients:
   - name: Haferdrink (ungesüßt)

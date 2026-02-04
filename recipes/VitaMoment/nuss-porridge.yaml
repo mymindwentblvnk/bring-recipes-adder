@@ -5,6 +5,11 @@ category: 🥣
 servings: 1
 prep_time: 5  # minutes
 cook_time: 10  # minutes
+tags:
+  - beeren
+  - haferflocken
+  - milch
+  - nüsse
 
 ingredients:
   - name: Milch

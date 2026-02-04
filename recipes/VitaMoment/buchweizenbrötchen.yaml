@@ -5,6 +5,11 @@ category: 🍞
 servings: 1
 prep_time: 30  # minutes
 cook_time: 25  # minutes
+tags:
+  - eier
+  - frischkäse
+  - mehl
+  - sesam
 
 ingredients:
   - name: Eier
