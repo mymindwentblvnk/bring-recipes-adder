@@ -702,6 +702,9 @@ def generate_overview_html(
         function resetSearch() {{
             selectedItems = [];
             fastFilter.checked = false;
+            searchInput.value = '';
+            autocomplete.innerHTML = '';
+            autocomplete.classList.remove('show');
             renderSelectedItems();
             applyFilters();
         }}
