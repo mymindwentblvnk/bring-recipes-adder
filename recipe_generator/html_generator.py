@@ -386,13 +386,20 @@ def generate_overview_html(
         label = category_labels.get(cat, cat)
         categories.append((cat, label))
 
-    # Collect all unique tags, authors, and categories for unified search
+    # Collect all unique tags, authors, categories, and recipe names for unified search
     all_tags = set()
+    all_recipe_names = []
     all_search_items = []
 
-    for _, recipe in recipes_data:
+    for filename, recipe in recipes_data:
         if 'tags' in recipe and recipe['tags']:
             all_tags.update(recipe['tags'])
+        if 'name' in recipe and recipe['name']:
+            all_recipe_names.append({'name': recipe['name'], 'slug': filename.replace('.html', '')})
+
+    # Add recipe names with type indicator
+    for recipe_info in sorted(all_recipe_names, key=lambda x: x['name']):
+        all_search_items.append({'label': recipe_info['name'], 'value': recipe_info['slug'], 'type': 'recipe'})
 
     # Add tags with type indicator
     for tag in sorted(all_tags):
@@ -428,8 +435,9 @@ def generate_overview_html(
         # Get tags for this recipe
         recipe_tags = recipe.get('tags', [])
         tags_json = escape(','.join(recipe_tags))  # Comma-separated tags for data attribute
+        slug = filename.replace('.html', '')  # Recipe slug for search filtering
 
-        recipe_entry = f'''    <div class="recipe-card" data-category="{category}" data-author="{author}" data-time="{time_category}" data-tags="{tags_json}">
+        recipe_entry = f'''    <div class="recipe-card" data-category="{category}" data-author="{author}" data-time="{time_category}" data-tags="{tags_json}" data-slug="{slug}" data-name="{escape(recipe['name'])}">
         <h2><a href="{escape(filename)}">{escape(recipe['name'])}</a></h2>
         <p class="description">{description}</p>
         <p class="meta">
@@ -529,7 +537,7 @@ def generate_overview_html(
                     div.className = 'search-suggestion';
 
                     // Add type indicator
-                    const typeLabel = item.type === 'tag' ? '🏷️' : item.type === 'author' ? '👤' : '📁';
+                    const typeLabel = item.type === 'tag' ? '🏷️' : item.type === 'author' ? '👤' : item.type === 'recipe' ? '🍽️' : '📁';
                     div.innerHTML = `${{typeLabel}} ${{item.label}}`;
 
                     div.addEventListener('click', () => addItem(item));
@@ -602,7 +610,7 @@ def generate_overview_html(
                 itemEl.className = 'selected-item';
 
                 // Add type indicator
-                const typeLabel = item.type === 'tag' ? '🏷️' : item.type === 'author' ? '👤' : '📁';
+                const typeLabel = item.type === 'tag' ? '🏷️' : item.type === 'author' ? '👤' : item.type === 'recipe' ? '🍽️' : '📁';
                 itemEl.innerHTML = `
                     <span>${{typeLabel}} ${{item.label}}</span>
                     <span class="selected-item-remove" onclick='removeItem(${{JSON.stringify(item)}})'>&times;</span>
@@ -627,6 +635,7 @@ def generate_overview_html(
             const selectedTags = selectedItems.filter(i => i.type === 'tag').map(i => i.label);
             const selectedAuthors = selectedItems.filter(i => i.type === 'author').map(i => i.label);
             const selectedCategories = selectedItems.filter(i => i.type === 'category').map(i => i.value);
+            const selectedRecipes = selectedItems.filter(i => i.type === 'recipe').map(i => i.value);
             const fastOnly = fastFilter.checked;
 
             // Filter recipe cards
@@ -634,7 +643,11 @@ def generate_overview_html(
                 const category = card.dataset.category;
                 const author = card.dataset.author;
                 const time = card.dataset.time;
+                const slug = card.dataset.slug;
                 const recipeTags = card.dataset.tags ? card.dataset.tags.split(',') : [];
+
+                // Check if matches recipe name filter (empty = show all)
+                const matchesRecipe = selectedRecipes.length === 0 || selectedRecipes.includes(slug);
 
                 // Check if matches category filter (empty = show all)
                 const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(category);
@@ -649,7 +662,7 @@ def generate_overview_html(
                 const matchesTags = selectedTags.length === 0 || selectedTags.every(tag => recipeTags.includes(tag));
 
                 // Show card only if it matches all filters
-                if (matchesCategory && matchesAuthor && matchesTime && matchesTags) {{
+                if (matchesRecipe && matchesCategory && matchesAuthor && matchesTime && matchesTags) {{
                     card.classList.remove('hidden');
                 }} else {{
                     card.classList.add('hidden');
