@@ -488,10 +488,6 @@ def generate_overview_html(
                 <input type="checkbox" id="fastFilter">
                 <span>⚡ {get_text('filter_fast')}</span>
             </label>
-
-            <button class="clear-filters-btn" onclick="clearAllFilters()">
-                ✕ Zurücksetzen
-            </button>
         </div>
     </div>
 
@@ -687,14 +683,6 @@ def generate_overview_html(
 
         // Add event listeners
         fastFilter.addEventListener('change', applyFilters);
-
-        // Clear all filters
-        function clearAllFilters() {{
-            fastFilter.checked = false;
-            selectedItems = [];
-            renderSelectedItems();
-            applyFilters();
-        }}
 
         {generate_dark_mode_script()}
 

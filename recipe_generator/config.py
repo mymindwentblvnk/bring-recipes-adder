@@ -357,14 +357,9 @@ h1 {
     border: 1px solid var(--border-color);
 }
 .filter-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
     margin-top: 15px;
     padding-top: 15px;
     border-top: 1px solid var(--border-color);
-    flex-wrap: wrap;
 }
 .search-label {
     display: block;
@@ -455,22 +450,6 @@ h1 {
 }
 .filter-checkbox:hover {
     color: var(--primary-color);
-}
-.clear-filters-btn {
-    padding: 8px 16px;
-    border: 2px solid var(--border-color);
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    border-radius: 6px;
-    font-size: 0.9em;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-}
-.clear-filters-btn:hover {
-    background-color: var(--bg-secondary);
-    border-color: var(--text-secondary);
 }
 .recipe-grid {
     display: grid;
