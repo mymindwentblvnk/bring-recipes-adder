@@ -487,7 +487,7 @@ def generate_overview_html(
 
     <div class="search-container">
         <label for="search" class="search-label">🔍 Suchen</label>
-        <input type="text" id="search" class="search-input" placeholder="z.B. fisch, HelloFresh, Vegetarisch..." autocomplete="off">
+        <input type="text" id="search" class="search-input" placeholder="z.B. Fisch, HelloFresh, Vegetarisch..." autocomplete="off">
         <div id="autocomplete" class="autocomplete"></div>
         <div id="selectedItems" class="selected-items"></div>
 
