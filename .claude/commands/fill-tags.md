@@ -13,93 +13,93 @@ For each recipe without tags:
 
 ### General Principles
 
-1. **Remove descriptors and adjectives**: "Griechischer Joghurt" → "joghurt", "Rote Zwiebel" → "zwiebel"
-2. **Use base ingredient name**: "Kräuterfrischkäse" → "frischkäse", "Salatgurke" → "gurke"
-3. **Group similar items**: "Möhren" and "Karotte" both → "karotte"
-4. **Be specific for vegetables**: Don't use generic "gemüse", use specific names like "karotte", "zwiebel", "tomate"
-5. **Use singular form**: "Eier" → "eier", "Tomaten" → "tomate"
-6. **Lowercase tags**: All tags should be lowercase
+1. **Remove descriptors and adjectives**: "Griechischer Joghurt" → "Joghurt", "Rote Zwiebel" → "Zwiebel"
+2. **Use base ingredient name**: "Kräuterfrischkäse" → "Frischkäse", "Salatgurke" → "Gurke"
+3. **Group similar items**: "Möhren" and "Karotte" both → "Karotte"
+4. **Be specific for vegetables**: Don't use generic "Gemüse", use specific names like "Karotte", "Zwiebel", "Tomate"
+5. **Use singular form**: "Eier" → "Eier", "Tomaten" → "Tomate"
+6. **Capitalize tags**: All tags should start with an uppercase letter
 7. **Sort alphabetically**: Tags list should be sorted
-8. **Use hierarchical tags**: For categorized ingredients, include BOTH the generic category tag AND the specific ingredient tag (e.g., both "fisch" and "lachs", both "nüsse" and "mandeln")
+8. **Use hierarchical tags**: For categorized ingredients, include BOTH the generic category tag AND the specific ingredient tag (e.g., both "Fisch" and "Lachs", both "Nüsse" and "Mandeln")
 
 ### Hierarchical Tagging
 
 For ingredients that belong to broader categories, add BOTH the generic tag AND the specific tag. Do NOT go deeper than one level of specificity.
 
 **Examples:**
-- Wildlachs → Add tags: "fisch" + "lachs" (NOT "wildlachs")
-- Haselnüsse → Add tags: "nüsse" + "haselnüsse"
-- Süßkartoffel → Add tags: "kartoffeln" + "süßkartoffel"
-- Frischkäse → Add tags: "käse" + "frischkäse"
+- Wildlachs → Add tags: "Fisch" + "Lachs" (NOT "Wildlachs")
+- Haselnüsse → Add tags: "Nüsse" + "Haselnüsse"
+- Süßkartoffel → Add tags: "Kartoffeln" + "Süßkartoffel"
+- Frischkäse → Add tags: "Käse" + "Frischkäse"
 
 **Tag Hierarchies:**
 
 1. **Fish (Fisch):**
-   - Add "fisch" + specific type: "lachs", "thunfisch", "seelachs", "garnelen"
-   - Example: Wildlachsfilet → tags: "fisch", "lachs"
+   - Add "Fisch" + specific type: "Lachs", "Thunfisch", "Seelachs", "Garnelen"
+   - Example: Wildlachsfilet → tags: "Fisch", "Lachs"
 
 2. **Meat (Fleisch):**
-   - Add "fleisch" + specific type: "rind", "pute", "schinken", "hackfleisch"
-   - Example: Rinderfilet → tags: "fleisch", "rind"
+   - Add "Fleisch" + specific type: "Rind", "Pute", "Schinken", "Hackfleisch"
+   - Example: Rinderfilet → tags: "Fleisch", "Rind"
 
 3. **Cheese (Käse):**
-   - Add "käse" + specific type: "feta", "schafskäse", "parmesan", "bergkäse", "frischkäse"
-   - Example: Kräuterfrischkäse → tags: "käse", "frischkäse"
+   - Add "Käse" + specific type: "Feta", "Schafskäse", "Parmesan", "Bergkäse", "Frischkäse"
+   - Example: Kräuterfrischkäse → tags: "Käse", "Frischkäse"
 
 4. **Nuts (Nüsse):**
-   - Add "nüsse" + specific type: "walnüsse", "haselnüsse", "mandeln"
-   - Example: Haselnüsse (gehackt) → tags: "nüsse", "haselnüsse"
+   - Add "Nüsse" + specific type: "Walnüsse", "Haselnüsse", "Mandeln"
+   - Example: Haselnüsse (gehackt) → tags: "Nüsse", "Haselnüsse"
 
 5. **Berries (Beeren):**
-   - Add "beeren" + specific type: "himbeeren", "erdbeeren"
-   - Example: Himbeeren (frisch) → tags: "beeren", "himbeeren"
+   - Add "Beeren" + specific type: "Himbeeren", "Erdbeeren"
+   - Example: Himbeeren (frisch) → tags: "Beeren", "Himbeeren"
 
 6. **Fruit (Obst):**
-   - Add "obst" + specific type: "apfel", "kiwi", "weintrauben"
-   - Example: Äpfel → tags: "obst", "apfel"
+   - Add "Obst" + specific type: "Apfel", "Kiwi", "Weintrauben"
+   - Example: Äpfel → tags: "Obst", "Apfel"
 
 7. **Seeds (Kerne):**
-   - Add "kerne" + specific type: "chiasamen", "leinsamen", "sesam"
-   - Example: Chiasamen → tags: "kerne", "chiasamen"
-   - Note: "Kürbiskerne", "Sonnenblumenkerne" → only "kerne" (these ARE the specific level)
+   - Add "Kerne" + specific type: "Chiasamen", "Leinsamen", "Sesam"
+   - Example: Chiasamen → tags: "Kerne", "Chiasamen"
+   - Note: "Kürbiskerne", "Sonnenblumenkerne" → only "Kerne" (these ARE the specific level)
 
 8. **Potatoes (Kartoffeln):**
-   - Add "kartoffeln" + specific type: "süßkartoffel"
-   - Example: Süßkartoffel → tags: "kartoffeln", "süßkartoffel"
+   - Add "Kartoffeln" + specific type: "Süßkartoffel"
+   - Example: Süßkartoffel → tags: "Kartoffeln", "Süßkartoffel"
 
 9. **Cabbage/Brassica (Kohl):**
-   - Add "kohl" + specific type: "blumenkohl", "brokkoli"
-   - Example: Blumenkohl → tags: "kohl", "blumenkohl"
+   - Add "Kohl" + specific type: "Blumenkohl", "Brokkoli"
+   - Example: Blumenkohl → tags: "Kohl", "Blumenkohl"
 
 ### Category Guidelines
 
-**For vegetables:** Use the specific vegetable name (e.g., "karotte", "zwiebel", "tomate", "gurke", "spinat")
-- Exception: For cabbage family, use both "kohl" + specific type ("blumenkohl", "brokkoli")
+**For vegetables:** Use the specific vegetable name (e.g., "Karotte", "Zwiebel", "Tomate", "Gurke", "Spinat")
+- Exception: For cabbage family, use both "Kohl" + specific type ("Blumenkohl", "Brokkoli")
 
 **For proteins:** Use hierarchical tagging:
-- Fish → Always add BOTH "fisch" + specific type ("lachs", "thunfisch", "seelachs", "garnelen")
-- Meat → Always add BOTH "fleisch" + specific type ("rind", "pute", "schinken", "hackfleisch")
-- Eggs → "eier" (no subtypes)
+- Fish → Always add BOTH "Fisch" + specific type ("Lachs", "Thunfisch", "Seelachs", "Garnelen")
+- Meat → Always add BOTH "Fleisch" + specific type ("Rind", "Pute", "Schinken", "Hackfleisch")
+- Eggs → "Eier" (no subtypes)
 
 **For dairy:** Use hierarchical tagging for cheese:
-- Cheese → Always add BOTH "käse" + specific type ("feta", "schafskäse", "parmesan", "bergkäse", "frischkäse")
-- Milk products → "milch", "joghurt", "quark" (no subtypes)
-- Butter → "butter" (no subtypes)
+- Cheese → Always add BOTH "Käse" + specific type ("Feta", "Schafskäse", "Parmesan", "Bergkäse", "Frischkäse")
+- Milk products → "Milch", "Joghurt", "Quark" (no subtypes)
+- Butter → "Butter" (no subtypes)
 
 **For grains/starches:** Use the base name:
-- Any rice → "reis"
-- Any pasta/noodles → "pasta"
-- Potatoes → "kartoffeln" (add "süßkartoffel" if applicable)
-- Flour → "mehl"
+- Any rice → "Reis"
+- Any pasta/noodles → "Pasta"
+- Potatoes → "Kartoffeln" (add "Süßkartoffel" if applicable)
+- Flour → "Mehl"
 
 **For nuts/seeds:** Use hierarchical tagging:
-- Nuts → Always add BOTH "nüsse" + specific type ("walnüsse", "haselnüsse", "mandeln")
-- Seeds → Always add BOTH "kerne" + specific type ("chiasamen", "leinsamen", "sesam")
-  - Exception: "Kürbiskerne", "Sonnenblumenkerne" use only "kerne"
+- Nuts → Always add BOTH "Nüsse" + specific type ("Walnüsse", "Haselnüsse", "Mandeln")
+- Seeds → Always add BOTH "Kerne" + specific type ("Chiasamen", "Leinsamen", "Sesam")
+  - Exception: "Kürbiskerne", "Sonnenblumenkerne" use only "Kerne"
 
 **For fruits:** Use hierarchical tagging:
-- Berries → Always add BOTH "beeren" + specific type ("himbeeren", "erdbeeren")
-- Other fruits → Always add BOTH "obst" + specific type ("apfel", "kiwi", "weintrauben")
+- Berries → Always add BOTH "Beeren" + specific type ("Himbeeren", "Erdbeeren")
+- Other fruits → Always add BOTH "Obst" + specific type ("Apfel", "Kiwi", "Weintrauben")
 
 ## Ingredient Mapping Examples
 
@@ -108,122 +108,122 @@ Use these examples as a guide. For new ingredients not listed, apply the general
 **IMPORTANT**: For categorized ingredients, add BOTH the generic category tag AND the specific tag.
 
 ### Fish & Seafood
-- "Lachs", "Seelachs", "Wildlachs", "Räucherlachs" → "fisch" + "lachs"
-- "Wildlachs" → "fisch" + "lachs" (NOT "wildlachs" - don't go deeper)
-- "Seelachs" → "fisch" + "seelachs"
-- "Thunfisch" → "fisch" + "thunfisch"
-- "Garnelen" → "fisch" + "garnelen"
+- "Lachs", "Seelachs", "Wildlachs", "Räucherlachs" → "Fisch" + "Lachs"
+- "Wildlachs" → "Fisch" + "Lachs" (NOT "Wildlachs" - don't go deeper)
+- "Seelachs" → "Fisch" + "Seelachs"
+- "Thunfisch" → "Fisch" + "Thunfisch"
+- "Garnelen" → "Fisch" + "Garnelen"
 
 ### Meat & Poultry
-- "Rinderhackfleisch", "Rindfleisch", "Rinderfilet" → "fleisch" + "rind"
-- "Hackfleisch" → "fleisch" + "hackfleisch"
-- "Putenbrustfilet", "Pute" → "fleisch" + "pute"
-- "Kochschinken" → "fleisch" + "schinken"
+- "Rinderhackfleisch", "Rindfleisch", "Rinderfilet" → "Fleisch" + "Rind"
+- "Hackfleisch" → "Fleisch" + "Hackfleisch"
+- "Putenbrustfilet", "Pute" → "Fleisch" + "Pute"
+- "Kochschinken" → "Fleisch" + "Schinken"
 
 ### Dairy & Cheese
-- "Frischkäse", "Kräuterfrischkäse", "Körniger Frischkäse" → "käse" + "frischkäse"
-- "Magerquark", "Quark" → "quark"
-- "Schafskäse" → "käse" + "schafskäse"
-- "Feta" → "käse" + "feta"
-- "Parmesan" → "käse" + "parmesan"
-- "Bergkäse" → "käse" + "bergkäse"
-- "Joghurt", "Griechischer Joghurt", "Naturjoghurt" → "joghurt"
-- "Milch", "Hafermilch", "Haferdrink", "Kokosdrink" → "milch"
-- "Butter", "Butterschmalz" → "butter"
+- "Frischkäse", "Kräuterfrischkäse", "Körniger Frischkäse" → "Käse" + "Frischkäse"
+- "Magerquark", "Quark" → "Quark"
+- "Schafskäse" → "Käse" + "Schafskäse"
+- "Feta" → "Käse" + "Feta"
+- "Parmesan" → "Käse" + "Parmesan"
+- "Bergkäse" → "Käse" + "Bergkäse"
+- "Joghurt", "Griechischer Joghurt", "Naturjoghurt" → "Joghurt"
+- "Milch", "Hafermilch", "Haferdrink", "Kokosdrink" → "Milch"
+- "Butter", "Butterschmalz" → "Butter"
 
-### Vegetables (IMPORTANT: Use SPECIFIC tags, NOT "gemüse")
-- "Zwiebel", "Frühlingszwiebel", "Rote Zwiebel" → "zwiebel"
-- "Knoblauch", "Knoblauchzehe" → "knoblauch"
-- "Möhren", "Karotte" → "karotte"
-- "Zucchini" → "zucchini"
-- "Aubergine" → "aubergine"
-- "Paprika", "Gelbe Paprika" → "paprika"
-- "Tomate", "Tomaten", "Kirschtomaten", "Getrocknete Tomaten" → "tomate"
-- "Blumenkohl" → "kohl" + "blumenkohl"
-- "Brokkoli" → "kohl" + "brokkoli"
-- "Spinat", "Blattspinat" → "spinat"
-- "Porree", "Porreestange" → "porree"
-- "Sellerie", "Knollensellerie", "Stangensellerie", "Petersilienwurzel" → "sellerie"
-- "Gurke", "Salatgurke" → "gurke"
-- "Avocado" → "avocado"
-- "Radieschen" → "radieschen"
-- "Rucola", "Salatherz", "Romana" → "salat"
-- "Erbsen" → "erbsen"
+### Vegetables (IMPORTANT: Use SPECIFIC tags, NOT "Gemüse")
+- "Zwiebel", "Frühlingszwiebel", "Rote Zwiebel" → "Zwiebel"
+- "Knoblauch", "Knoblauchzehe" → "Knoblauch"
+- "Möhren", "Karotte" → "Karotte"
+- "Zucchini" → "Zucchini"
+- "Aubergine" → "Aubergine"
+- "Paprika", "Gelbe Paprika" → "Paprika"
+- "Tomate", "Tomaten", "Kirschtomaten", "Getrocknete Tomaten" → "Tomate"
+- "Blumenkohl" → "Kohl" + "Blumenkohl"
+- "Brokkoli" → "Kohl" + "Brokkoli"
+- "Spinat", "Blattspinat" → "Spinat"
+- "Porree", "Porreestange" → "Porree"
+- "Sellerie", "Knollensellerie", "Stangensellerie", "Petersilienwurzel" → "Sellerie"
+- "Gurke", "Salatgurke" → "Gurke"
+- "Avocado" → "Avocado"
+- "Radieschen" → "Radieschen"
+- "Rucola", "Salatherz", "Romana" → "Salat"
+- "Erbsen" → "Erbsen"
 
 ### Herbs
-- "Minze", "Petersilie", "Dill", "Schnittlauch" → "kräuter"
+- "Minze", "Petersilie", "Dill", "Schnittlauch" → "Kräuter"
 
 ### Potatoes & Pasta
-- "Kartoffel" → "kartoffeln"
-- "Süßkartoffel" → "kartoffeln" + "süßkartoffel"
-- "Gnocchi", "Pasta", "Nudeln", "Buchweizenpasta" → "pasta"
+- "Kartoffel" → "Kartoffeln"
+- "Süßkartoffel" → "Kartoffeln" + "Süßkartoffel"
+- "Gnocchi", "Pasta", "Nudeln", "Buchweizenpasta" → "Pasta"
 
 ### Rice & Grains
-- "Reis", "Wildreis", "Risottoreis" → "reis"
-- "Haferflocken" → "haferflocken"
+- "Reis", "Wildreis", "Risottoreis" → "Reis"
+- "Haferflocken" → "Haferflocken"
 
 ### Flour
-- "Mehl", "Buchweizenmehl", "Dinkelmehl", "Mandelmehl" → "mehl"
+- "Mehl", "Buchweizenmehl", "Dinkelmehl", "Mandelmehl" → "Mehl"
 
 ### Nuts & Seeds
-- "Walnüsse" → "nüsse" + "walnüsse"
-- "Haselnüsse" → "nüsse" + "haselnüsse"
-- "Mandeln (gemahlen)" → "nüsse" + "mandeln"
-- "Chiasamen" → "kerne" + "chiasamen"
-- "Leinsamen" → "kerne" + "leinsamen"
-- "Sesam" → "kerne" + "sesam"
-- "Kürbiskerne", "Sonnenblumenkerne" → "kerne" (these are the specific level)
+- "Walnüsse" → "Nüsse" + "Walnüsse"
+- "Haselnüsse" → "Nüsse" + "Haselnüsse"
+- "Mandeln (gemahlen)" → "Nüsse" + "Mandeln"
+- "Chiasamen" → "Kerne" + "Chiasamen"
+- "Leinsamen" → "Kerne" + "Leinsamen"
+- "Sesam" → "Kerne" + "Sesam"
+- "Kürbiskerne", "Sonnenblumenkerne" → "Kerne" (these are the specific level)
 
 ### Eggs
-- "Eier", "Ei" → "eier"
+- "Eier", "Ei" → "Eier"
 
 ### Fruits & Berries
-- "Himbeeren" → "beeren" + "himbeeren"
-- "Erdbeeren" → "beeren" + "erdbeeren"
-- "Äpfel", "Apfel" → "obst" + "apfel"
-- "Kiwi" → "obst" + "kiwi"
-- "Weintrauben" → "obst" + "weintrauben"
+- "Himbeeren" → "Beeren" + "Himbeeren"
+- "Erdbeeren" → "Beeren" + "Erdbeeren"
+- "Äpfel", "Apfel" → "Obst" + "Apfel"
+- "Kiwi" → "Obst" + "Kiwi"
+- "Weintrauben" → "Obst" + "Weintrauben"
 
 ### Fats & Oils
-- "Kokosöl", "Olivenöl", "Leinöl", "Sesamöl" → "öl"
+- "Kokosöl", "Olivenöl", "Leinöl", "Sesamöl" → "Öl"
 
 ### Other
-- "Honig" → "honig"
+- "Honig" → "Honig"
 
 ## How to Handle Unknown Ingredients
 
 If you encounter an ingredient not in the examples:
 
 1. **Identify the base ingredient**: Remove brands, adjectives, preparation methods
-   - "Bio-Vollkornmehl" → "mehl"
+   - "Bio-Vollkornmehl" → "Mehl"
    - "Geräucherter Tofu" → "tofu"
-   - "Wildlachs" → "lachs" (don't go too specific)
+   - "Wildlachs" → "Lachs" (don't go too specific)
 
 2. **Determine the category and apply hierarchical tagging**:
-   - Vegetable? Use the specific vegetable name (or "kohl" + specific for cabbage family)
-   - Fish? Add BOTH "fisch" + specific type ("lachs", "thunfisch", etc.)
-   - Meat? Add BOTH "fleisch" + specific type ("rind", "pute", "schinken", "hackfleisch")
-   - Cheese? Add BOTH "käse" + specific type ("feta", "parmesan", "frischkäse", etc.)
-   - Nuts? Add BOTH "nüsse" + specific type ("walnüsse", "mandeln", "haselnüsse")
-   - Berries? Add BOTH "beeren" + specific type ("himbeeren", "erdbeeren")
-   - Fruit? Add BOTH "obst" + specific type ("apfel", "kiwi", "weintrauben")
-   - Seeds? Add BOTH "kerne" + specific type ("chiasamen", "leinsamen", "sesam")
-   - Eggs? Use "eier"
-   - Other dairy? Use "joghurt", "milch", "quark", or "butter"
-   - Grains? Use "reis", "pasta", "mehl", "haferflocken"
+   - Vegetable? Use the specific vegetable name (or "Kohl" + specific for cabbage family)
+   - Fish? Add BOTH "Fisch" + specific type ("Lachs", "Thunfisch", etc.)
+   - Meat? Add BOTH "Fleisch" + specific type ("Rind", "Pute", "Schinken", "Hackfleisch")
+   - Cheese? Add BOTH "Käse" + specific type ("Feta", "Parmesan", "Frischkäse", etc.)
+   - Nuts? Add BOTH "Nüsse" + specific type ("Walnüsse", "Mandeln", "Haselnüsse")
+   - Berries? Add BOTH "Beeren" + specific type ("Himbeeren", "Erdbeeren")
+   - Fruit? Add BOTH "Obst" + specific type ("Apfel", "Kiwi", "Weintrauben")
+   - Seeds? Add BOTH "Kerne" + specific type ("Chiasamen", "Leinsamen", "Sesam")
+   - Eggs? Use "Eier"
+   - Other dairy? Use "Joghurt", "Milch", "Quark", or "Butter"
+   - Grains? Use "Reis", "Pasta", "Mehl", "Haferflocken"
 
 3. **Use German base form**: Keep it simple and in German
-   - "Cherry tomatoes" → "tomate"
-   - "Spring onions" → "zwiebel"
-   - "Wild salmon" → "fisch" + "lachs" (NOT "wildlachs")
+   - "Cherry tomatoes" → "Tomate"
+   - "Spring onions" → "Zwiebel"
+   - "Wild salmon" → "Fisch" + "Lachs" (NOT "Wildlachs")
 
 4. **Be consistent**: If similar ingredients already have tags, use the same pattern
-   - If "Karotten" → "karotte", then "Babymöhren" → "karotte"
-   - If "Wildlachs" → "fisch" + "lachs", then "Räucherlachs" → "fisch" + "lachs"
+   - If "Karotten" → "Karotte", then "Babymöhren" → "Karotte"
+   - If "Wildlachs" → "Fisch" + "Lachs", then "Räucherlachs" → "Fisch" + "Lachs"
 
 5. **Don't go deeper than one level of specificity**:
-   - ✓ Correct: "Wildlachs" → "fisch" + "lachs"
-   - ✗ Wrong: "Wildlachs" → "fisch" + "lachs" + "wildlachs"
+   - ✓ Correct: "Wildlachs" → "Fisch" + "Lachs"
+   - ✗ Wrong: "Wildlachs" → "Fisch" + "Lachs" + "Wildlachs"
 
 ## Implementation Notes
 
@@ -245,40 +245,40 @@ If you encounter an ingredient not in the examples:
 
 | Ingredient | Generic Tag | + Specific Tag | Example |
 |------------|-------------|----------------|---------|
-| Wildlachs | fisch | lachs | "fisch", "lachs" |
-| Thunfisch | fisch | thunfisch | "fisch", "thunfisch" |
-| Seelachs | fisch | seelachs | "fisch", "seelachs" |
-| Garnelen | fisch | garnelen | "fisch", "garnelen" |
-| Rinderfilet | fleisch | rind | "fleisch", "rind" |
-| Hackfleisch | fleisch | hackfleisch | "fleisch", "hackfleisch" |
-| Putenbrustfilet | fleisch | pute | "fleisch", "pute" |
-| Kochschinken | fleisch | schinken | "fleisch", "schinken" |
-| Frischkäse | käse | frischkäse | "käse", "frischkäse" |
-| Feta | käse | feta | "käse", "feta" |
-| Schafskäse | käse | schafskäse | "käse", "schafskäse" |
-| Parmesan | käse | parmesan | "käse", "parmesan" |
-| Bergkäse | käse | bergkäse | "käse", "bergkäse" |
-| Walnüsse | nüsse | walnüsse | "nüsse", "walnüsse" |
-| Haselnüsse | nüsse | haselnüsse | "nüsse", "haselnüsse" |
-| Mandeln | nüsse | mandeln | "nüsse", "mandeln" |
-| Himbeeren | beeren | himbeeren | "beeren", "himbeeren" |
-| Erdbeeren | beeren | erdbeeren | "beeren", "erdbeeren" |
-| Äpfel | obst | apfel | "obst", "apfel" |
-| Kiwi | obst | kiwi | "obst", "kiwi" |
-| Weintrauben | obst | weintrauben | "obst", "weintrauben" |
-| Chiasamen | kerne | chiasamen | "kerne", "chiasamen" |
-| Leinsamen | kerne | leinsamen | "kerne", "leinsamen" |
-| Sesam | kerne | sesam | "kerne", "sesam" |
-| Süßkartoffel | kartoffeln | süßkartoffel | "kartoffeln", "süßkartoffel" |
-| Blumenkohl | kohl | blumenkohl | "kohl", "blumenkohl" |
-| Brokkoli | kohl | brokkoli | "kohl", "brokkoli" |
+| Wildlachs | fisch | lachs | "Fisch", "Lachs" |
+| Thunfisch | fisch | thunfisch | "Fisch", "Thunfisch" |
+| Seelachs | fisch | seelachs | "Fisch", "Seelachs" |
+| Garnelen | fisch | garnelen | "Fisch", "Garnelen" |
+| Rinderfilet | fleisch | rind | "Fleisch", "Rind" |
+| Hackfleisch | fleisch | hackfleisch | "Fleisch", "Hackfleisch" |
+| Putenbrustfilet | fleisch | pute | "Fleisch", "Pute" |
+| Kochschinken | fleisch | schinken | "Fleisch", "Schinken" |
+| Frischkäse | käse | frischkäse | "Käse", "Frischkäse" |
+| Feta | käse | feta | "Käse", "Feta" |
+| Schafskäse | käse | schafskäse | "Käse", "Schafskäse" |
+| Parmesan | käse | parmesan | "Käse", "Parmesan" |
+| Bergkäse | käse | bergkäse | "Käse", "Bergkäse" |
+| Walnüsse | nüsse | walnüsse | "Nüsse", "Walnüsse" |
+| Haselnüsse | nüsse | haselnüsse | "Nüsse", "Haselnüsse" |
+| Mandeln | nüsse | mandeln | "Nüsse", "Mandeln" |
+| Himbeeren | beeren | himbeeren | "Beeren", "Himbeeren" |
+| Erdbeeren | beeren | erdbeeren | "Beeren", "Erdbeeren" |
+| Äpfel | obst | apfel | "Obst", "Apfel" |
+| Kiwi | obst | kiwi | "Obst", "Kiwi" |
+| Weintrauben | obst | weintrauben | "Obst", "Weintrauben" |
+| Chiasamen | kerne | chiasamen | "Kerne", "Chiasamen" |
+| Leinsamen | kerne | leinsamen | "Kerne", "Leinsamen" |
+| Sesam | kerne | sesam | "Kerne", "Sesam" |
+| Süßkartoffel | kartoffeln | süßkartoffel | "Kartoffeln", "Süßkartoffel" |
+| Blumenkohl | kohl | blumenkohl | "Kohl", "Blumenkohl" |
+| Brokkoli | kohl | brokkoli | "Kohl", "Brokkoli" |
 
 ### Key Rule: ONE LEVEL OF SPECIFICITY
 
 **Always stop at the second level. Never go deeper.**
 
-- ✓ Correct: Wildlachsfilet → "fisch", "lachs"
-- ✗ Wrong: Wildlachsfilet → "fisch", "lachs", "wildlachs"
+- ✓ Correct: Wildlachsfilet → "Fisch", "Lachs"
+- ✗ Wrong: Wildlachsfilet → "Fisch", "Lachs", "Wildlachs"
 
 ## After Processing
 

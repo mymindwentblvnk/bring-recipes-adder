@@ -6,14 +6,14 @@ servings: 1
 prep_time: 10  # minutes
 cook_time: 50  # minutes
 tags:
-  - eier
-  - frühstück
-  - haferflocken
-  - kerne
-  - quark
-  - salat
-  - sesam
-  - tomate
+  - Eier
+  - Frühstück
+  - Haferflocken
+  - Kerne
+  - Quark
+  - Salat
+  - Sesam
+  - Tomate
 
 ingredients:
   - name: Rucola

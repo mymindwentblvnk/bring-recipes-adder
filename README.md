@@ -111,8 +111,8 @@ servings: 4
 prep_time: 15  # minutes
 cook_time: 0   # minutes
 tags:
-  - eier
-  - mehl
+  - Eier
+  - Mehl
 
 ingredients:
   - name: flour
@@ -146,38 +146,38 @@ You can use any emoji as a category - it will automatically appear in the filter
 Tags enable powerful ingredient-based search and filtering. The system uses a **hierarchical tagging structure** with both generic and specific tags:
 
 **Tag Format:**
-- Lowercase German words
+- Capitalized German words (start with uppercase letter)
 - Sorted alphabetically
 - Include BOTH generic category AND specific ingredient
 
 **Hierarchical Tag Examples:**
 ```yaml
 tags:
-  - fisch           # Generic: fish
-  - lachs           # Specific: salmon
-  - käse            # Generic: cheese
-  - feta            # Specific: feta
-  - nüsse           # Generic: nuts
-  - walnüsse        # Specific: walnuts
-  - kerne           # Generic: seeds
-  - chiasamen       # Specific: chia seeds
+  - Fisch           # Generic: fish
+  - Lachs           # Specific: salmon
+  - Käse            # Generic: cheese
+  - Feta            # Specific: feta
+  - Nüsse           # Generic: nuts
+  - Walnüsse        # Specific: walnuts
+  - Kerne           # Generic: seeds
+  - Chiasamen       # Specific: chia seeds
 ```
 
 **Tag Hierarchies:**
-- **Fish**: `fisch` + (`lachs` | `thunfisch` | `seelachs` | `garnelen`)
-- **Meat**: `fleisch` + (`rind` | `pute` | `schinken` | `hackfleisch`)
-- **Cheese**: `käse` + (`feta` | `schafskäse` | `parmesan` | `bergkäse` | `frischkäse`)
-- **Nuts**: `nüsse` + (`walnüsse` | `haselnüsse` | `mandeln`)
-- **Berries**: `beeren` + (`himbeeren` | `erdbeeren`)
-- **Fruit**: `obst` + (`apfel` | `kiwi` | `weintrauben`)
-- **Seeds**: `kerne` + (`chiasamen` | `leinsamen` | `sesam`)
-- **Cabbage**: `kohl` + (`blumenkohl` | `brokkoli`)
+- **Fish**: `Fisch` + (`Lachs` | `Thunfisch` | `Seelachs` | `Garnelen`)
+- **Meat**: `Fleisch` + (`Rind` | `Pute` | `Schinken` | `Hackfleisch`)
+- **Cheese**: `Käse` + (`Feta` | `Schafskäse` | `Parmesan` | `Bergkäse` | `Frischkäse`)
+- **Nuts**: `Nüsse` + (`Walnüsse` | `Haselnüsse` | `Mandeln`)
+- **Berries**: `Beeren` + (`Himbeeren` | `Erdbeeren`)
+- **Fruit**: `Obst` + (`Apfel` | `Kiwi` | `Weintrauben`)
+- **Seeds**: `Kerne` + (`Chiasamen` | `Leinsamen` | `Sesam`)
+- **Cabbage**: `Kohl` + (`Blumenkohl` | `Brokkoli`)
 
 **Important Rules:**
-- ✓ Use both levels: "Wildlachsfilet" → `fisch` + `lachs`
-- ✗ Don't go deeper: "Wildlachsfilet" → NOT `wildlachs`
+- ✓ Use both levels: "Wildlachsfilet" → `Fisch` + `Lachs`
+- ✗ Don't go deeper: "Wildlachsfilet" → NOT `Wildlachs`
 - ✓ Always sort tags alphabetically
-- ✓ Use singular German forms: "Äpfel" → `apfel`
+- ✓ Use singular German forms: "Äpfel" → `Apfel`
 
 This allows users to search broadly (all fish recipes) or specifically (only salmon recipes).
 
@@ -203,13 +203,13 @@ The overview page provides a powerful unified search with autocomplete:
 
 ### Unified Search
 - **Recipe names** (🍽️): Search for specific recipes like "Fischpfanne" or "Gulasch"
-- **Tags** (🏷️): Search by ingredients like "lachs", "käse", or "nüsse"
+- **Tags** (🏷️): Search by ingredients like "Lachs", "Käse", or "Nüsse"
 - **Authors** (👤): Filter by recipe creators (VitaMoment, HelloFresh, Chefkoch, etc.)
 - **Categories** (📁): Filter by meal type (Brot, Fisch, Fleisch, Frühstück, etc.)
 
 ### Additional Filters
 - **Fast recipes**: Checkbox to show only recipes that take 30 minutes or less
-- **Multi-select**: Combine multiple search criteria (e.g., "lachs" + "frühstück" + VitaMoment)
+- **Multi-select**: Combine multiple search criteria (e.g., "Lachs" + "Frühstück" + VitaMoment)
 - **Persistent state**: Filter selections are saved in local storage and restored on page reload
 
 ### How It Works

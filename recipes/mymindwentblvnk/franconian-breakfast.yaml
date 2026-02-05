@@ -6,27 +6,27 @@ servings: 8
 prep_time: 20  # minutes
 cook_time: 20  # minutes
 tags:
-  - apfel
-  - avocado
-  - beeren
-  - bergkäse
-  - butter
-  - eier
-  - erdbeeren
-  - fisch
-  - fleisch
-  - frischkäse
-  - frühstück
-  - gurke
-  - honig
-  - kiwi
-  - käse
-  - lachs
-  - milch
-  - obst
-  - paprika
-  - schinken
-  - weintrauben
+  - Apfel
+  - Avocado
+  - Beeren
+  - Bergkäse
+  - Butter
+  - Eier
+  - Erdbeeren
+  - Fisch
+  - Fleisch
+  - Frischkäse
+  - Frühstück
+  - Gurke
+  - Honig
+  - Kiwi
+  - Käse
+  - Lachs
+  - Milch
+  - Obst
+  - Paprika
+  - Schinken
+  - Weintrauben
 
 ingredients:
   - name: Orangensaft
