@@ -8,13 +8,13 @@ cook_time: 10  # minutes
 tags:
   - Blumenkohl
   - Brokkoli
-  - Kohl
   - Käse
+  - Kohl
   - Mandeln
   - Nüsse
+  - Öl
   - Pasta
   - Schafskäse
-  - Öl
 
 ingredients:
   - name: Blumenkohl
