@@ -945,6 +945,7 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
     html = f'''{generate_page_header(get_text('weekly_plan_title'), WEEKLY_PAGE_CSS)}
     {generate_navigation(show_back_button=True)}
     <h1>{get_text('weekly_plan_title')}</h1>
+    <p style="color: var(--text-tertiary); font-size: 0.9em; font-style: italic; margin-bottom: 30px; padding: 10px; background-color: var(--bg-secondary); border-radius: 4px; border-left: 3px solid var(--primary-color);">{get_text('weekly_plan_disclaimer')}</p>
 
     <button id="clearAllButton" class="clear-all-button" onclick="clearAllRecipes()">Alle löschen</button>
 

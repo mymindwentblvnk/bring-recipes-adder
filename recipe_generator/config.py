@@ -31,7 +31,7 @@ TEXTS = {
     "stats_subtitle": "Top 10 beliebteste Rezepte",
     "stats_views": "Aufrufe",
     "stats_no_data": "Noch keine Daten verfügbar. Öffne einige Rezepte, um Statistiken zu sehen!",
-    "stats_disclaimer": "💡 Diese Statistiken basieren auf deinem lokalen Browser-Verlauf und werden nicht geräteübergreifend synchronisiert.",
+    "stats_disclaimer": "💡 Diese Statistiken werden lokal in deinem Browser gespeichert und gehen verloren, wenn du die Browser-Daten löschst.",
 
     # Detail page
     "recipe_title_suffix": "Rezept",
@@ -48,6 +48,7 @@ TEXTS = {
     # Weekly plan page
     "view_weekly_plan": "🗓️ Wochenplan",
     "weekly_plan_title": "Wochenplan",
+    "weekly_plan_disclaimer": "💡 Dein Wochenplan wird lokal in deinem Browser gespeichert und geht verloren, wenn du die Browser-Daten löschst.",
     "add_to_weekly": "📅 Diese Woche kochen",
     "in_weekly_plan": "✓ In Wochenplan",
     "mark_cooked": "Als gekocht markieren",
