@@ -28,19 +28,25 @@ This agent verifies that the local HTML files in the `output/` directory match w
    - `output/stats.html` → `https://mymindwentblvnk.github.io/bring-recipes-adder/stats.html`
    - `output/weekly.html` → `https://mymindwentblvnk.github.io/bring-recipes-adder/weekly.html`
 
-3. **Fetch the deployed version** using WebFetch tool:
-   - URL: GitHub Pages URL for the file
-   - Prompt: "Return the exact raw HTML content without any modifications, summaries, or analysis. Just output the complete HTML as-is."
+3. **Fetch the deployed version** using curl via Bash tool:
+   ```bash
+   curl -s -o /tmp/deployed-file.html https://mymindwentblvnk.github.io/bring-recipes-adder/filename.html
+   ```
+   - Use `-s` for silent mode
+   - Use `-o` to save to temp file
+   - Check exit code: 0 = success, non-zero = error (likely 404)
 
-4. **Compare content**:
-   - Read local file content
-   - Compare with fetched content
-   - Note: Ignore minor whitespace differences if needed
-   - Consider files "different" if content doesn't match
+4. **Compare content** using MD5 hashes:
+   ```bash
+   md5sum output/filename.html /tmp/deployed-file.html
+   ```
+   - If hashes match, files are identical
+   - If hashes differ, content has changed
+   - For better debugging, also compare file sizes
 
 5. **Handle errors**:
-   - 404 errors = file not deployed yet
-   - Other errors = report them
+   - curl exit code 22 = HTTP error (404 = file not deployed yet)
+   - Other errors = network issues or deployment problems
 
 ## Comparison Strategy
 
@@ -108,11 +114,41 @@ Priority files (check these first):
 
 ## Implementation Notes
 
-- **Be efficient**: Don't fetch unnecessarily large content for comparison
-- **Use HEAD requests** if possible to check if files exist before fetching full content
-- **Handle rate limiting**: GitHub Pages may rate limit requests
-- **Cache results**: If checking many files, consider caching to avoid repeated requests
-- **Ignore dynamic content**: Some content may differ due to timestamps or build IDs - focus on meaningful differences
+**IMPORTANT**: Use the Bash tool with curl commands, NOT WebFetch. Background agents don't have access to web tools.
+
+### Example Implementation
+
+For each HTML file, run these Bash commands:
+
+```bash
+# 1. Download deployed version
+curl -s -f -o /tmp/deployed-index.html https://mymindwentblvnk.github.io/bring-recipes-adder/index.html
+CURL_EXIT=$?
+
+# 2. Check if file exists on deployment
+if [ $CURL_EXIT -eq 0 ]; then
+  # File exists, compare hashes
+  LOCAL_HASH=$(md5sum output/index.html | awk '{print $1}')
+  DEPLOYED_HASH=$(md5sum /tmp/deployed-index.html | awk '{print $1}')
+
+  if [ "$LOCAL_HASH" = "$DEPLOYED_HASH" ]; then
+    echo "✓ index.html - IN SYNC"
+  else
+    LOCAL_SIZE=$(wc -c < output/index.html)
+    DEPLOYED_SIZE=$(wc -c < /tmp/deployed-index.html)
+    echo "✗ index.html - OUT OF SYNC (local: ${LOCAL_SIZE}B, deployed: ${DEPLOYED_SIZE}B)"
+  fi
+else
+  echo "✗ index.html - NOT DEPLOYED (curl exit code: $CURL_EXIT)"
+fi
+```
+
+### Efficiency Tips
+
+- **Batch processing**: Check multiple files in a single Bash command using loops
+- **Early exit**: Stop on first difference if you just want to know if anything changed
+- **Use -f flag**: Makes curl fail silently on HTTP errors for easier error handling
+- **md5sum vs md5**: Use `md5sum` on Linux, `md5` on macOS - check which is available
 
 ## Expected Use Cases
 
