@@ -444,7 +444,10 @@ def generate_overview_html(
             <span class="servings">🍽️ {servings} {get_text('servings')}</span> •
             <span class="time">⏱️ {total_time} {get_text('min_total')}</span>
         </p>
-        <a href="{escape(filename)}" class="view-recipe-btn">{get_text('view_recipe')}</a>
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <a href="{escape(filename)}" class="view-recipe-btn">{get_text('view_recipe')}</a>
+            <button class="weekly-plan-button-card" data-slug="{slug}" data-name="{escape(recipe['name'])}" data-category="{category}" onclick="toggleWeeklyPlanFromCard(this)">📅 Diese Woche kochen</button>
+        </div>
     </div>'''
         recipe_entries.append(recipe_entry)
 
@@ -713,6 +716,80 @@ def generate_overview_html(
         fastFilter.addEventListener('change', applyFilters);
         document.getElementById('resetSearch').addEventListener('click', resetSearch);
 
+        // Weekly plan functionality for overview page
+        function toggleWeeklyPlanFromCard(button) {{
+            const slug = button.dataset.slug;
+            const name = button.dataset.name;
+            const category = button.dataset.category;
+            const planKey = 'weeklyMealPlan';
+            let plan = {{ recipes: [] }};
+
+            try {{
+                const stored = localStorage.getItem(planKey);
+                if (stored) {{
+                    plan = JSON.parse(stored);
+                }}
+            }} catch (e) {{
+                console.error('Error reading weekly plan:', e);
+            }}
+
+            // Always add to plan (allow duplicates)
+            plan.recipes.push({{
+                id: String(Date.now() + Math.random()),
+                name: name,
+                slug: slug,
+                category: category,
+                addedAt: Date.now(),
+                cooked: false
+            }});
+
+            // Update lastModified timestamp
+            plan.lastModified = Date.now();
+
+            // Save back to localStorage
+            try {{
+                localStorage.setItem(planKey, JSON.stringify(plan));
+                updateAllWeeklyPlanButtons();
+
+                // Trigger sync by posting message to any open weekly plan tabs
+                try {{
+                    localStorage.setItem('weeklyPlanNeedsSync', Date.now().toString());
+                }} catch (e) {{
+                    // Ignore if localStorage is full
+                }}
+            }} catch (e) {{
+                console.error('Error saving weekly plan:', e);
+            }}
+        }}
+
+        function updateAllWeeklyPlanButtons() {{
+            const planKey = 'weeklyMealPlan';
+            let plan = {{ recipes: [] }};
+
+            try {{
+                const stored = localStorage.getItem(planKey);
+                if (stored) {{
+                    plan = JSON.parse(stored);
+                }}
+            }} catch (e) {{
+                console.error('Error reading weekly plan:', e);
+            }}
+
+            document.querySelectorAll('.weekly-plan-button-card').forEach(button => {{
+                const slug = button.dataset.slug;
+                const count = plan.recipes.filter(r => r.slug === slug).length;
+
+                if (count > 0) {{
+                    button.classList.add('in-plan');
+                    const countText = count > 1 ? ` (${{count}}×)` : '';
+                    button.textContent = `✓ In Wochenplan${{countText}}`;
+                }} else {{
+                    button.classList.remove('in-plan');
+                    button.textContent = '📅 Diese Woche kochen';
+                }}
+            }});
+        }}
+
         {generate_dark_mode_script()}
 
         // Apply saved preferences on page load
@@ -722,6 +799,9 @@ def generate_overview_html(
             // Load and apply saved filters
             loadFilters();
             applyFilters();
+
+            // Update weekly plan button states
+            updateAllWeeklyPlanButtons();
         }});
     </script>
 </body>

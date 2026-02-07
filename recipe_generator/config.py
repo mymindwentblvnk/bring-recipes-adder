@@ -563,10 +563,38 @@ h1 {
     border-radius: 4px;
     font-weight: 500;
     transition: background-color 0.2s;
+    flex: 1;
 }
 .view-recipe-btn:hover {
     background-color: var(--primary-hover);
     text-decoration: none;
+}
+.weekly-plan-button-card {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    white-space: nowrap;
+    flex: 1;
+}
+.weekly-plan-button-card:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+.weekly-plan-button-card.in-plan {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+.weekly-plan-button-card.in-plan:hover {
+    background-color: var(--bg-secondary);
 }
 .deployment-info {
     margin-top: 40px;
