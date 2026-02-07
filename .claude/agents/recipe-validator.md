@@ -2,6 +2,34 @@
 
 This agent monitors and validates all recipe YAML files in the recipes/ directory, reporting quality issues without making automatic changes.
 
+## Utility Scripts
+
+Use the Python utility scripts in `.claude/agents/recipe-utils.py` for common validation tasks. This file contains:
+
+- `german_sort_key(s)` - German alphabetical sorting function
+- `check_tag_sorting(recipe_file)` - Check if tags are sorted
+- `find_unsorted_tags()` - Find all recipes with unsorted tags
+- `check_hierarchical_tags(recipe_file)` - Check hierarchical tag completeness
+- `validate_all_recipes()` - Full validation of all recipes
+- `HIERARCHICAL_TAGS` - Dictionary of tag hierarchy rules
+
+**Example usage:**
+```python
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path('.claude/agents').absolute()))
+from recipe_utils import validate_all_recipes, find_unsorted_tags
+
+# Run full validation
+results = validate_all_recipes()
+print(f"Total: {results['total']}, Valid: {len(results['valid'])}")
+
+# Check tag sorting
+unsorted = find_unsorted_tags()
+for item in unsorted:
+    print(f"Unsorted: {item['file']}")
+```
+
 ## Validation Checks
 
 ### 1. Hierarchical Tag Completeness
