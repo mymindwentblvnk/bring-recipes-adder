@@ -1,7 +1,7 @@
 name: Baba Ghanoush
 description: Orientalische Vorspeise mit Suchtfaktor – cremiges Auberginenpüree mit Sesampaste, Knoblauch und Zitrone.
 author: Chefkoch
-category: 🍲
+category: 🥣
 servings: 4
 prep_time: 30  # minutes
 cook_time: 30  # minutes
@@ -16,7 +16,7 @@ tags:
 
 ingredients:
   - name: Auberginen
-    amount: 2 (ca. 500g)
+    amount: 2
   - name: Sesampaste (Tahin)
     amount: 3 EL
   - name: Zitronensaft
@@ -43,4 +43,3 @@ instructions:
   - Mit Salz und Pfeffer abschmecken
   - Petersilie und Oliven fein hacken
   - Kurz vor dem Servieren Petersilie und Oliven auf das Baba Ghanoush streuen
-  - Mit Fladenbrot servieren
