@@ -1139,8 +1139,24 @@ def generate_weekly_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
 
             clearButton.disabled = false;
 
+            // Sort recipes: breakfast (🥣) first, then others
+            const sortedRecipes = [...plan.recipes].sort((a, b) => {{
+                const categoryA = a.category || '';
+                const categoryB = b.category || '';
+
+                // Breakfast emoji first
+                const isBreakfastA = categoryA === '🥣';
+                const isBreakfastB = categoryB === '🥣';
+
+                if (isBreakfastA && !isBreakfastB) return -1;
+                if (!isBreakfastA && isBreakfastB) return 1;
+
+                // Within same category, keep original order (by addedAt)
+                return 0;
+            }});
+
             let html = '<div class="weekly-plan-list">';
-            plan.recipes.forEach((recipe) => {{
+            sortedRecipes.forEach((recipe) => {{
                 const recipeInfo = recipeData[recipe.slug];
                 if (!recipeInfo) return; // Skip if recipe not found
 
