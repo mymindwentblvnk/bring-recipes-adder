@@ -9,6 +9,7 @@ tags:
   - Bergkäse
   - Butter
   - Eier
+  - Feta
   - Fisch
   - Frischkäse
   - Gurke
@@ -32,6 +33,8 @@ ingredients:
   - name: Butter
     amount: 1
   - name: Eier
+    amount: 1 Packung
+  - name: Feta
     amount: 1 Packung
 
 instructions:
