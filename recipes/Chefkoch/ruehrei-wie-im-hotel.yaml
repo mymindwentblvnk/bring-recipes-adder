@@ -12,18 +12,16 @@ tags:
   - Öl
 
 ingredients:
-  - name: Eier
-    amount: 4 große
+  - name: Eier (groß)
+    amount: 4
   - name: Butter
-    amount: 1 TL gehäuft (15-20g)
+    amount: 20 g
   - name: Schnittlauch
     amount: 1 Halm
-  - name: Fleur de Sel
+  - name: Salz
     amount: 1 Prise
   - name: Schwarzer Pfeffer
     amount: nach Geschmack
-  - name: Olivenöl
-    amount: 1 Schuss (zum Einreiben der Pfanne)
 
 instructions:
   - Pfanne sehr stark erhitzen und mit etwas Olivenöl einreiben (mit Küchenpapier verteilen)
