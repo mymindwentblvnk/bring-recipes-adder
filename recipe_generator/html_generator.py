@@ -267,6 +267,31 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
             }}
         }})();
 
+        // Track cumulative "add to plan" clicks
+        function incrementAddToPlanCounter(recipeName) {{
+            const counterKey = 'recipeAddToPlanCount';
+            let counts = {{}};
+
+            try {{
+                const stored = localStorage.getItem(counterKey);
+                if (stored) {{
+                    counts = JSON.parse(stored);
+                }}
+            }} catch (e) {{
+                console.error('Error reading add-to-plan counts:', e);
+            }}
+
+            // Increment counter for this recipe
+            counts[recipeName] = (counts[recipeName] || 0) + 1;
+
+            // Save back to localStorage
+            try {{
+                localStorage.setItem(counterKey, JSON.stringify(counts));
+            }} catch (e) {{
+                console.error('Error saving add-to-plan counts:', e);
+            }}
+        }}
+
         // Weekly plan functionality
         function toggleWeeklyPlan() {{
             const planKey = 'weeklyMealPlan';
@@ -293,6 +318,9 @@ def generate_recipe_detail_html(recipe: dict[str, Any], slug: str) -> str:
 
             // Update lastModified timestamp
             plan.lastModified = Date.now();
+
+            // Increment add-to-plan counter
+            incrementAddToPlanCounter(recipeData.name);
 
             // Save back to localStorage
             try {{
@@ -716,6 +744,31 @@ def generate_overview_html(
         fastFilter.addEventListener('change', applyFilters);
         document.getElementById('resetSearch').addEventListener('click', resetSearch);
 
+        // Track cumulative "add to plan" clicks
+        function incrementAddToPlanCounter(recipeName) {{
+            const counterKey = 'recipeAddToPlanCount';
+            let counts = {{}};
+
+            try {{
+                const stored = localStorage.getItem(counterKey);
+                if (stored) {{
+                    counts = JSON.parse(stored);
+                }}
+            }} catch (e) {{
+                console.error('Error reading add-to-plan counts:', e);
+            }}
+
+            // Increment counter for this recipe
+            counts[recipeName] = (counts[recipeName] || 0) + 1;
+
+            // Save back to localStorage
+            try {{
+                localStorage.setItem(counterKey, JSON.stringify(counts));
+            }} catch (e) {{
+                console.error('Error saving add-to-plan counts:', e);
+            }}
+        }}
+
         // Weekly plan functionality for overview page
         function toggleWeeklyPlanFromCard(button) {{
             const slug = button.dataset.slug;
@@ -745,6 +798,9 @@ def generate_overview_html(
 
             // Update lastModified timestamp
             plan.lastModified = Date.now();
+
+            // Increment add-to-plan counter
+            incrementAddToPlanCounter(name);
 
             // Save back to localStorage
             try {{
@@ -819,13 +875,8 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
     Returns:
         Complete HTML page as a string
     """
-    # Create recipe lookup by slug and by name
+    # Create recipe lookup by name
     recipe_lookup_by_name = {recipe['name']: (filename, recipe) for filename, recipe in recipes_data}
-    recipe_lookup_by_slug = {filename.replace('.html', ''): recipe['name'] for filename, recipe in recipes_data}
-
-    # Generate recipe lookups as JSON for JavaScript
-    import json
-    recipe_lookup_json = json.dumps(recipe_lookup_by_slug)
 
     # Stats-specific CSS
     stats_css = '''.stats-list {
@@ -929,34 +980,31 @@ def generate_stats_html(recipes_data: list[tuple[str, dict[str, Any]]]) -> str:
     </div>
 
     <script>
-        const recipeSlugToName = {recipe_lookup_json};
         const recipeData = {{{','.join(f'"{recipe["name"]}": {{"filename": "{filename}", "category": "{recipe.get("category", "")}"}}' for filename, recipe in recipes_data)}}};
 
         function displayStats() {{
-            const planKey = 'weeklyMealPlan';
-            let plan = {{ recipes: [] }};
+            const counterKey = 'recipeAddToPlanCount';
+            let counts = {{}};
 
             try {{
-                const stored = localStorage.getItem(planKey);
+                const stored = localStorage.getItem(counterKey);
                 if (stored) {{
-                    plan = JSON.parse(stored);
+                    counts = JSON.parse(stored);
                 }}
             }} catch (e) {{
-                console.error('Error reading weekly plan:', e);
+                console.error('Error reading add-to-plan counts:', e);
             }}
 
-            // Count how many times each recipe slug appears in the plan
-            const recipeCounts = {{}};
-            plan.recipes.forEach(recipe => {{
-                const slug = recipe.slug;
-                if (recipeSlugToName[slug]) {{
-                    const name = recipeSlugToName[slug];
-                    recipeCounts[name] = (recipeCounts[name] || 0) + 1;
+            // Filter to only include recipes that exist
+            const validCounts = {{}};
+            for (const [name, count] of Object.entries(counts)) {{
+                if (recipeData[name]) {{
+                    validCounts[name] = count;
                 }}
-            }});
+            }}
 
             // Sort by count and take top 10
-            const sortedRecipes = Object.entries(recipeCounts)
+            const sortedRecipes = Object.entries(validCounts)
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 10);
 
